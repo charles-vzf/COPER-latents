@@ -1,0 +1,12 @@
+torchdiffeq
+einops
+numpy
+pandas
+scikit-learn
+matplotlib
+seaborn
+wandb
+tqdm
+umap-learn
+ipykernel
+openpyxl

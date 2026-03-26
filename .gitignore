@@ -1,0 +1,41 @@
+# Byte-compiled / caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+.venv-*/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+.env
+.env.*
+
+# Weights & Biases (if enabled)
+wandb/
+
+# Experiment outputs under results/: ignore heavy artifacts, keep aggregated tables
+# (tracked: results/tables/*.csv and similar small summaries)
+results/logs/
+results/checkpoints/
+results/**/*.ckpt
+results/**/*.pth
+results/Predictions_*.npz
+# Nested experiment roots (e.g. results/latent_dim_sweep/ld64/...)
+results/**/Predictions_*.npz
+results/**/logs/
+
+# Large portable bundles (optional — remove these lines if you want .pt bundles in git)
+# artifacts/*.pt

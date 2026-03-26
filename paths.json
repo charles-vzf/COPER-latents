@@ -1,0 +1,5 @@
+{
+  "mimic3_mortality": "/home/charlesv/Desktop/StatisitcalGenetics/MIMIC/mimic3-benchmarks/data/mortality_for_coper.data",
+  "physionet_2012_data": "/data/Vinod/Data/datasets/physionet2012/anshul_from/Data.npy",
+  "physionet_2012_labels": "/data/Vinod/Data/datasets/physionet2012/anshul_from/labels.npy"
+}

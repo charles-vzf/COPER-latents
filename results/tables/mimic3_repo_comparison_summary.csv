@@ -1,0 +1,4 @@
+,arch_id,second_node,drop,test_og_auroc,test_og_auroc,test_og_auprc,test_og_auprc,test_g_auroc,test_g_auroc,test_g_auprc,test_g_auprc,runtime_sec,runtime_sec
+,,,,mean,std,mean,std,mean,std,mean,std,mean,std
+0,coper_1node,False,0.5,0.7779,,0.3306,,0.7765,,0.3304,,171.4431335926056,
+1,coper_2node,True,0.5,0.7611,,0.3098,,0.7678,,0.3195,,353.68840885162354,
