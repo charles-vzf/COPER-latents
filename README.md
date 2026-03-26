@@ -15,11 +15,6 @@ and to experiment with architectural variants (e.g. the 1-NODE vs 2-NODE COPER v
 * MIMIC-III / mortality preprocessing: [YerevaNN/mimic3-benchmarks](https://github.com/YerevaNN/mimic3-benchmarks)
 * PhysioNet Challenge 2012: [PhysioNet Challenge 2012 (1.0.0)](https://physionet.org/content/challenge-2012/1.0.0/)
 
-Code for the papers:
-> [Chauhan, V. K., Thakur, A., O’Donoghue, O., Rohanian, O., Molaei, S., & Clifton, D. A. (2024). Continuous patient state attention model for addressing irregularity in electronic health records. BMC Medical Informatics and Decision Making, 24(1), 117.](https://link.springer.com/article/10.1186/s12911-024-02514-2)
-
-> [Chauhan, V. K., Thakur, A., O'Donoghue, O., & Clifton, D. A. (2022). COPER: Continuous patient state perceiver. In 2022 IEEE-EMBS International Conference on Biomedical and Health Informatics (BHI) (pp. 1-4). IEEE.](https://ieeexplore.ieee.org/document/9926807)
-
 ## Python environment (venv)
 
 We provide:
@@ -70,9 +65,9 @@ The `notebooks/` folder contains an end-to-end benchmark designed to:
 
 Key notebooks:
 
-* `notebooks/compare_mortality_mimic3.ipynb`: runs the benchmark and saves tables under `results/tables/`.
+* `notebooks/compare_mortality_mimic3.ipynb`: runs the benchmark (default **3 epochs**) and exports bundles named `coper_*_drop*_s*_e3.pt`; saves tables under `results/tables/`.
 * `notebooks/latent_dim.ipynb`: **1-NODE** COPER only — sweeps `--latent-dim` on MIMIC mortality, records test metrics and parameter counts, plots performance vs latent size / model size.
-* `notebooks/display_copers_embeddings.ipynb`: loads exported bundles and visualizes embeddings (PCA / UMAP / t-SNE).
+* `notebooks/display_copers_embeddings.ipynb`: loads `_e3` bundles, saves slide figures `pictures/coper_*_{1,3}epoch.png` (1-epoch row uses legacy bundles if still on disk).
 * `notebooks/demo.ipynb`: fast end-to-end demo using COPER on raw local MIMIC-III CSV extracts (no benchmark pickle dependency).
 
 Export helper:
@@ -85,45 +80,3 @@ Outputs are stored under:
 * `artifacts/` (portable embedding bundles)
 
 `.gitignore` excludes heavy run artifacts (venv, `__pycache__/`, `results/logs/`, `results/checkpoints/`, `Predictions_*.npz`, etc.) while leaving small summaries such as `results/tables/*.csv` trackable if you commit them.
-
-## Citations:
-```
-@article{chauhan2024continuous,
-  title={Continuous patient state attention model for addressing irregularity in electronic health records},
-  author={Chauhan, Vinod Kumar and Thakur, Anshul and O’Donoghue, Odhran and Rohanian, Omid and Molaei, Soheila and Clifton, David A},
-  journal={BMC Medical Informatics and Decision Making},
-  volume={24},
-  number={1},
-  pages={117},
-  year={2024},
-  publisher={Springer}
-}
-
-@inproceedings{Chauhan2022a,
-  title={COPER: Continuous Patient State Perceiver},
-  author={Chauhan, Vinod Kumar and Thakur, Anshul and O'Donoghue, Odhran and Clifton, David A},
-  booktitle={IEEE International Conference on Biomedical and Health Informatics},
-  year={2022},
-  url={https://arxiv.org/abs/2208.03196}
-}
-
-@misc{coper_repo,
-  title={COPER repository},
-  howpublished={\url{https://github.com/jmdvinodjmd/COPER}},
-  year={2024},
-}
-
-@misc{mimic3_benchmarks,
-  title={mimic3-benchmarks (MIMIC-III benchmark preprocessing)},
-  howpublished={\url{https://github.com/YerevaNN/mimic3-benchmarks}},
-  year={2024},
-}
-
-@misc{physionet2012,
-  title={PhysioNet Challenge 2012 (1.0.0)},
-  howpublished={\url{https://physionet.org/content/challenge-2012/1.0.0/}},
-  year={2012},
-}
-```
-
-Neural ODE implementations based on [[Yulia Rubanova]](https://github.com/YuliaRubanova/latent_ode).

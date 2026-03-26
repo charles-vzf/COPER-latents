@@ -1,32 +1,5 @@
 arch_id,architecture,second_node,repo_dir,seed,drop,return_code,runtime_sec,ckpt_path,ckpt_exists,test_og_auroc,test_og_auprc,test_g_auroc,test_g_auprc,raw_tail
-coper_1node,1-NODE (ODE → Perceiver),False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,171.4431335926056,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/COPER-mimic-F-1_D0.5_S1.ckpt,True,0.7779,0.3306,0.7765,0.3304,"
-/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/run_exp.py
-Experiment 15399
-args:
-
-Namespace(UQ=2, model_type='COPER', setting='Train', drop=0.5, niters=1, num_labels=1, fold=-1, kfold=5, patience=10, lr=0.0001, batch_size=64, save='/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints', results_dir='/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results', load=None, random_seed=1, dataset='mimic', project='perceiver', num_latents=48, rec_dims=40, rec_layers=3, units=128, emb_dim=32, mask=False, cont_in=True, cont_out=False, second_node=False, self_per_cross_attn=1, latent_heads=2, cross_heads=1, cross_dim_head=128, latent_dim_head=128, latent_dim=64, ff_dropout=0.5, att_dropout=0.5, ode_dropout=0.5, bidirectional=False, num_layers=2, lstm_dropout=0.1, rec_hidden=64, gen_hidden=32, enc_num_heads=1, dec_num_heads=1, embed_time=256, learn_emb=False, kl=False, norm=False, std=0.01, k_iwae=1, alpha=5.0, poisson=False, gen_layers=3, gru_units=50, linear_classif=True, seq_len=48)
-['run_exp.py', '--model-type', 'COPER', '--dataset', 'mimic', '--cont-in', '--self-per-cross-attn', '1', '--latent-heads', '2', '--cross-heads', '1', '--cross-dim-head', '128', '--latent-dim-head', '128', '--latent-dim', '64', '--units', '128', '--ode-dropout', '0.5', '--att-dropout', '0.5', '--ff-dropout', '0.5', '--num-latents', '48', '--batch-size', '64', '--patience', '10', '--niters', '1', '--results-dir', '/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results', '--random-seed', '1', '--drop', '0.5']
-COPER(
-  (embed): Linear(in_features=76, out_features=32, bias=True)
-  (ode_in): ODE(
-    (ode_cell): ODECell(
-      (diffeq_solver): DiffeqSolver(
-        (ode_func): ODEFunc(
-          (gradient_net): ODEFuncNet(
-            (net): PlainNet(
-              (net): Sequential(
-                (0): Linear(in_features=32, out_features=128, bias=True)
-                (1): Tanh()
-                (2): Dropout(p=0.5, inplace=False)
-                (3): Linear(in_features=128, out_features=128, bias=True)
-                (4): Tanh()
-                (5): Dropout(p=0.5, inplace=False)
-                (6): Linear(in_features=128, out_features=128, bias=True)
-                (7): Tanh()
-                (8): Dropout(p=0.5, inplace=False)
-                (9): Linear(in_features=128, out_features=128, bias=True)
-                (10): Tanh()
-                (11): Linear(in_features=128, out_features=32, bias=True)
+coper_1node,1-NODE (ODE → Perceiver),False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,440.87583661079407,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/COPER-mimic-F-1_D0.5_S1.ckpt,True,0.8088,0.3813,0.8049,0.3743,"                (11): Linear(in_features=128, out_features=32, bias=True)
               )
             )
           )
@@ -93,60 +66,60 @@ Val F1-score = 0.6081
 
 
 Validation auc increased (inf --> 0.783422).  Saving model ...
-Test-OG Epoch: -001 | Test-OG Loss 0.307144
-Number of labeled examples: 3236
-Number of examples with mortality 1: 374
-Best Threshold=0.119652, G-Mean=0.713
-Test-OG AUROC = 0.7779
-Test-OG AUPRC = 0.3306
-Test-OG Accuracy = 0.7089
-Test-OG Precision = 0.2432
-Test-OG Recall = 0.7193
-Test-OG F1-score = 0.5874
+Train Loss:0.334621
+Val Epoch: 0002 | Val Loss 0.323839
+Number of labeled examples: 3222
+Number of examples with mortality 1: 436
+Best Threshold=0.088337, G-Mean=0.738
+Val AUROC = 0.8040
+Val AUPRC = 0.4291
+Val Accuracy = 0.7135
+Val Precision = 0.2903
+Val Recall = 0.7729
+Val F1-score = 0.6158
 
 
-Test-G Epoch: -001 | Test-G Loss 0.305935
+Validation auc increased (0.783422 --> 0.804034).  Saving model ...
+Train Loss:0.325622
+Val Epoch: 0003 | Val Loss 0.318891
+Number of labeled examples: 3222
+Number of examples with mortality 1: 436
+Best Threshold=0.109792, G-Mean=0.746
+Val AUROC = 0.8093
+Val AUPRC = 0.4452
+Val Accuracy = 0.7486
+Val Precision = 0.3170
+Val Recall = 0.7431
+Val F1-score = 0.6410
+
+
+Validation auc increased (0.804034 --> 0.809289).  Saving model ...
+Test-OG Epoch: -001 | Test-OG Loss 0.291615
 Number of labeled examples: 3236
 Number of examples with mortality 1: 374
-Best Threshold=0.115717, G-Mean=0.713
-Test-G AUROC = 0.7765
-Test-G AUPRC = 0.3304
-Test-G Accuracy = 0.7067
-Test-G Precision = 0.2422
-Test-G Recall = 0.7219
-Test-G F1-score = 0.5861
+Best Threshold=0.107882, G-Mean=0.736
+Test-OG AUROC = 0.8088
+Test-OG AUPRC = 0.3813
+Test-OG Accuracy = 0.7225
+Test-OG Precision = 0.2592
+Test-OG Recall = 0.7540
+Test-OG F1-score = 0.6033
+
+
+Test-G Epoch: -001 | Test-G Loss 0.292380
+Number of labeled examples: 3236
+Number of examples with mortality 1: 374
+Best Threshold=0.098306, G-Mean=0.736
+Test-G AUROC = 0.8049
+Test-G AUPRC = 0.3743
+Test-G Accuracy = 0.7284
+Test-G Precision = 0.2625
+Test-G Recall = 0.7460
+Test-G F1-score = 0.6069
 
 
 ...........Experiment ended............."
-coper_2node,2-NODE (ODE → Perceiver → ODE on latents),True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,353.68840885162354,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/COPER-mimic-F-1_D0.5_S1_N2.ckpt,True,0.7611,0.3098,0.7678,0.3195,"                (9): Linear(in_features=128, out_features=128, bias=True)
-                (10): Tanh()
-                (11): Linear(in_features=128, out_features=32, bias=True)
-              )
-            )
-          )
-        )
-      )
-    )
-  )
-  (net): Perceiver(
-    (pos_encoder): PositionalEncoding()
-    (cross_attn): Transformer(
-      (mha): MultiheadAttention(
-        (w_q): Linear(in_features=64, out_features=128, bias=True)
-        (w_k): Linear(in_features=32, out_features=128, bias=True)
-        (w_v): Linear(in_features=32, out_features=128, bias=True)
-        (dropout): Dropout(p=0.5, inplace=False)
-        (to_out): Linear(in_features=128, out_features=64, bias=True)
-      )
-      (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
-      (mlp): Sequential(
-        (0): Linear(in_features=64, out_features=256, bias=True)
-        (1): ReLU()
-        (2): Dropout(p=0.5, inplace=False)
-        (3): Linear(in_features=256, out_features=64, bias=True)
-      )
-      (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
-    )
+coper_2node,2-NODE (ODE → Perceiver → ODE on latents),True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,878.2948911190033,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/COPER-mimic-F-1_D0.5_S1_N2.ckpt,True,0.7923,0.358,0.8064,0.3806,"    )
     (self_attns): ModuleList(
       (0): Transformer(
         (mha): MultiheadAttention(
@@ -213,28 +186,56 @@ Val F1-score = 0.6168
 
 
 Validation auc increased (inf --> 0.774494).  Saving model ...
-Test-OG Epoch: -001 | Test-OG Loss 0.548452
-Number of labeled examples: 3236
-Number of examples with mortality 1: 374
-Best Threshold=0.464059, G-Mean=0.702
-Test-OG AUROC = 0.7611
-Test-OG AUPRC = 0.3098
-Test-OG Accuracy = 0.7111
-Test-OG Precision = 0.2396
-Test-OG Recall = 0.6898
-Test-OG F1-score = 0.5847
+Train Loss:0.335441
+Val Epoch: 0002 | Val Loss 0.321079
+Number of labeled examples: 3222
+Number of examples with mortality 1: 436
+Best Threshold=0.148227, G-Mean=0.743
+Val AUROC = 0.8050
+Val AUPRC = 0.4261
+Val Accuracy = 0.7427
+Val Precision = 0.3112
+Val Recall = 0.7431
+Val F1-score = 0.6359
 
 
-Test-G Epoch: -001 | Test-G Loss 0.310135
+Validation auc increased (0.774494 --> 0.804961).  Saving model ...
+Train Loss:0.325613
+Val Epoch: 0003 | Val Loss 0.319192
+Number of labeled examples: 3222
+Number of examples with mortality 1: 436
+Best Threshold=0.117772, G-Mean=0.747
+Val AUROC = 0.8097
+Val AUPRC = 0.4399
+Val Accuracy = 0.7592
+Val Precision = 0.3262
+Val Recall = 0.7317
+Val F1-score = 0.6485
+
+
+Validation auc increased (0.804961 --> 0.809696).  Saving model ...
+Test-OG Epoch: -001 | Test-OG Loss 0.474733
 Number of labeled examples: 3236
 Number of examples with mortality 1: 374
-Best Threshold=0.129074, G-Mean=0.709
-Test-G AUROC = 0.7678
-Test-G AUPRC = 0.3195
-Test-G Accuracy = 0.7293
-Test-G Precision = 0.2525
-Test-G Recall = 0.6845
-Test-G F1-score = 0.5983
+Best Threshold=0.393341, G-Mean=0.724
+Test-OG AUROC = 0.7923
+Test-OG AUPRC = 0.3580
+Test-OG Accuracy = 0.7061
+Test-OG Precision = 0.2463
+Test-OG Recall = 0.7487
+Test-OG F1-score = 0.5895
+
+
+Test-G Epoch: -001 | Test-G Loss 0.292100
+Number of labeled examples: 3236
+Number of examples with mortality 1: 374
+Best Threshold=0.090011, G-Mean=0.732
+Test-G AUROC = 0.8064
+Test-G AUPRC = 0.3806
+Test-G Accuracy = 0.7123
+Test-G Precision = 0.2524
+Test-G Recall = 0.7594
+Test-G F1-score = 0.5959
 
 
 ...........Experiment ended............."
