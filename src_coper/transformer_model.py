@@ -1,31 +1,25 @@
-###########################
-# COPER: Continuous patient state Perceiver
-# Author: Vinod Kumar Chauhan
-###########################
-
-# import numpy as np
 import torch
 import torch.nn as nn
 from einops import rearrange, repeat
 import math
 import numpy as np
 
-import src.utils as utils
+import src_coper.utils as utils
 
-from src.ode_cell import ODECell
-from src.attention import Transformer
+from src_coper.ode_cell import ODECell
+from src_coper.attention import Transformer
 
 torch.autograd.set_detect_anomaly(True)
 
 
-class COPER(nn.Module):
+class TRANSFORMER(nn.Module):
     '''
-        Continuous input Perceiver to handle irregularity in time-series.
+        Continuous input Transformer.
 	'''
     def __init__(self, config, n_labels, input_dim, num_latents, latent_dim, rec_layers, units, nonlinear,
                  cont_in, cont_out, emb_dim=None, device = torch.device("cpu")):
 
-        super(COPER, self).__init__()
+        super(TRANSFORMER, self).__init__()
         
         self.config = config
         self.device = device
@@ -43,14 +37,14 @@ class COPER(nn.Module):
 
         if cont_in:
             self.ode_in = ODE(input, input, rec_layers, units, nonlinear, config.ode_dropout, device)
-
-        self.net = Perceiver(cont_out, num_latents=num_latents, latent_dim=latent_dim, input_channels=input, att_dropout=config.att_dropout, ff_dropout = config.ff_dropout, self_per_cross_attn=config.self_per_cross_attn,
+            
+        self.net = Transformer_Multiple(cont_out, num_latents=num_latents, latent_dim=latent_dim, input_channels=input, att_dropout=config.att_dropout, ff_dropout = config.ff_dropout, self_per_cross_attn=config.self_per_cross_attn,
                             latent_heads = config.latent_heads, cross_heads=config.cross_heads, cross_dim_head=config.cross_dim_head, latent_dim_head=config.latent_dim_head)
 
         if self.second_node:
             self.ode_out = ODE(
-                latent_dim,
-                latent_dim,
+                input,
+                input,
                 rec_layers,
                 units,
                 nonlinear,
@@ -58,9 +52,9 @@ class COPER(nn.Module):
                 device,
             )
 
-        self.norm = nn.LayerNorm(latent_dim, eps=1e-06)
+        self.norm = nn.LayerNorm(input, eps=1e-06)
         self.classifier = nn.Sequential(
-                nn.Linear(latent_dim, n_labels),
+                nn.Linear(input, n_labels),
                 # nn.ReLU(),
                 # # nn.Linear(300, 300),
                 # # nn.ReLU(),
@@ -82,20 +76,19 @@ class COPER(nn.Module):
         # print(h.shape)
 
         if self.cont_in:
-            h = self.ode_in(h, time_steps, pred_t, setting) # (batch, seq_len, emb_dim)
+            h = self.ode_in(h, time_steps, pred_t, setting, self.config.drop) # (batch, seq_len, emb_dim)
 
         # print(h.shape)
-        h = self.net(h) # (batch, num_latents, latent_dim)
-        # print(h.shape)
+        h = self.net(h) # (batch, seq_len, emb_dim)
 
         if self.second_node:
             L = h.shape[1]
             ts = torch.linspace(0.0, 1.0, L, device=h.device, dtype=h.dtype)
             h = self.ode_out(h, ts, [], setting)
-
+        
         h = self.norm(h)
-
-        h = h[:,-1,:] # take the last time step
+        # print(out.shape)
+        h = h[:,-1,:]
         
         h = self.classifier(h)
         h = self.act(h)
@@ -103,12 +96,12 @@ class COPER(nn.Module):
         return h
 
 
-class Perceiver(nn.Module):
+class Transformer_Multiple(nn.Module):
     def __init__(self, cont_out, num_latents, latent_dim, input_channels = 1, cross_heads = 1,
             latent_heads = 1, cross_dim_head = 128, latent_dim_head = 128,
             att_dropout = 0.2, ff_dropout = 0.2, self_per_cross_attn = 1, device=torch.device("cpu")):
 
-        super(Perceiver, self).__init__()
+        super(Transformer_Multiple, self).__init__()
 
         self.pos_encoder = PositionalEncoding(input_channels)#, max_len=num_latents)
 
@@ -116,14 +109,12 @@ class Perceiver(nn.Module):
 
         self.self_per_cross_attn = self_per_cross_attn
 
-        self.latents = nn.Parameter(torch.randn(num_latents, latent_dim))
-
-        self.cross_attn = Transformer(latent_dim=latent_dim, data_dim=input_channels,
+        self.cross_attn = Transformer(latent_dim=input_channels, data_dim=input_channels,
                             num_heads=cross_heads, head_dim=cross_dim_head, att_dropout = att_dropout, ff_dropout = ff_dropout)
 
         self.self_attns = nn.ModuleList()
         for i in range(self_per_cross_attn):
-            self.self_attns.append(Transformer(latent_dim=latent_dim, data_dim=latent_dim, num_heads=latent_heads,
+            self.self_attns.append(Transformer(latent_dim=input_channels, data_dim=input_channels, num_heads=latent_heads,
                                         head_dim=latent_dim_head, att_dropout = att_dropout, ff_dropout = ff_dropout))
 
     def forward(self, data, time_steps=None):
@@ -134,9 +125,8 @@ class Perceiver(nn.Module):
         # else:
         mask = None
         b = data.shape[0]
-        latent = repeat(self.latents, 'n d -> b n d', b = b)
 
-        latent = self.cross_attn(latent, data, mask)
+        latent = self.cross_attn(data, data, mask)
 
         for i in range(self.self_per_cross_attn):
             latent = self.self_attns[i](latent, latent, mask)
@@ -174,11 +164,10 @@ class ODE(nn.Module):
     def __init__(self, input_dim, latent_dim, rec_layers, units, nonlinear, ode_dropout, device = torch.device("cpu"), setting='Train'):
         super(ODE, self).__init__()
         self.device = device
-        self.setting = setting
 
         self.ode_cell = ODECell(input_dim, latent_dim, rec_layers, units, nonlinear, ode_dropout, device)
 
-    def forward(self, latents, time_steps, time_pred, setting='Train'):
+    def forward(self, latents, time_steps, time_pred, setting='Train', drop = 0.0):
         # latent (batch, seq_len, latent_dim)
         prev_t, t_i = time_steps[0],  time_steps[1]
         prev_y = latents[:,0,:].unsqueeze(0)
@@ -204,7 +193,7 @@ class ODE(nn.Module):
                 prev_y = latents[:,j,:].unsqueeze(0)
                 j = j + 1
 
-            # at test, it will use the observed data as such and
+            # at test time, it will use the observed data as such and
             # ode will be used to generate only the missing time steps
             if setting == 'Test':
                 new_latents[:,i,:] = prev_y.squeeze(0)

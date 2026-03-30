@@ -1,0 +1,11 @@
+gymnasium
+gym
+numpy
+tqdm
+scipy
+matplotlib
+pandas
+pyyaml
+scikit-learn
+umap-learn
+pillow

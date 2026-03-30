@@ -7,7 +7,7 @@ import torch.nn as nn
 # git clone https://github.com/rtqichen/torchdiffeq.git
 from torchdiffeq import odeint as odeint
 
-import src
+import src_coper.utils as coper_utils
 
 
 #####################################################################################################
@@ -43,7 +43,7 @@ class ODECell(nn.Module):
         else:
             n_intermediate_tp = max(2, ((prev_t - t_i) / minimum_step).int())
 
-            time_points = src.utils.linspace_vector(prev_t, t_i, n_intermediate_tp).to(prev_y.device)
+            time_points = coper_utils.linspace_vector(prev_t, t_i, n_intermediate_tp).to(prev_y.device)
             ode_sol = self.diffeq_solver(prev_y, time_points)
 
             assert(not torch.isnan(ode_sol).any())

@@ -85,8 +85,8 @@ def load_coper_from_bundle(
     if r not in sys.path:
         sys.path.insert(0, r)
 
-    from src.coper_model import COPER
-    from src.transformer_model import TRANSFORMER
+    from src_coper.coper_model import COPER
+    from src_coper.transformer_model import TRANSFORMER
 
     device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
     raw = torch.load(bundle_path, map_location=device)

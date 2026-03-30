@@ -6,7 +6,7 @@ import types
 import torch
 import torch.nn as nn
 
-from src.coper_model import COPER
+from src_coper.coper_model import COPER
 
 
 def count_coper_params_mimic(

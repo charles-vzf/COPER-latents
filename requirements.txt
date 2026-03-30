@@ -2,11 +2,16 @@ torchdiffeq
 einops
 numpy
 pandas
+scipy
 scikit-learn
 matplotlib
 seaborn
 wandb
 tqdm
 umap-learn
+gymnasium
+gym
+pyyaml
+pillow
 ipykernel
 openpyxl

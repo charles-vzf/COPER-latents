@@ -5,7 +5,7 @@ import torch.nn as nn
 # from torch.nn.modules.rnn import RNNCell
 from einops import rearrange, repeat
 
-from src.ode_cell import ODECell
+from src_coper.ode_cell import ODECell
 
 torch.autograd.set_detect_anomaly(True)
 

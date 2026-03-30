@@ -8,7 +8,7 @@
 import os
 import sys
 
-# Parent of utils/ is the COPER repo root (so `src.*` resolves when launched as
+# Parent of utils/ is the COPER repo root (so `src_coper.*` resolves when launched as
 # `python utils/run_exp.py` from that root).
 _ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if _ROOT not in sys.path:
@@ -26,11 +26,11 @@ from random import SystemRandom
 import torch
 import torch.nn as nn
 
-import src.utils as utils
-from src.load_dataset import *
-from src.coper_model import COPER
-from src.lstm_model import LSTM_MODEL
-from src.transformer_model import TRANSFORMER
+import src_coper.utils as utils
+from src_coper.load_dataset import *
+from src_coper.coper_model import COPER
+from src_coper.lstm_model import LSTM_MODEL
+from src_coper.transformer_model import TRANSFORMER
 
 
 def main():

@@ -10,6 +10,25 @@ the **preprocessed** MIMIC-III mortality dataset and **PhysioNet Challenge 2012*
 The purpose of this codebase is to study the quality of the learned **patient embeddings**
 and to experiment with architectural variants (e.g. the 1-NODE vs 2-NODE COPER variants).
 
+## COPER + ICU-Sepsis for interpretation
+
+This repo now includes a vendored ICU-Sepsis bundle under `icu_sepsis/` so you can
+interpret COPER embeddings against the tabular MDP without depending on a separate
+`code/icu-sepsis` checkout.
+
+Included in `icu_sepsis/`:
+
+* Python packages: `icu_sepsis/` and `icu_sepsis_helpers/`
+* MDP assets and helper scripts: `assets/`, `examples/`, `demo_outputs/`
+* Parameter tables archive: `icu-sepsis-csv-tables.tar.gz`
+
+Important:
+
+* The Gym/Gymnasium environment (`Sepsis/ICU-Sepsis-v2`) uses bundled package assets,
+  so the CSV archive is **not required** to run the environment or `notebooks/icu_sepsis_demo.ipynb`.
+* The archive is still useful for table-level inspection/export of transition/reward/policy
+  parameters and for reproducing the paper-style CSV artifacts.
+
 ## Data preprocessing repositories
 
 * MIMIC-III / mortality preprocessing: [YerevaNN/mimic3-benchmarks](https://github.com/YerevaNN/mimic3-benchmarks)
@@ -68,7 +87,8 @@ Key notebooks:
 * `notebooks/compare_mortality_mimic3.ipynb`: runs the benchmark grid over **`NITERS_LIST`** (e.g. 1 / 3 / 10 epochs) and all selected architectures; exports bundles `*_drop*_s*_e{N}.pt` under `artifacts/`; saves tables under `results/tables/`. With several epoch counts, `Predictions_*.npz` in `results/` are overwritten by the last run unless you use separate `--results-dir` per epoch.
 * `notebooks/latent_dim.ipynb`: **1-NODE** COPER only — sweeps `--latent-dim` on MIMIC mortality, records test metrics and parameter counts, plots performance vs latent size / model size.
 * `notebooks/display_embeddings.ipynb`: loads exported bundles for each **`NITERS_TO_VIS`** (keep in sync with **`NITERS_LIST`** in the compare notebook) and saves figures under `pictures/` (e.g. `coper_1node_1epoch.png`, `transformer_baseline_1epoch.png`).
-* `notebooks/demo.ipynb`: fast end-to-end demo using COPER on raw local MIMIC-III CSV extracts (no benchmark pickle dependency).
+* `notebooks/COPER_demo.ipynb`: fast end-to-end demo using COPER on raw local MIMIC-III CSV extracts (no benchmark pickle dependency).
+* `notebooks/icu_sepsis_demo.ipynb`: ICU-Sepsis MDP demo and baseline metrics used for embedding-to-state interpretation work.
 
 Export helper:
 
