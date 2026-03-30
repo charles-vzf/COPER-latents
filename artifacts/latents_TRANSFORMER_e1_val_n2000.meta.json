@@ -1,0 +1,37 @@
+{
+  "format_version": 1,
+  "framework": "pytorch",
+  "model_architecture": "TRANSFORMER",
+  "repo_path": "/home/charlesv/Desktop/StatisitcalGenetics/code/COPER",
+  "source_checkpoint": "/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1.ckpt",
+  "task": "mimic_in_hospital_mortality",
+  "hyperparams": {
+    "model_type": "TRANSFORMER",
+    "dataset": "mimic",
+    "fold": -1,
+    "drop": 0.5,
+    "random_seed": 1,
+    "num_latents": 48,
+    "latent_dim": 64,
+    "rec_layers": 3,
+    "units": 128,
+    "emb_dim": 32,
+    "self_per_cross_attn": 1,
+    "latent_heads": 2,
+    "cross_heads": 1,
+    "cross_dim_head": 128,
+    "latent_dim_head": 128,
+    "ff_dropout": 0.5,
+    "att_dropout": 0.5,
+    "ode_dropout": 0.5,
+    "cont_in": true,
+    "cont_out": false,
+    "second_node": false,
+    "seq_len": 48,
+    "input_size_mimic": 76
+  },
+  "embedding_definition": {
+    "last_timestep": "LayerNorm at final time index -1, shape (batch, features)",
+    "sequence": "Sequence tensor after attention, shape (batch, seq_len, features)"
+  }
+}

@@ -26,6 +26,7 @@ class TRANSFORMER(nn.Module):
         self.n_labels = n_labels
         self.cont_in = cont_in
         self.cont_out = cont_out
+        self.second_node = getattr(config, 'second_node', False)
         self.emb_dim = emb_dim
         
         # self.mask = True # True for causal masking
@@ -39,6 +40,17 @@ class TRANSFORMER(nn.Module):
             
         self.net = Transformer_Multiple(cont_out, num_latents=num_latents, latent_dim=latent_dim, input_channels=input, att_dropout=config.att_dropout, ff_dropout = config.ff_dropout, self_per_cross_attn=config.self_per_cross_attn,
                             latent_heads = config.latent_heads, cross_heads=config.cross_heads, cross_dim_head=config.cross_dim_head, latent_dim_head=config.latent_dim_head)
+
+        if self.second_node:
+            self.ode_out = ODE(
+                input,
+                input,
+                rec_layers,
+                units,
+                nonlinear,
+                config.ode_dropout,
+                device,
+            )
 
         self.norm = nn.LayerNorm(input, eps=1e-06)
         self.classifier = nn.Sequential(
@@ -68,6 +80,11 @@ class TRANSFORMER(nn.Module):
 
         # print(h.shape)
         h = self.net(h) # (batch, seq_len, emb_dim)
+
+        if self.second_node:
+            L = h.shape[1]
+            ts = torch.linspace(0.0, 1.0, L, device=h.device, dtype=h.dtype)
+            h = self.ode_out(h, ts, [], setting)
         
         h = self.norm(h)
         # print(out.shape)

@@ -26,16 +26,26 @@ env/
 # Weights & Biases (if enabled)
 wandb/
 
-# Experiment outputs under results/: ignore heavy artifacts, keep aggregated tables
-# (tracked: results/tables/*.csv and similar small summaries)
+# Experiment outputs under results/: ignore heavy artifacts, keep small summaries
 results/logs/
+results/**/logs/
+results/**/logs/**
 results/checkpoints/
+results/**/checkpoints/
+results/**/checkpoints/**
+results/models/
 results/**/*.ckpt
 results/**/*.pth
-results/Predictions_*.npz
-# Nested experiment roots (e.g. results/latent_dim_sweep/ld64/...)
+results/**/*.pt
 results/**/Predictions_*.npz
-results/**/logs/
 
-# Large portable bundles (optional — remove these lines if you want .pt bundles in git)
-# artifacts/*.pt
+# Keep lightweight aggregate outputs
+!results/tables/
+!results/tables/*.csv
+!results/**/*.meta.json
+
+# Artifacts: ignore heavy bundles/arrays, keep metadata
+artifacts/*.pt
+artifacts/*.npz
+!artifacts/*.json
+!artifacts/*.meta.json

@@ -1,4 +1,4 @@
-"""Load COPER from an exported .pt bundle (see utils/export_coper_checkpoint.py)."""
+"""Load COPER or TRANSFORMER from an exported .pt bundle (see utils/export_coper_checkpoint.py)."""
 from __future__ import annotations
 
 import json
@@ -75,7 +75,7 @@ def load_coper_from_bundle(
     device: torch.device | None = None,
 ) -> tuple[torch.nn.Module, dict]:
     """
-    Load exported bundle, instantiate COPER from repo_root/src, load weights.
+    Load exported bundle, instantiate **COPER** or **TRANSFORMER** from ``meta.hyperparams.model_type``, load weights.
 
     Returns (model, meta_dict).
     """
@@ -86,6 +86,7 @@ def load_coper_from_bundle(
         sys.path.insert(0, r)
 
     from src.coper_model import COPER
+    from src.transformer_model import TRANSFORMER
 
     device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
     raw = torch.load(bundle_path, map_location=device)
@@ -103,23 +104,48 @@ def load_coper_from_bundle(
         )
 
     args = _namespace_from_hyperparams(h)
+    # Robustness: some older bundles may have an incorrect `meta.hyperparams.second_node`.
+    # If the checkpoint contains `ode_out.*` weights, we must instantiate the model
+    # with `second_node=True` so `load_state_dict(..., strict=True)` succeeds.
+    has_ode_out = isinstance(state, dict) and any(
+        str(k).startswith("ode_out.") for k in state.keys()
+    )
+    if has_ode_out:
+        args.second_node = True
     n_labels = 1
     input_size = h.get("input_size_mimic", 76)
 
-    model = COPER(
-        args,
-        n_labels,
-        input_size,
-        args.num_latents,
-        args.latent_dim,
-        args.rec_layers,
-        args.units,
-        nn.Tanh,
-        args.cont_in,
-        args.cont_out,
-        emb_dim=args.emb_dim,
-        device=device,
-    ).to(device)
+    mt = str(h.get("model_type", "COPER")).upper()
+    if mt == "TRANSFORMER":
+        model = TRANSFORMER(
+            args,
+            n_labels,
+            input_size,
+            args.num_latents,
+            args.latent_dim,
+            args.rec_layers,
+            args.units,
+            nn.Tanh,
+            args.cont_in,
+            args.cont_out,
+            emb_dim=args.emb_dim,
+            device=device,
+        ).to(device)
+    else:
+        model = COPER(
+            args,
+            n_labels,
+            input_size,
+            args.num_latents,
+            args.latent_dim,
+            args.rec_layers,
+            args.units,
+            nn.Tanh,
+            args.cont_in,
+            args.cont_out,
+            emb_dim=args.emb_dim,
+            device=device,
+        ).to(device)
     model.load_state_dict(state, strict=True)
     model.eval()
     return model, meta

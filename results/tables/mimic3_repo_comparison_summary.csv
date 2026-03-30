@@ -1,4 +1,10 @@
-,arch_id,second_node,drop,test_og_auroc,test_og_auroc,test_og_auprc,test_og_auprc,test_g_auroc,test_g_auroc,test_g_auprc,test_g_auprc,runtime_sec,runtime_sec
-,,,,mean,std,mean,std,mean,std,mean,std,mean,std
-0,coper_1node,False,0.5,0.8088,,0.3813,,0.8049,,0.3743,,440.87583661079407,
-1,coper_2node,True,0.5,0.7923,,0.358,,0.8064,,0.3806,,878.2948911190033,
+,arch_id,model_type,niters,second_node,drop,test_og_auroc,test_og_auroc,test_og_auprc,test_og_auprc,test_g_auroc,test_g_auroc,test_g_auprc,test_g_auprc,runtime_sec,runtime_sec
+,,,,,,mean,std,mean,std,mean,std,mean,std,mean,std
+0,coper_1node,COPER,1,False,0.5,0.7779,,0.3306,,0.7765,,0.3304,,171.8455114364624,
+1,coper_1node,COPER,3,False,0.5,0.8088,,0.3813,,0.8049,,0.3743,,433.1864311695099,
+2,coper_2node,COPER,1,True,0.5,0.7611,,0.3098,,0.7678,,0.3195,,333.513334274292,
+3,coper_2node,COPER,3,True,0.5,0.7923,,0.358,,0.8064,,0.3806,,828.970427274704,
+4,transformer_2node,TRANSFORMER,1,True,0.5,0.7749,,0.3514,,0.7755,,0.3518,,332.1071689128876,
+5,transformer_2node,TRANSFORMER,3,True,0.5,0.8133,,0.4098,,0.808,,0.3989,,848.9562726020813,
+6,transformer_baseline,TRANSFORMER,1,False,0.5,0.8059,,0.3779,,0.8007,,0.3638,,173.40497708320618,
+7,transformer_baseline,TRANSFORMER,3,False,0.5,0.8251,,0.4195,,0.819,,0.4032,,422.0627329349518,

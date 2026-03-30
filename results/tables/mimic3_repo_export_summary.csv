@@ -1,7 +1,25 @@
-arch_id,architecture,second_node,seed,drop,ckpt_path,bundle_name,return_code,raw_tail
-coper_1node,1-NODE (ODE → Perceiver),False,1,0.5,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/COPER-mimic-F-1_D0.5_S1.ckpt,coper_1node_drop0.5_s1_e3,0,"Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/coper_1node_drop0.5_s1_e3.pt
+arch_id,architecture,model_type,niters,second_node,seed,drop,ckpt_path,bundle_name,return_code,raw_tail
+coper_1node,1-NODE (ODE → Perceiver),COPER,1,False,1,0.5,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/COPER-mimic-F-1_D0.5_S1.ckpt,coper_1node_drop0.5_s1_e1,0,"Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/coper_1node_drop0.5_s1_e1.pt
+Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/coper_1node_drop0.5_s1_e1.json
+"
+coper_2node,2-NODE (ODE → Perceiver → ODE on latents),COPER,1,True,1,0.5,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/COPER-mimic-F-1_D0.5_S1_N2.ckpt,coper_2node_drop0.5_s1_e1,0,"Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/coper_2node_drop0.5_s1_e1.pt
+Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/coper_2node_drop0.5_s1_e1.json
+"
+transformer_baseline,TRANSFORMER (ODE → T×T self-attention),TRANSFORMER,1,False,1,0.5,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1.ckpt,transformer_baseline_drop0.5_s1_e1,0,"Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/transformer_baseline_drop0.5_s1_e1.pt
+Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/transformer_baseline_drop0.5_s1_e1.json
+"
+transformer_2node,TRANSFORMER 2-NODE (ODE → T×T self-attention → ODE on sequence),TRANSFORMER,1,True,1,0.5,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1_N2.ckpt,transformer_2node_drop0.5_s1_e1,0,"Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/transformer_2node_drop0.5_s1_e1.pt
+Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/transformer_2node_drop0.5_s1_e1.json
+"
+coper_1node,1-NODE (ODE → Perceiver),COPER,3,False,1,0.5,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/COPER-mimic-F-1_D0.5_S1.ckpt,coper_1node_drop0.5_s1_e3,0,"Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/coper_1node_drop0.5_s1_e3.pt
 Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/coper_1node_drop0.5_s1_e3.json
 "
-coper_2node,2-NODE (ODE → Perceiver → ODE on latents),True,1,0.5,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/COPER-mimic-F-1_D0.5_S1_N2.ckpt,coper_2node_drop0.5_s1_e3,0,"Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/coper_2node_drop0.5_s1_e3.pt
+coper_2node,2-NODE (ODE → Perceiver → ODE on latents),COPER,3,True,1,0.5,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/COPER-mimic-F-1_D0.5_S1_N2.ckpt,coper_2node_drop0.5_s1_e3,0,"Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/coper_2node_drop0.5_s1_e3.pt
 Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/coper_2node_drop0.5_s1_e3.json
+"
+transformer_baseline,TRANSFORMER (ODE → T×T self-attention),TRANSFORMER,3,False,1,0.5,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1.ckpt,transformer_baseline_drop0.5_s1_e3,0,"Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/transformer_baseline_drop0.5_s1_e3.pt
+Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/transformer_baseline_drop0.5_s1_e3.json
+"
+transformer_2node,TRANSFORMER 2-NODE (ODE → T×T self-attention → ODE on sequence),TRANSFORMER,3,True,1,0.5,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1_N2.ckpt,transformer_2node_drop0.5_s1_e3,0,"Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/transformer_2node_drop0.5_s1_e3.pt
+Saved: /home/charlesv/Desktop/StatisitcalGenetics/code/COPER/artifacts/transformer_2node_drop0.5_s1_e3.json
 "

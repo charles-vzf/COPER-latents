@@ -42,7 +42,13 @@ def parse_args():
     p.add_argument(
         "--second-node",
         action="store_true",
-        help="Metadata flag: model was trained with --second-node (2-NODE COPER).",
+        help="Metadata flag: model was trained with --second-node (2-NODE: COPER or TRANSFORMER).",
+    )
+    p.add_argument(
+        "--model-type",
+        type=str,
+        default="COPER",
+        help="Training architecture (metadata only): COPER, TRANSFORMER, etc.",
     )
     p.add_argument("--copy-raw-ckpt", action="store_true")
     return p.parse_args()
@@ -60,15 +66,27 @@ def main() -> None:
 
     state = torch.load(ckpt, map_location="cpu")
 
+    mt = args.model_type.upper()
+    if mt == "TRANSFORMER":
+        emb_def = {
+            "last_timestep": "LayerNorm at final time index -1, shape (batch, features)",
+            "sequence": "Sequence tensor after attention, shape (batch, seq_len, features)",
+        }
+    else:
+        emb_def = {
+            "last_latent": "LayerNorm output at latent index -1, shape (batch, latent_dim)",
+            "latent_grid": "Full Perceiver latents after LayerNorm, shape (batch, num_latents, latent_dim)",
+        }
+
     meta = {
         "format_version": 1,
         "framework": "pytorch",
-        "model_architecture": "COPER",
+        "model_architecture": mt,
         "repo_path": str(repo),
         "source_checkpoint": str(ckpt),
         "task": "mimic_in_hospital_mortality",
         "hyperparams": {
-            "model_type": "COPER",
+            "model_type": mt,
             "dataset": args.dataset,
             "fold": args.fold,
             "drop": args.drop,
@@ -92,10 +110,7 @@ def main() -> None:
             "seq_len": 48,
             "input_size_mimic": 76,
         },
-        "embedding_definition": {
-            "last_latent": "LayerNorm output at latent index -1, shape (batch, latent_dim)",
-            "latent_grid": "Full Perceiver latents after LayerNorm, shape (batch, num_latents, latent_dim)",
-        },
+        "embedding_definition": emb_def,
     }
 
     bundle = {

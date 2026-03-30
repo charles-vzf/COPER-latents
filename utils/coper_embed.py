@@ -16,8 +16,8 @@ def latent_before_classifier(
     pred_t,
 ) -> torch.Tensor:
     """
-    Returns tensor of shape (batch, latent_dim): last Perceiver latent after LayerNorm,
-    matching the slice used for classification in COPER.forward.
+    Returns tensor of shape (batch, D): last time index after optional second ODE and LayerNorm,
+    matching the slice used for classification (COPER: last latent slot; TRANSFORMER: last sequence step).
     """
     setting = model.config.setting
     time_steps = time_steps[0]
@@ -47,6 +47,10 @@ def latent_before_classifier(
     if model.cont_in:
         h = model.ode_in(h, time_steps, pred_t, setting)
     h = model.net(h)
+    if getattr(model, "second_node", False):
+        L = h.shape[1]
+        ts = torch.linspace(0.0, 1.0, L, device=h.device, dtype=h.dtype)
+        h = model.ode_out(h, ts, [], setting)
     h = model.norm(h)
     return h[:, -1, :]
 
@@ -90,5 +94,9 @@ def latent_grid(
     if model.cont_in:
         h = model.ode_in(h, time_steps, pred_t, setting)
     h = model.net(h)
+    if getattr(model, "second_node", False):
+        L = h.shape[1]
+        ts = torch.linspace(0.0, 1.0, L, device=h.device, dtype=h.dtype)
+        h = model.ode_out(h, ts, [], setting)
     h = model.norm(h)
     return h

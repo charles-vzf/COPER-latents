@@ -65,9 +65,9 @@ The `notebooks/` folder contains an end-to-end benchmark designed to:
 
 Key notebooks:
 
-* `notebooks/compare_mortality_mimic3.ipynb`: runs the benchmark (default **3 epochs**) and exports bundles named `coper_*_drop*_s*_e3.pt`; saves tables under `results/tables/`.
+* `notebooks/compare_mortality_mimic3.ipynb`: runs the benchmark grid over **`NITERS_LIST`** (e.g. 1 / 3 / 10 epochs) and all selected architectures; exports bundles `*_drop*_s*_e{N}.pt` under `artifacts/`; saves tables under `results/tables/`. With several epoch counts, `Predictions_*.npz` in `results/` are overwritten by the last run unless you use separate `--results-dir` per epoch.
 * `notebooks/latent_dim.ipynb`: **1-NODE** COPER only — sweeps `--latent-dim` on MIMIC mortality, records test metrics and parameter counts, plots performance vs latent size / model size.
-* `notebooks/display_copers_embeddings.ipynb`: loads `_e3` bundles, saves slide figures `pictures/coper_*_{1,3}epoch.png` (1-epoch row uses legacy bundles if still on disk).
+* `notebooks/display_embeddings.ipynb`: loads exported bundles for each **`NITERS_TO_VIS`** (keep in sync with **`NITERS_LIST`** in the compare notebook) and saves figures under `pictures/` (e.g. `coper_1node_1epoch.png`, `transformer_baseline_1epoch.png`).
 * `notebooks/demo.ipynb`: fast end-to-end demo using COPER on raw local MIMIC-III CSV extracts (no benchmark pickle dependency).
 
 Export helper:

@@ -52,17 +52,37 @@ def parse_metrics(stdout: str) -> dict:
     return out
 
 
+def niters_from_cli_tokens(tokens: list) -> int | None:
+    """Read `--niters` from a flat argv-style list."""
+    for i, tok in enumerate(tokens):
+        if tok == "--niters" and i + 1 < len(tokens):
+            try:
+                return int(tokens[i + 1])
+            except ValueError:
+                return None
+    return None
+
+
+def model_type_from_cli_tokens(tokens: list) -> str:
+    """Read `--model-type` from a flat argv-style list (shared_args + extra_args)."""
+    for i, tok in enumerate(tokens):
+        if tok == "--model-type" and i + 1 < len(tokens):
+            return str(tokens[i + 1])
+    return "COPER"
+
+
 def expected_ckpt_path(
     results_root: Path,
     fold: int,
     drop: float,
     random_seed: int,
     second_node: bool,
+    model_type: str = "COPER",
 ) -> Path:
     """Match utils/run_exp.py checkpoint naming (suffix _N2 for --second-node)."""
     drop_tag = f"{drop:g}"
     suffix = "_N2" if second_node else ""
-    name = f"COPER-mimic-F{fold}_D{drop_tag}_S{random_seed}{suffix}.ckpt"
+    name = f"{model_type}-mimic-F{fold}_D{drop_tag}_S{random_seed}{suffix}.ckpt"
     return results_root / "checkpoints" / name
 
 
@@ -80,6 +100,9 @@ def run_one(
     python_executable: str,
 ) -> dict:
     second_node = "--second-node" in extra_args
+    cli_tokens = list(shared_args) + list(extra_args)
+    model_type = model_type_from_cli_tokens(cli_tokens)
+    niters_val = niters_from_cli_tokens(cli_tokens)
     cmd = [python_executable, "utils/run_exp.py"] + shared_args + extra_args + [
         "--random-seed",
         str(seed),
@@ -99,11 +122,15 @@ def run_one(
 
     text_out = (proc.stdout or "") + "\n" + (proc.stderr or "")
     metrics = parse_metrics(text_out)
-    ckpt_path = expected_ckpt_path(results_root, fold, drop, seed, second_node)
+    ckpt_path = expected_ckpt_path(
+        results_root, fold, drop, seed, second_node, model_type=model_type
+    )
 
     return {
         "arch_id": arch_id,
         "architecture": arch_label,
+        "model_type": model_type,
+        "niters": niters_val,
         "second_node": second_node,
         "repo_dir": str(repo),
         "seed": seed,
