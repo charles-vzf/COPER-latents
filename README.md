@@ -20,7 +20,7 @@ Included in `icu_sepsis/`:
 
 * Python packages: `icu_sepsis/` and `icu_sepsis_helpers/`
 * MDP assets and helper scripts: `assets/`, `examples/`, `demo_outputs/`
-* Parameter tables archive: `icu-sepsis-csv-tables.tar.gz`
+* Optional CSV tables archive: `icu-sepsis-csv-tables.tar.gz` (not versioned; download separately if needed)
 
 Important:
 

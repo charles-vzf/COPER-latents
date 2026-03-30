@@ -49,3 +49,16 @@ artifacts/*.pt
 artifacts/*.npz
 !artifacts/*.json
 !artifacts/*.meta.json
+
+# ICU-Sepsis bundle: optional large CSV tables (~1.7 MB); MDP uses packaged dynamics.npz
+icu_sepsis/icu-sepsis-csv-tables.tar.gz
+
+# Duplicate of icu_sepsis/icu_sepsis + icu_sepsis_helpers (upstream "packages/" layout)
+icu_sepsis/packages/
+
+# Redundant notebook; canonical copy is notebooks/icu_sepsis_demo.ipynb
+icu_sepsis/demo.ipynb
+
+# Generated notebook outputs (GIFs, etc.)
+icu_sepsis/demo_outputs/
+notebooks/demo_outputs/

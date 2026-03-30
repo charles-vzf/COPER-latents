@@ -1,1 +1,0 @@
-this is where we keep the assets.

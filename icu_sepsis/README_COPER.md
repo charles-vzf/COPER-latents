@@ -5,9 +5,10 @@ the MDP demo/metrics without relying on `code/icu-sepsis`:
 
 - `icu_sepsis/` package (Gymnasium environment + bundled MDP assets)
 - `icu_sepsis_helpers/` package (baseline metrics/helpers and rebuild tools)
-- `assets/`, `examples/`, `demo_outputs/`
+- `assets/`, `examples/`, `demo_outputs/` (local only; not versioned)
 - `requirements.txt`, `README.md`, `LICENSE`
-- `icu-sepsis-csv-tables.tar.gz`
+
+The CSV table archive `icu-sepsis-csv-tables.tar.gz` is **not** in the repo (add it locally if you need raw CSVs; see upstream [ICU-Sepsis](https://github.com/icu-sepsis/icu-sepsis) or your mirror).
 
 Notebook copy:
 
