@@ -1,102 +1,51 @@
-# Continuous patient state attention model for addressing irregularity in electronic health records
+# Studying COntinuous Patient state attention model for addressing irregularity in Electronic health Records (COPER)
 
-This repository contains the implementation of **COPER** and the training scripts used with
-the **preprocessed** MIMIC-III mortality dataset and **PhysioNet Challenge 2012**.
+## References
 
-**Upstream reference code** (original release accompanying the papers): [github.com/jmdvinodjmd/COPER](https://github.com/jmdvinodjmd/COPER).
+- **COPER**: [jmdvinodjmd/COPER](https://github.com/jmdvinodjmd/COPER)
+- **MIMIC-III benchmark preprocessing**: [YerevaNN/mimic3-benchmarks](https://github.com/YerevaNN/mimic3-benchmarks)
+- **ICU-Sepsis MDP**: [icu-sepsis/icu-sepsis](https://github.com/icu-sepsis/icu-sepsis)
 
-## Setup goal
+## Overview
 
-The purpose of this codebase is to study the quality of the learned **patient embeddings**
-and to experiment with architectural variants (e.g. the 1-NODE vs 2-NODE COPER variants).
+This repository studies **COPER** as a patient representation model for irregular clinical time series.
+The main focus is:
 
-## COPER + ICU-Sepsis for interpretation
+- training and comparing COPER variants on **MIMIC-III in-hospital mortality**
+- exporting trained models as reusable bundles
+- extracting and visualizing latent embeddings
+- interpreting COPER embeddings against the vendored **ICU-Sepsis** tabular MDP
 
-This repo now includes a vendored ICU-Sepsis bundle under `icu_sepsis/` so you can
-interpret COPER embeddings against the tabular MDP without depending on a separate
-`code/icu-sepsis` checkout.
+The repo is centered on the local `code/COPER` project, with MIMIC preprocessing expected to come from an external `mimic3-benchmarks` setup.
 
-Included in `icu_sepsis/`:
+## Repository Structure
 
-* Python packages: `icu_sepsis/` and `icu_sepsis_helpers/`
-* MDP assets and helper scripts: `assets/`, `examples/`, `demo_outputs/`
-* Optional CSV tables archive: `icu-sepsis-csv-tables.tar.gz` (not versioned; download separately if needed)
+### Core model code
 
-Important:
+- `src_coper/`: COPER, Transformer baseline, ODE cell, attention blocks, metrics, and dataset utilities
+- `utils/run_exp.py`: main training entry point
+- `utils/export_coper_checkpoint.py`: exports trained checkpoints to portable bundles
+- `utils/load_coper_bundle.py`: reloads exported bundles for inference / embedding extraction
+- `utils/coper_embed.py`: extracts representations before the classifier
+- `utils/embedding_data_utils.py`: helpers for loading mortality splits and batching data
+- `utils/viz_utils.py`: utilities for latent-space visualization
 
-* The Gym/Gymnasium environment (`Sepsis/ICU-Sepsis-v2`) uses bundled package assets,
-  so the CSV archive is **not required** to run the environment or `notebooks/icu_sepsis_demo.ipynb`.
-* The archive is still useful for table-level inspection/export of transition/reward/policy
-  parameters and for reproducing the paper-style CSV artifacts.
+### Notebooks
 
-## Data preprocessing repositories
+- `notebooks/compare_mortality_mimic3.ipynb`: benchmark notebook for training and exporting COPER / Transformer models on MIMIC mortality
+- `notebooks/display_embeddings.ipynb`: computes and visualizes latent embeddings from exported bundles
+- `notebooks/latent_dim.ipynb`: latent-dimension sweep for COPER
+- `notebooks/COPER_demo.ipynb`: lightweight COPER demo on local raw MIMIC extracts
+- `notebooks/icu_sepsis_demo.ipynb`: explores the ICU-Sepsis MDP and its bundled assets
+- `notebooks/coper_to_states.ipynb`: learns a small head from COPER embeddings to MDP-state distributions for interpretation
 
-* MIMIC-III / mortality preprocessing: [YerevaNN/mimic3-benchmarks](https://github.com/YerevaNN/mimic3-benchmarks)
-* PhysioNet Challenge 2012: [PhysioNet Challenge 2012 (1.0.0)](https://physionet.org/content/challenge-2012/1.0.0/)
+### ICU-Sepsis integration
 
-## Python environment (venv)
+- `icu_sepsis/`: vendored ICU-Sepsis code and assets used for MDP-based interpretation
+- `icu_sepsis/icu_sepsis/`: environment package
+- `icu_sepsis/icu_sepsis_helpers/`: helper code for analysis, baselines, and MDP construction
 
-We provide:
+### Outputs
 
-* `requirements.txt` for non-PyTorch dependencies
-* `scripts/setup_venv.sh` to recreate `.venv-coper/` and install PyTorch + requirements
-
-To recreate the venv:
-
-```bash
-cd code/COPER
-./scripts/setup_venv.sh
-```
-
-Activate:
-
-```bash
-source .venv-coper/bin/activate
-```
-
-Note: `scripts/setup_venv.sh` installs a CUDA build of `torch` when `nvidia-smi` is available,
-otherwise it installs the CPU build.
-
-To keep an existing venv, run `./scripts/setup_venv.sh --keep`.
-
-## Experiment
-
-You need mimic-iii [mimic-iii](https://github.com/YerevaNN/mimic3-benchmarks) and [Physionet Challenge 2012](https://physionet.org/content/challenge-2012/1.0.0/) datasets.
-
-Training entry point (from `code/COPER/`):
-
-```bash
-python utils/run_exp.py --help
-```
-
-To run different experiments, you can use the following shell scripts:
-* ```scripts/experiments/run_irregular_mimic.sh```: to study irregularity on mimic dataset.
-* ```scripts/experiments/run_irregular_physionet.sh```: to study irregularity on physionet dataset.
-* ```scripts/experiments/run_exp_normal.sh```: to run Perceiver and baselines (without irregularity).
-* ```scripts/experiments/run_perceiver_latents.sh```: to study the effect of number of latents on the Perceiver and compare with Transformer.
-
-## Embedding quality study (MIMIC-III mortality + 1-NODE vs 2-NODE)
-
-The `notebooks/` folder contains an end-to-end benchmark designed to:
-1. Train COPER under two architectural variants (flag `--second-node`).
-2. Export trained checkpoints to portable bundles (`.pt` + `.json`).
-3. Compute latent embeddings and visualize/compare them.
-
-Key notebooks:
-
-* `notebooks/compare_mortality_mimic3.ipynb`: runs the benchmark grid over **`NITERS_LIST`** (e.g. 1 / 3 / 10 epochs) and all selected architectures; exports bundles `*_drop*_s*_e{N}.pt` under `artifacts/`; saves tables under `results/tables/`. With several epoch counts, `Predictions_*.npz` in `results/` are overwritten by the last run unless you use separate `--results-dir` per epoch.
-* `notebooks/latent_dim.ipynb`: **1-NODE** COPER only — sweeps `--latent-dim` on MIMIC mortality, records test metrics and parameter counts, plots performance vs latent size / model size.
-* `notebooks/display_embeddings.ipynb`: loads exported bundles for each **`NITERS_TO_VIS`** (keep in sync with **`NITERS_LIST`** in the compare notebook) and saves figures under `pictures/` (e.g. `coper_1node_1epoch.png`, `transformer_baseline_1epoch.png`).
-* `notebooks/COPER_demo.ipynb`: fast end-to-end demo using COPER on raw local MIMIC-III CSV extracts (no benchmark pickle dependency).
-* `notebooks/icu_sepsis_demo.ipynb`: ICU-Sepsis MDP demo and baseline metrics used for embedding-to-state interpretation work.
-
-Export helper:
-
-* `utils/export_coper_checkpoint.py`
-* `utils/load_coper_bundle.py`
-
-Outputs are stored under:
-* `results/` (checkpoints/logs/predictions via `--results-dir`)
-* `artifacts/` (portable embedding bundles)
-
-`.gitignore` excludes heavy run artifacts (venv, `__pycache__/`, `results/logs/`, `results/checkpoints/`, `Predictions_*.npz`, etc.) while leaving small summaries such as `results/tables/*.csv` trackable if you commit them.
+- `artifacts/`: exported model bundles and saved latent-analysis artifacts
+- `results/`: run outputs such as tables, temporary checkpoints, logs, and demo model files
