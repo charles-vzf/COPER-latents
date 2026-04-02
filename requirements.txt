@@ -11,6 +11,8 @@ tqdm
 umap-learn
 gymnasium
 gym
+torch
+tensorboard
 pyyaml
 pillow
 ipykernel

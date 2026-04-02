@@ -5,6 +5,7 @@
 - **COPER**: [jmdvinodjmd/COPER](https://github.com/jmdvinodjmd/COPER)
 - **MIMIC-III benchmark preprocessing**: [YerevaNN/mimic3-benchmarks](https://github.com/YerevaNN/mimic3-benchmarks)
 - **ICU-Sepsis MDP**: [icu-sepsis/icu-sepsis](https://github.com/icu-sepsis/icu-sepsis)
+- **Original policy baselines**: [Dhawgupta/choudhary2024icu](https://github.com/Dhawgupta/choudhary2024icu/tree/master)
 
 ## Overview
 
@@ -38,12 +39,14 @@ The repo is centered on the local `code/COPER` project, with MIMIC preprocessing
 - `notebooks/COPER_demo.ipynb`: lightweight COPER demo on local raw MIMIC extracts
 - `notebooks/icu_sepsis_demo.ipynb`: explores the ICU-Sepsis MDP and its bundled assets
 - `notebooks/coper_to_states.ipynb`: learns a small head from COPER embeddings to MDP-state distributions for interpretation
+- `notebooks/train_mdp_policies.ipynb`: trains tabular RL policies on the ICU-Sepsis MDP and compares them against random and expert policies
 
 ### ICU-Sepsis integration
 
 - `icu_sepsis/`: vendored ICU-Sepsis code and assets used for MDP-based interpretation
 - `icu_sepsis/icu_sepsis/`: environment package
 - `icu_sepsis/icu_sepsis_helpers/`: helper code for analysis, baselines, and MDP construction
+- `policies/`: vendored policy-learning helpers adapted from `code/choudhary2024icu` / the upstream [`Dhawgupta/choudhary2024icu`](https://github.com/Dhawgupta/choudhary2024icu/tree/master) repository so MDP policy work lives inside `code/COPER`
 
 ### Outputs
 
