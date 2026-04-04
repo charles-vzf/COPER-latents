@@ -1,3 +1,5 @@
+# Unified ignore rules for code/COPER (replaces per-subtree .gitignore files)
+
 # Byte-compiled / caches
 __pycache__/
 *.py[cod]
@@ -5,15 +7,19 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.pytype/
+.pyre/
 
 # Virtual environments
 .venv/
 .venv-*/
 venv/
 env/
+ENV/
 
 # Jupyter
 .ipynb_checkpoints/
+.ipynb_checkpoints
 
 # OS / editor
 .DS_Store
@@ -25,6 +31,16 @@ env/
 
 # Weights & Biases (if enabled)
 wandb/
+
+# Test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
 
 # Experiment outputs under results/: ignore heavy artifacts, keep small summaries
 results/logs/
@@ -62,3 +78,14 @@ icu_sepsis/demo.ipynb
 # Generated notebook outputs (GIFs, etc.)
 icu_sepsis/demo_outputs/
 notebooks/demo_outputs/
+
+# Local data / temp (from former icu_sepsis/.gitignore)
+icu_sepsis/data/
+temp/
+
+# Policy experiment outputs (from policies/ workflows)
+policies/results/
+policies/plots/
+
+# Misc
+*.dw
