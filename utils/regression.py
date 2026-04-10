@@ -96,4 +96,5 @@ def fit_logistic_mortality(
         out["test_accuracy"] = te_acc
         out["test_auroc"] = te_auroc
 
+    out["estimator"] = clf
     return out

@@ -1,5 +1,5 @@
 arch_id,architecture,model_type,niters,second_node,repo_dir,seed,drop,return_code,runtime_sec,ckpt_path,ckpt_exists,test_og_auroc,test_og_auprc,test_og_accuracy,test_g_auroc,test_g_auprc,test_g_accuracy,val_auroc,val_auprc,val_accuracy,train_auroc,train_auprc,train_accuracy,raw_tail
-coper_1node,1-NODE (ODE → Perceiver),COPER,1,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,58.09263777732849,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0.5_S1.ckpt,True,0.6244,0.3385,0.6068,0.6256,0.3384,0.623,0.6533,0.469,0.6379,0.6493,0.3995,0.6228,"      (diffeq_solver): DiffeqSolver(
+coper_1node,1-NODE (ODE → Perceiver),COPER,1,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.0,0,58.15251970291138,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0_S1.ckpt,True,0.6223,0.3307,0.6165,0.6234,0.3317,0.6359,0.6625,0.4632,0.6687,0.6527,0.3945,0.6126,"      (diffeq_solver): DiffeqSolver(
         (ode_func): ODEFunc(
           (gradient_net): ODEFuncNet(
             (net): PlainNet(
@@ -68,58 +68,58 @@ coper_1node,1-NODE (ODE → Perceiver),COPER,1,False,/home/charlesv/Desktop/Stat
   )
   (act): Sigmoid()
 )
-Train Loss:0.576239
-Val Epoch: 0001 | Val Loss 0.611703
+Train Loss:0.576363
+Val Epoch: 0001 | Val Loss 0.612632
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.267335, G-Mean=0.616
-Val AUROC = 0.6533
-Val AUPRC = 0.4690
-Val Accuracy = 0.6379
-Val Precision = 0.4100
-Val Recall = 0.5691
-Val F1-score = 0.5999
+Best Threshold=0.268084, G-Mean=0.631
+Val AUROC = 0.6625
+Val AUPRC = 0.4632
+Val Accuracy = 0.6687
+Val Precision = 0.4430
+Val Recall = 0.5585
+Val F1-score = 0.6239
 
 
-Validation auc increased (inf --> 0.653286).  Saving model ...
-Train Epoch: -001 | Train Loss 0.570052
+Validation auc increased (inf --> 0.662482).  Saving model ...
+Train Epoch: -001 | Train Loss 0.570376
 Number of labeled examples: 2850
 Number of examples with mortality 1: 747
-Best Threshold=0.266355, G-Mean=0.619
-Train AUROC = 0.6493
-Train AUPRC = 0.3995
-Train Accuracy = 0.6228
-Train Precision = 0.3677
-Train Recall = 0.6104
-Train F1-score = 0.5847
+Best Threshold=0.266272, G-Mean=0.616
+Train AUROC = 0.6527
+Train AUPRC = 0.3945
+Train Accuracy = 0.6126
+Train Precision = 0.3615
+Train Recall = 0.6238
+Train F1-score = 0.5782
 
 
-Test-OG Epoch: -001 | Test-OG Loss 0.551119
+Test-OG Epoch: -001 | Test-OG Loss 0.551511
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.266613, G-Mean=0.604
-Test-OG AUROC = 0.6244
-Test-OG AUPRC = 0.3385
-Test-OG Accuracy = 0.6068
-Test-OG Precision = 0.3272
-Test-OG Recall = 0.5973
-Test-OG F1-score = 0.5623
+Best Threshold=0.267744, G-Mean=0.600
+Test-OG AUROC = 0.6223
+Test-OG AUPRC = 0.3307
+Test-OG Accuracy = 0.6165
+Test-OG Precision = 0.3295
+Test-OG Recall = 0.5705
+Test-OG F1-score = 0.5659
 
 
-Test-G Epoch: -001 | Test-G Loss 0.551110
+Test-G Epoch: -001 | Test-G Loss 0.551491
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.267405, G-Mean=0.607
-Test-G AUROC = 0.6256
-Test-G AUPRC = 0.3384
-Test-G Accuracy = 0.6230
-Test-G Precision = 0.3359
-Test-G Recall = 0.5772
-Test-G F1-score = 0.5722
+Best Threshold=0.268746, G-Mean=0.604
+Test-G AUROC = 0.6234
+Test-G AUPRC = 0.3317
+Test-G Accuracy = 0.6359
+Test-G Precision = 0.3417
+Test-G Recall = 0.5503
+Test-G F1-score = 0.5780
 
 
 ...........Experiment ended............."
-coper_2node,2-NODE (ODE → Perceiver → ODE on latents),COPER,1,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,108.67307090759277,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0.5_S1_N2.ckpt,True,0.5976,0.3418,0.6262,0.5984,0.3301,0.5696,0.6091,0.4042,0.5871,0.6134,0.3649,0.5554,"    (cross_attn): Transformer(
+coper_2node,2-NODE (ODE → Perceiver → ODE on latents),COPER,1,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.0,0,109.11475872993469,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0_S1_N2.ckpt,True,0.5959,0.3405,0.5777,0.5977,0.3306,0.5421,0.6105,0.4032,0.5794,0.615,0.3647,0.5754,"    (cross_attn): Transformer(
       (mha): MultiheadAttention(
         (w_q): Linear(in_features=64, out_features=128, bias=True)
         (w_k): Linear(in_features=32, out_features=128, bias=True)
@@ -188,58 +188,58 @@ coper_2node,2-NODE (ODE → Perceiver → ODE on latents),COPER,1,True,/home/cha
   )
   (act): Sigmoid()
 )
-Train Loss:0.586686
-Val Epoch: 0001 | Val Loss 0.609139
+Train Loss:0.586664
+Val Epoch: 0001 | Val Loss 0.609103
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.295456, G-Mean=0.591
-Val AUROC = 0.6091
-Val AUPRC = 0.4042
-Val Accuracy = 0.5871
-Val Precision = 0.3693
+Best Threshold=0.295115, G-Mean=0.586
+Val AUROC = 0.6105
+Val AUPRC = 0.4032
+Val Accuracy = 0.5794
+Val Precision = 0.3633
 Val Recall = 0.6011
-Val F1-score = 0.5621
+Val F1-score = 0.5556
 
 
-Validation auc increased (inf --> 0.609118).  Saving model ...
-Train Epoch: -001 | Train Loss 0.574584
+Validation auc increased (inf --> 0.610548).  Saving model ...
+Train Epoch: -001 | Train Loss 0.574579
 Number of labeled examples: 2850
 Number of examples with mortality 1: 747
-Best Threshold=0.293696, G-Mean=0.584
-Train AUROC = 0.6134
-Train AUPRC = 0.3649
-Train Accuracy = 0.5554
-Train Precision = 0.3264
-Train Recall = 0.6546
-Train F1-score = 0.5345
+Best Threshold=0.294602, G-Mean=0.589
+Train AUROC = 0.6150
+Train AUPRC = 0.3647
+Train Accuracy = 0.5754
+Train Precision = 0.3336
+Train Recall = 0.6212
+Train F1-score = 0.5472
 
 
-Test-OG Epoch: -001 | Test-OG Loss 0.783344
+Test-OG Epoch: -001 | Test-OG Loss 0.784280
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.581912, G-Mean=0.567
-Test-OG AUROC = 0.5976
-Test-OG AUPRC = 0.3418
-Test-OG Accuracy = 0.6262
-Test-OG Precision = 0.3170
-Test-OG Recall = 0.4765
-Test-OG F1-score = 0.5565
+Best Threshold=0.580282, G-Mean=0.568
+Test-OG AUROC = 0.5959
+Test-OG AUPRC = 0.3405
+Test-OG Accuracy = 0.5777
+Test-OG Precision = 0.2971
+Test-OG Recall = 0.5503
+Test-OG F1-score = 0.5320
 
 
-Test-G Epoch: -001 | Test-G Loss 0.557314
+Test-G Epoch: -001 | Test-G Loss 0.557327
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.295327, G-Mean=0.570
-Test-G AUROC = 0.5984
-Test-G AUPRC = 0.3301
-Test-G Accuracy = 0.5696
-Test-G Precision = 0.2962
-Test-G Recall = 0.5705
-Test-G F1-score = 0.5287
+Best Threshold=0.294004, G-Mean=0.571
+Test-G AUROC = 0.5977
+Test-G AUPRC = 0.3306
+Test-G Accuracy = 0.5421
+Test-G Precision = 0.2932
+Test-G Recall = 0.6376
+Test-G F1-score = 0.5154
 
 
 ...........Experiment ended............."
-transformer_baseline,TRANSFORMER (ODE → T×T self-attention),TRANSFORMER,1,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,57.60437989234924,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1.ckpt,True,0.6475,0.3931,0.6278,0.6473,0.3768,0.6456,0.6651,0.4682,0.6302,0.6459,0.4078,0.5951,"      (diffeq_solver): DiffeqSolver(
+transformer_baseline,TRANSFORMER (ODE → T×T self-attention),TRANSFORMER,1,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.0,0,58.19167232513428,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0_S1.ckpt,True,0.6465,0.3952,0.6214,0.648,0.3805,0.5615,0.6655,0.4864,0.5809,0.6498,0.412,0.6225,"      (diffeq_solver): DiffeqSolver(
         (ode_func): ODEFunc(
           (gradient_net): ODEFuncNet(
             (net): PlainNet(
@@ -308,58 +308,58 @@ transformer_baseline,TRANSFORMER (ODE → T×T self-attention),TRANSFORMER,1,Fal
   )
   (act): Sigmoid()
 )
-Train Loss:0.572761
-Val Epoch: 0001 | Val Loss 0.597412
+Train Loss:0.572162
+Val Epoch: 0001 | Val Loss 0.599734
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.257108, G-Mean=0.612
-Val AUROC = 0.6651
-Val AUPRC = 0.4682
-Val Accuracy = 0.6302
-Val Precision = 0.4030
-Val Recall = 0.5745
-Val F1-score = 0.5943
+Best Threshold=0.248307, G-Mean=0.613
+Val AUROC = 0.6655
+Val AUPRC = 0.4864
+Val Accuracy = 0.5809
+Val Precision = 0.3807
+Val Recall = 0.7128
+Val F1-score = 0.5687
 
 
-Validation auc increased (inf --> 0.665124).  Saving model ...
-Train Epoch: -001 | Train Loss 0.559803
+Validation auc increased (inf --> 0.665528).  Saving model ...
+Train Epoch: -001 | Train Loss 0.559064
 Number of labeled examples: 2850
 Number of examples with mortality 1: 747
-Best Threshold=0.255461, G-Mean=0.606
-Train AUROC = 0.6459
-Train AUPRC = 0.4078
-Train Accuracy = 0.5951
-Train Precision = 0.3494
-Train Recall = 0.6319
-Train F1-score = 0.5648
+Best Threshold=0.260338, G-Mean=0.611
+Train AUROC = 0.6498
+Train AUPRC = 0.4120
+Train Accuracy = 0.6225
+Train Precision = 0.3639
+Train Recall = 0.5890
+Train F1-score = 0.5813
 
 
-Test-OG Epoch: -001 | Test-OG Loss 0.539566
+Test-OG Epoch: -001 | Test-OG Loss 0.539380
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.263646, G-Mean=0.612
-Test-OG AUROC = 0.6475
-Test-OG AUPRC = 0.3931
-Test-OG Accuracy = 0.6278
-Test-OG Precision = 0.3412
-Test-OG Recall = 0.5839
-Test-OG F1-score = 0.5771
+Best Threshold=0.264266, G-Mean=0.606
+Test-OG AUROC = 0.6465
+Test-OG AUPRC = 0.3952
+Test-OG Accuracy = 0.6214
+Test-OG Precision = 0.3346
+Test-OG Recall = 0.5772
+Test-OG F1-score = 0.5709
 
 
-Test-G Epoch: -001 | Test-G Loss 0.539764
+Test-G Epoch: -001 | Test-G Loss 0.539543
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.265362, G-Mean=0.604
-Test-G AUROC = 0.6473
-Test-G AUPRC = 0.3768
-Test-G Accuracy = 0.6456
-Test-G Precision = 0.3478
-Test-G Recall = 0.5369
-Test-G F1-score = 0.5833
+Best Threshold=0.248497, G-Mean=0.611
+Test-G AUROC = 0.6480
+Test-G AUPRC = 0.3805
+Test-G Accuracy = 0.5615
+Test-G Precision = 0.3216
+Test-G Recall = 0.7383
+Test-G F1-score = 0.5422
 
 
 ...........Experiment ended............."
-transformer_2node,TRANSFORMER 2-NODE (ODE → T×T self-attention → ODE on sequence),TRANSFORMER,1,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,111.22240424156189,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1_N2.ckpt,True,0.614,0.3386,0.5696,0.6097,0.3303,0.6084,0.6389,0.4381,0.5855,0.6189,0.3699,0.5965,"    (cross_attn): Transformer(
+transformer_2node,TRANSFORMER 2-NODE (ODE → T×T self-attention → ODE on sequence),TRANSFORMER,1,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.0,0,111.33115553855896,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0_S1_N2.ckpt,True,0.6139,0.3387,0.5647,0.6101,0.3294,0.6003,0.6505,0.442,0.6194,0.6177,0.3689,0.5818,"    (cross_attn): Transformer(
       (mha): MultiheadAttention(
         (w_q): Linear(in_features=32, out_features=128, bias=True)
         (w_k): Linear(in_features=32, out_features=128, bias=True)
@@ -428,58 +428,58 @@ transformer_2node,TRANSFORMER 2-NODE (ODE → T×T self-attention → ODE on seq
   )
   (act): Sigmoid()
 )
-Train Loss:0.619047
-Val Epoch: 0001 | Val Loss 0.615103
+Train Loss:0.619180
+Val Epoch: 0001 | Val Loss 0.614277
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.219013, G-Mean=0.605
-Val AUROC = 0.6389
-Val AUPRC = 0.4381
-Val Accuracy = 0.5855
-Val Precision = 0.3769
-Val Recall = 0.6596
-Val F1-score = 0.5676
+Best Threshold=0.224855, G-Mean=0.615
+Val AUROC = 0.6505
+Val AUPRC = 0.4420
+Val Accuracy = 0.6194
+Val Precision = 0.3972
+Val Recall = 0.6064
+Val F1-score = 0.5899
 
 
-Validation auc increased (inf --> 0.638944).  Saving model ...
-Train Epoch: -001 | Train Loss 0.569433
+Validation auc increased (inf --> 0.650517).  Saving model ...
+Train Epoch: -001 | Train Loss 0.569469
 Number of labeled examples: 2850
 Number of examples with mortality 1: 747
-Best Threshold=0.228634, G-Mean=0.589
-Train AUROC = 0.6189
-Train AUPRC = 0.3699
-Train Accuracy = 0.5965
-Train Precision = 0.3400
-Train Recall = 0.5730
-Train F1-score = 0.5577
+Best Threshold=0.226616, G-Mean=0.589
+Train AUROC = 0.6177
+Train AUPRC = 0.3689
+Train Accuracy = 0.5818
+Train Precision = 0.3351
+Train Recall = 0.6051
+Train F1-score = 0.5503
 
 
-Test-OG Epoch: -001 | Test-OG Loss 0.544027
+Test-OG Epoch: -001 | Test-OG Loss 0.544046
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.236973, G-Mean=0.589
-Test-OG AUROC = 0.6140
-Test-OG AUPRC = 0.3386
-Test-OG Accuracy = 0.5696
-Test-OG Precision = 0.3082
-Test-OG Recall = 0.6309
-Test-OG F1-score = 0.5370
+Best Threshold=0.236925, G-Mean=0.588
+Test-OG AUROC = 0.6139
+Test-OG AUPRC = 0.3387
+Test-OG Accuracy = 0.5647
+Test-OG Precision = 0.3065
+Test-OG Recall = 0.6376
+Test-OG F1-score = 0.5339
 
 
-Test-G Epoch: -001 | Test-G Loss 0.545148
+Test-G Epoch: -001 | Test-G Loss 0.545170
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.230435, G-Mean=0.582
-Test-G AUROC = 0.6097
-Test-G AUPRC = 0.3303
-Test-G Accuracy = 0.6084
-Test-G Precision = 0.3162
-Test-G Recall = 0.5369
-Test-G F1-score = 0.5539
+Best Threshold=0.229248, G-Mean=0.582
+Test-G AUROC = 0.6101
+Test-G AUPRC = 0.3294
+Test-G Accuracy = 0.6003
+Test-G Precision = 0.3130
+Test-G Recall = 0.5503
+Test-G F1-score = 0.5498
 
 
 ...........Experiment ended............."
-coper_1node,1-NODE (ODE → Perceiver),COPER,3,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,119.40963673591614,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0.5_S1.ckpt,True,0.6743,0.4004,0.6311,0.6723,0.3988,0.6036,0.6985,0.5121,0.6703,0.7011,0.4837,0.6095,"        (w_q): Linear(in_features=64, out_features=128, bias=True)
+coper_1node,1-NODE (ODE → Perceiver),COPER,3,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.0,0,117.6668906211853,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0_S1.ckpt,True,0.6725,0.3963,0.6181,0.6704,0.3914,0.623,0.7039,0.5007,0.641,0.7057,0.4805,0.6488,"        (w_q): Linear(in_features=64, out_features=128, bias=True)
         (w_k): Linear(in_features=32, out_features=128, bias=True)
         (w_v): Linear(in_features=32, out_features=128, bias=True)
         (dropout): Dropout(p=0.5, inplace=False)
@@ -520,86 +520,86 @@ coper_1node,1-NODE (ODE → Perceiver),COPER,3,False,/home/charlesv/Desktop/Stat
   )
   (act): Sigmoid()
 )
-Train Loss:0.576239
-Val Epoch: 0001 | Val Loss 0.611703
+Train Loss:0.576363
+Val Epoch: 0001 | Val Loss 0.612632
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.267335, G-Mean=0.616
-Val AUROC = 0.6533
-Val AUPRC = 0.4690
-Val Accuracy = 0.6379
-Val Precision = 0.4100
-Val Recall = 0.5691
-Val F1-score = 0.5999
+Best Threshold=0.268084, G-Mean=0.631
+Val AUROC = 0.6625
+Val AUPRC = 0.4632
+Val Accuracy = 0.6687
+Val Precision = 0.4430
+Val Recall = 0.5585
+Val F1-score = 0.6239
 
 
-Validation auc increased (inf --> 0.653286).  Saving model ...
-Train Loss:0.568323
-Val Epoch: 0002 | Val Loss 0.621970
+Validation auc increased (inf --> 0.662482).  Saving model ...
+Train Loss:0.568511
+Val Epoch: 0002 | Val Loss 0.622923
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.215627, G-Mean=0.656
-Val AUROC = 0.6871
-Val AUPRC = 0.5027
-Val Accuracy = 0.6718
-Val Precision = 0.4517
-Val Recall = 0.6223
-Val F1-score = 0.6366
+Best Threshold=0.215170, G-Mean=0.658
+Val AUROC = 0.6939
+Val AUPRC = 0.4923
+Val Accuracy = 0.6687
+Val Precision = 0.4491
+Val Recall = 0.6330
+Val F1-score = 0.6355
 
 
-Validation auc increased (0.653286 --> 0.687093).  Saving model ...
-Train Loss:0.560497
-Val Epoch: 0003 | Val Loss 0.582110
+Validation auc increased (0.662482 --> 0.693901).  Saving model ...
+Train Loss:0.561454
+Val Epoch: 0003 | Val Loss 0.584532
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.291408, G-Mean=0.664
-Val AUROC = 0.6985
-Val AUPRC = 0.5121
-Val Accuracy = 0.6703
-Val Precision = 0.4519
-Val Recall = 0.6489
-Val F1-score = 0.6390
+Best Threshold=0.280279, G-Mean=0.655
+Val AUROC = 0.7039
+Val AUPRC = 0.5007
+Val Accuracy = 0.6410
+Val Precision = 0.4262
+Val Recall = 0.6915
+Val F1-score = 0.6190
 
 
-Validation auc increased (0.687093 --> 0.698458).  Saving model ...
-Train Epoch: -001 | Train Loss 0.543996
+Validation auc increased (0.693901 --> 0.703905).  Saving model ...
+Train Epoch: -001 | Train Loss 0.546730
 Number of labeled examples: 2850
 Number of examples with mortality 1: 747
-Best Threshold=0.274936, G-Mean=0.645
-Train AUROC = 0.7011
-Train AUPRC = 0.4837
-Train Accuracy = 0.6095
-Train Precision = 0.3752
-Train Recall = 0.7363
-Train F1-score = 0.5889
+Best Threshold=0.286858, G-Mean=0.649
+Train AUROC = 0.7057
+Train AUPRC = 0.4805
+Train Accuracy = 0.6488
+Train Precision = 0.3964
+Train Recall = 0.6506
+Train F1-score = 0.6120
 
 
-Test-OG Epoch: -001 | Test-OG Loss 0.535593
+Test-OG Epoch: -001 | Test-OG Loss 0.537969
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.292523, G-Mean=0.629
-Test-OG AUROC = 0.6743
-Test-OG AUPRC = 0.4004
-Test-OG Accuracy = 0.6311
-Test-OG Precision = 0.3509
-Test-OG Recall = 0.6242
-Test-OG F1-score = 0.5860
+Best Threshold=0.285443, G-Mean=0.635
+Test-OG AUROC = 0.6725
+Test-OG AUPRC = 0.3963
+Test-OG Accuracy = 0.6181
+Test-OG Precision = 0.3484
+Test-OG Recall = 0.6711
+Test-OG F1-score = 0.5819
 
 
-Test-G Epoch: -001 | Test-G Loss 0.534558
+Test-G Epoch: -001 | Test-G Loss 0.536877
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.284564, G-Mean=0.631
-Test-G AUROC = 0.6723
-Test-G AUPRC = 0.3988
-Test-G Accuracy = 0.6036
-Test-G Precision = 0.3411
-Test-G Recall = 0.6913
-Test-G F1-score = 0.5723
+Best Threshold=0.289553, G-Mean=0.630
+Test-G AUROC = 0.6704
+Test-G AUPRC = 0.3914
+Test-G Accuracy = 0.6230
+Test-G Precision = 0.3478
+Test-G Recall = 0.6443
+Test-G F1-score = 0.5822
 
 
 ...........Experiment ended............."
-coper_2node,2-NODE (ODE → Perceiver → ODE on latents),COPER,3,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,226.83828592300415,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0.5_S1_N2.ckpt,True,0.6561,0.3837,0.6586,0.6614,0.3939,0.6149,0.6814,0.4937,0.6133,0.6869,0.4634,0.6004,"          (0): Linear(in_features=64, out_features=256, bias=True)
+coper_2node,2-NODE (ODE → Perceiver → ODE on latents),COPER,3,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.0,0,234.85552740097046,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0_S1_N2.ckpt,True,0.6533,0.3797,0.6618,0.6596,0.3873,0.6699,0.6829,0.4892,0.6256,0.6899,0.4637,0.6102,"          (0): Linear(in_features=64, out_features=256, bias=True)
           (1): ReLU()
           (2): Dropout(p=0.5, inplace=False)
           (3): Linear(in_features=256, out_features=64, bias=True)
@@ -640,86 +640,86 @@ coper_2node,2-NODE (ODE → Perceiver → ODE on latents),COPER,3,True,/home/cha
   )
   (act): Sigmoid()
 )
-Train Loss:0.586686
-Val Epoch: 0001 | Val Loss 0.609139
+Train Loss:0.586664
+Val Epoch: 0001 | Val Loss 0.609103
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.295456, G-Mean=0.591
-Val AUROC = 0.6091
-Val AUPRC = 0.4042
-Val Accuracy = 0.5871
-Val Precision = 0.3693
+Best Threshold=0.295115, G-Mean=0.586
+Val AUROC = 0.6105
+Val AUPRC = 0.4032
+Val Accuracy = 0.5794
+Val Precision = 0.3633
 Val Recall = 0.6011
-Val F1-score = 0.5621
+Val F1-score = 0.5556
 
 
-Validation auc increased (inf --> 0.609118).  Saving model ...
-Train Loss:0.572849
-Val Epoch: 0002 | Val Loss 0.609309
+Validation auc increased (inf --> 0.610548).  Saving model ...
+Train Loss:0.572770
+Val Epoch: 0002 | Val Loss 0.609416
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.248027, G-Mean=0.631
-Val AUROC = 0.6594
-Val AUPRC = 0.4671
-Val Accuracy = 0.6133
-Val Precision = 0.4013
-Val Recall = 0.6809
-Val F1-score = 0.5938
+Best Threshold=0.250038, G-Mean=0.630
+Val AUROC = 0.6612
+Val AUPRC = 0.4538
+Val Accuracy = 0.6271
+Val Precision = 0.4082
+Val Recall = 0.6383
+Val F1-score = 0.6007
 
 
-Validation auc increased (0.609118 --> 0.659378).  Saving model ...
-Train Loss:0.563156
-Val Epoch: 0003 | Val Loss 0.608827
+Validation auc increased (0.610548 --> 0.661178).  Saving model ...
+Train Loss:0.563336
+Val Epoch: 0003 | Val Loss 0.609779
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.207698, G-Mean=0.640
-Val AUROC = 0.6814
-Val AUPRC = 0.4937
-Val Accuracy = 0.6133
-Val Precision = 0.4054
-Val Recall = 0.7181
-Val F1-score = 0.5976
+Best Threshold=0.210635, G-Mean=0.645
+Val AUROC = 0.6829
+Val AUPRC = 0.4892
+Val Accuracy = 0.6256
+Val Precision = 0.4132
+Val Recall = 0.6968
+Val F1-score = 0.6062
 
 
-Validation auc increased (0.659378 --> 0.681370).  Saving model ...
-Train Epoch: -001 | Train Loss 0.556822
+Validation auc increased (0.661178 --> 0.682928).  Saving model ...
+Train Epoch: -001 | Train Loss 0.557748
 Number of labeled examples: 2850
 Number of examples with mortality 1: 747
-Best Threshold=0.207344, G-Mean=0.635
-Train AUROC = 0.6869
-Train AUPRC = 0.4634
-Train Accuracy = 0.6004
-Train Precision = 0.3674
-Train Recall = 0.7269
-Train F1-score = 0.5802
+Best Threshold=0.209952, G-Mean=0.637
+Train AUROC = 0.6899
+Train AUPRC = 0.4637
+Train Accuracy = 0.6102
+Train Precision = 0.3711
+Train Recall = 0.7015
+Train F1-score = 0.5858
 
 
-Test-OG Epoch: -001 | Test-OG Loss 0.717154
+Test-OG Epoch: -001 | Test-OG Loss 0.722316
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.555785, G-Mean=0.618
-Test-OG AUROC = 0.6561
-Test-OG AUPRC = 0.3837
-Test-OG Accuracy = 0.6586
-Test-OG Precision = 0.3628
-Test-OG Recall = 0.5503
-Test-OG F1-score = 0.5961
+Best Threshold=0.559936, G-Mean=0.617
+Test-OG AUROC = 0.6533
+Test-OG AUPRC = 0.3797
+Test-OG Accuracy = 0.6618
+Test-OG Precision = 0.3649
+Test-OG Recall = 0.5436
+Test-OG F1-score = 0.5975
 
 
-Test-G Epoch: -001 | Test-G Loss 0.536851
+Test-G Epoch: -001 | Test-G Loss 0.537824
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.215639, G-Mean=0.625
-Test-G AUROC = 0.6614
-Test-G AUPRC = 0.3939
-Test-G Accuracy = 0.6149
-Test-G Precision = 0.3416
-Test-G Recall = 0.6443
-Test-G F1-score = 0.5756
+Best Threshold=0.226692, G-Mean=0.621
+Test-G AUROC = 0.6596
+Test-G AUPRC = 0.3873
+Test-G Accuracy = 0.6699
+Test-G Precision = 0.3733
+Test-G Recall = 0.5436
+Test-G F1-score = 0.6041
 
 
 ...........Experiment ended............."
-transformer_baseline,TRANSFORMER (ODE → T×T self-attention),TRANSFORMER,3,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,118.92574954032898,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1.ckpt,True,0.7048,0.4471,0.6942,0.6934,0.4319,0.6877,0.7002,0.5198,0.6656,0.7164,0.4999,0.6354,"        (w_q): Linear(in_features=32, out_features=128, bias=True)
+transformer_baseline,TRANSFORMER (ODE → T×T self-attention),TRANSFORMER,3,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.0,0,126.11906313896179,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0_S1.ckpt,True,0.7002,0.4417,0.6699,0.6922,0.4302,0.6812,0.7128,0.5337,0.6872,0.7209,0.511,0.646,"        (w_q): Linear(in_features=32, out_features=128, bias=True)
         (w_k): Linear(in_features=32, out_features=128, bias=True)
         (w_v): Linear(in_features=32, out_features=128, bias=True)
         (dropout): Dropout(p=0.5, inplace=False)
@@ -760,86 +760,86 @@ transformer_baseline,TRANSFORMER (ODE → T×T self-attention),TRANSFORMER,3,Fal
   )
   (act): Sigmoid()
 )
-Train Loss:0.572761
-Val Epoch: 0001 | Val Loss 0.597412
+Train Loss:0.572162
+Val Epoch: 0001 | Val Loss 0.599734
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.257108, G-Mean=0.612
-Val AUROC = 0.6651
-Val AUPRC = 0.4682
-Val Accuracy = 0.6302
-Val Precision = 0.4030
-Val Recall = 0.5745
-Val F1-score = 0.5943
+Best Threshold=0.248307, G-Mean=0.613
+Val AUROC = 0.6655
+Val AUPRC = 0.4864
+Val Accuracy = 0.5809
+Val Precision = 0.3807
+Val Recall = 0.7128
+Val F1-score = 0.5687
 
 
-Validation auc increased (inf --> 0.665124).  Saving model ...
-Train Loss:0.559020
-Val Epoch: 0002 | Val Loss 0.574705
+Validation auc increased (inf --> 0.665528).  Saving model ...
+Train Loss:0.557954
+Val Epoch: 0002 | Val Loss 0.576563
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.259547, G-Mean=0.640
-Val AUROC = 0.6932
-Val AUPRC = 0.5108
-Val Accuracy = 0.6025
-Val Precision = 0.4017
-Val Recall = 0.7606
-Val F1-score = 0.5918
+Best Threshold=0.278943, G-Mean=0.656
+Val AUROC = 0.7042
+Val AUPRC = 0.5297
+Val Accuracy = 0.6502
+Val Precision = 0.4330
+Val Recall = 0.6702
+Val F1-score = 0.6245
 
 
-Validation auc increased (0.665124 --> 0.693232).  Saving model ...
-Train Loss:0.537128
-Val Epoch: 0003 | Val Loss 0.559103
+Validation auc increased (0.665528 --> 0.704205).  Saving model ...
+Train Loss:0.535291
+Val Epoch: 0003 | Val Loss 0.559457
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.294769, G-Mean=0.657
-Val AUROC = 0.7002
-Val AUPRC = 0.5198
-Val Accuracy = 0.6656
-Val Precision = 0.4461
-Val Recall = 0.6383
-Val F1-score = 0.6336
+Best Threshold=0.295791, G-Mean=0.679
+Val AUROC = 0.7128
+Val AUPRC = 0.5337
+Val Accuracy = 0.6872
+Val Precision = 0.4715
+Val Recall = 0.6596
+Val F1-score = 0.6551
 
 
-Validation auc increased (0.693232 --> 0.700201).  Saving model ...
-Train Epoch: -001 | Train Loss 0.522552
+Validation auc increased (0.704205 --> 0.712801).  Saving model ...
+Train Epoch: -001 | Train Loss 0.520786
 Number of labeled examples: 2850
 Number of examples with mortality 1: 747
-Best Threshold=0.275196, G-Mean=0.655
-Train AUROC = 0.7164
-Train AUPRC = 0.4999
-Train Accuracy = 0.6354
-Train Precision = 0.3910
-Train Recall = 0.7015
-Train F1-score = 0.6073
+Best Threshold=0.279552, G-Mean=0.659
+Train AUROC = 0.7209
+Train AUPRC = 0.5110
+Train Accuracy = 0.6460
+Train Precision = 0.3984
+Train Recall = 0.6881
+Train F1-score = 0.6146
 
 
-Test-OG Epoch: -001 | Test-OG Loss 0.515392
+Test-OG Epoch: -001 | Test-OG Loss 0.515946
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.322775, G-Mean=0.666
-Test-OG AUROC = 0.7048
-Test-OG AUPRC = 0.4471
-Test-OG Accuracy = 0.6942
-Test-OG Precision = 0.4107
-Test-OG Recall = 0.6174
-Test-OG F1-score = 0.6371
+Best Threshold=0.307803, G-Mean=0.666
+Test-OG AUROC = 0.7002
+Test-OG AUPRC = 0.4417
+Test-OG Accuracy = 0.6699
+Test-OG Precision = 0.3904
+Test-OG Recall = 0.6577
+Test-OG F1-score = 0.6230
 
 
-Test-G Epoch: -001 | Test-G Loss 0.517101
+Test-G Epoch: -001 | Test-G Loss 0.516994
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.319274, G-Mean=0.654
-Test-G AUROC = 0.6934
-Test-G AUPRC = 0.4319
-Test-G Accuracy = 0.6877
-Test-G Precision = 0.4009
-Test-G Recall = 0.5973
-Test-G F1-score = 0.6283
+Best Threshold=0.313010, G-Mean=0.663
+Test-G AUROC = 0.6922
+Test-G AUPRC = 0.4302
+Test-G Accuracy = 0.6812
+Test-G Precision = 0.3983
+Test-G Recall = 0.6309
+Test-G F1-score = 0.6284
 
 
 ...........Experiment ended............."
-transformer_2node,TRANSFORMER 2-NODE (ODE → T×T self-attention → ODE on sequence),TRANSFORMER,3,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,244.59860801696777,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1_N2.ckpt,True,0.6793,0.437,0.6667,0.6697,0.4207,0.657,0.6894,0.5171,0.698,0.6987,0.4784,0.6319,"          (0): Linear(in_features=32, out_features=128, bias=True)
+transformer_2node,TRANSFORMER 2-NODE (ODE → T×T self-attention → ODE on sequence),TRANSFORMER,3,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.0,0,240.85414004325867,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0_S1_N2.ckpt,True,0.6782,0.435,0.623,0.6683,0.4187,0.6359,0.7006,0.5151,0.6487,0.6989,0.4775,0.6354,"          (0): Linear(in_features=32, out_features=128, bias=True)
           (1): ReLU()
           (2): Dropout(p=0.5, inplace=False)
           (3): Linear(in_features=128, out_features=32, bias=True)
@@ -880,82 +880,82 @@ transformer_2node,TRANSFORMER 2-NODE (ODE → T×T self-attention → ODE on seq
   )
   (act): Sigmoid()
 )
-Train Loss:0.619047
-Val Epoch: 0001 | Val Loss 0.615103
+Train Loss:0.619180
+Val Epoch: 0001 | Val Loss 0.614277
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.219013, G-Mean=0.605
-Val AUROC = 0.6389
-Val AUPRC = 0.4381
-Val Accuracy = 0.5855
-Val Precision = 0.3769
-Val Recall = 0.6596
-Val F1-score = 0.5676
+Best Threshold=0.224855, G-Mean=0.615
+Val AUROC = 0.6505
+Val AUPRC = 0.4420
+Val Accuracy = 0.6194
+Val Precision = 0.3972
+Val Recall = 0.6064
+Val F1-score = 0.5899
 
 
-Validation auc increased (inf --> 0.638944).  Saving model ...
-Train Loss:0.564537
-Val Epoch: 0002 | Val Loss 0.593182
+Validation auc increased (inf --> 0.650517).  Saving model ...
+Train Loss:0.564529
+Val Epoch: 0002 | Val Loss 0.592693
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.261256, G-Mean=0.632
-Val AUROC = 0.6713
-Val AUPRC = 0.4922
-Val Accuracy = 0.6317
-Val Precision = 0.4118
-Val Recall = 0.6330
-Val F1-score = 0.6039
+Best Threshold=0.269366, G-Mean=0.646
+Val AUROC = 0.6857
+Val AUPRC = 0.4954
+Val Accuracy = 0.6764
+Val Precision = 0.4545
+Val Recall = 0.5851
+Val F1-score = 0.6348
 
 
-Validation auc increased (0.638944 --> 0.671286).  Saving model ...
-Train Loss:0.552203
-Val Epoch: 0003 | Val Loss 0.581206
+Validation auc increased (0.650517 --> 0.685651).  Saving model ...
+Train Loss:0.552132
+Val Epoch: 0003 | Val Loss 0.580816
 Number of labeled examples: 649
 Number of examples with mortality 1: 188
-Best Threshold=0.273683, G-Mean=0.651
-Val AUROC = 0.6894
-Val AUPRC = 0.5171
-Val Accuracy = 0.6980
-Val Precision = 0.4818
-Val Recall = 0.5638
-Val F1-score = 0.6497
+Best Threshold=0.251107, G-Mean=0.661
+Val AUROC = 0.7006
+Val AUPRC = 0.5151
+Val Accuracy = 0.6487
+Val Precision = 0.4333
+Val Recall = 0.6915
+Val F1-score = 0.6257
 
 
-Validation auc increased (0.671286 --> 0.689447).  Saving model ...
-Train Epoch: -001 | Train Loss 0.539542
+Validation auc increased (0.685651 --> 0.700593).  Saving model ...
+Train Epoch: -001 | Train Loss 0.539544
 Number of labeled examples: 2850
 Number of examples with mortality 1: 747
-Best Threshold=0.257411, G-Mean=0.642
-Train AUROC = 0.6987
-Train AUPRC = 0.4784
-Train Accuracy = 0.6319
-Train Precision = 0.3833
-Train Recall = 0.6640
-Train F1-score = 0.5997
+Best Threshold=0.258039, G-Mean=0.644
+Train AUROC = 0.6989
+Train AUPRC = 0.4775
+Train Accuracy = 0.6354
+Train Precision = 0.3859
+Train Recall = 0.6613
+Train F1-score = 0.6023
 
 
-Test-OG Epoch: -001 | Test-OG Loss 0.528144
+Test-OG Epoch: -001 | Test-OG Loss 0.528457
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.294319, G-Mean=0.628
-Test-OG AUROC = 0.6793
-Test-OG AUPRC = 0.4370
-Test-OG Accuracy = 0.6667
-Test-OG Precision = 0.3733
-Test-OG Recall = 0.5638
-Test-OG F1-score = 0.6051
+Best Threshold=0.279652, G-Mean=0.630
+Test-OG AUROC = 0.6782
+Test-OG AUPRC = 0.4350
+Test-OG Accuracy = 0.6230
+Test-OG Precision = 0.3478
+Test-OG Recall = 0.6443
+Test-OG F1-score = 0.5822
 
 
-Test-G Epoch: -001 | Test-G Loss 0.527007
+Test-G Epoch: -001 | Test-G Loss 0.527323
 Number of labeled examples: 618
 Number of examples with mortality 1: 149
-Best Threshold=0.271496, G-Mean=0.625
-Test-G AUROC = 0.6697
-Test-G AUPRC = 0.4207
-Test-G Accuracy = 0.6570
-Test-G Precision = 0.3648
-Test-G Recall = 0.5705
-Test-G F1-score = 0.5984
+Best Threshold=0.268214, G-Mean=0.620
+Test-G AUROC = 0.6683
+Test-G AUPRC = 0.4187
+Test-G Accuracy = 0.6359
+Test-G Precision = 0.3492
+Test-G Recall = 0.5906
+Test-G F1-score = 0.5847
 
 
 ...........Experiment ended............."

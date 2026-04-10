@@ -154,9 +154,11 @@ def fit_lstm_mortality(
 
     out: dict[str, Any] = {
         "model": "lstm",
+        "input_dim": input_dim,
         "hidden_dim": int(hidden_dim),
         "num_layers": int(num_layers),
         "bidirectional": bool(bidirectional),
+        "dropout": float(dropout),
         "epochs_trained": int(epoch),
         "train_accuracy": tr_acc,
         "val_accuracy": va_acc,
@@ -177,4 +179,5 @@ def fit_lstm_mortality(
         out["test_accuracy"] = te_acc
         out["test_auroc"] = te_auroc
 
+    out["estimator"] = model.cpu()
     return out

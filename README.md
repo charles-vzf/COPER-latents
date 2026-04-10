@@ -16,11 +16,9 @@ This directory is a **single stand alone working tree** that combines several pr
 - **Core**: attention over continuous-time / irregular structure + optional ODE-inspired components (`src_coper/`).
 - **Outputs**: task heads (e.g. in-hospital mortality) and **exportable latent bundles** for downstream analysis (`utils/export_coper_checkpoint.py`, `load_coper_bundle.py`, `coper_embed.py`).
 
-Details are in the source modules and the original COPER reference repository.
+Implementation largely taken from the in the original COPER reference repository.
 
-COPER architecture overview
-
-
+![COPER architecture overview](figures/coper_architecture.png)
 
 ## **Notebooks**
 
@@ -29,13 +27,12 @@ COPER architecture overview
 | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `build_data.ipynb`                   | Runs unified `data_mngmt` build end-to-end: default **48 h / 1 h** IHM → `generated/mortality_coper_*.data`, sepsis-filtered MDP cohort (**1 h** RL blocs by default), optional publish. Analysis/plots are in `datasets.ipynb`. `REBUILD_FROM_SCRATCH=True` forces a benchmark rebuild; `MDP_FORCE_REBUILD_SOURCE_TABLE=True` (or delete `mimic_dataset_table_src_bloc*.csv`) forces Postgres RL rebuild. |
 | `icu_sepsis_demo.ipynb`              | **Gymnasium MDP demo:** value iteration, rollouts, UMAP — loads `mdp_params_<slug>/` from the unified build by default (`USE_PACKAGED_MDP=False`), or packaged `envs/assets` if `True`.                                                                                                                                                                                                                    |
-| `COPERvsTRANSFORMER_mortality.ipynb` | Train and compare **COPER vs Transformer** on MIMIC mortality tensors; export checkpoints; comparison tables → `results/demo_outputs/coper_vs_transformer_mortality/tables/`.                                                                                                                                                                                                                              |
+| `COPERvsTRANSFORMER_mortality.ipynb` | Train and compare **COPER vs Transformer** on MIMIC mortality tensors (default **no input-time `--drop`**; `NITERS_LIST` typically **1, 3, 10** — keep in sync with `display_embeddings.ipynb`). Also fits **logistic (L2/L1), random forest, PyTorch LSTM**; saves `.joblib` / `.pt` baselines under `results/demo_outputs/coper_vs_transformer_mortality/models/`. Exports deep bundles to the run’s `models/`; tables + `mimic3_baselines_*.csv/json` → `.../tables/`. |
 | `display_embeddings.ipynb`           | Latent PCA/UMAP/t-SNE; figures and caches → `results/demo_outputs/display_embeddings/{figures,latents}/`.                                                                                                                                                                                                                                                                                                  |
 | `latent_dim.ipynb`                   | Latent-dim sweep; CSV/PNGs → `results/demo_outputs/latent_dim_sweep/{tables,figures}/`.                                                                                                                                                                                                                                                                                                                    |
 | `COPER_demo.ipynb`                   | Quick MIMIC + COPER demo; demo checkpoint → `results/demo_outputs/coper_demo/models/`.                                                                                                                                                                                                                                                                                                                     |
 | `coper_to_states.ipynb`              | Map latents to MDP states; trained head → `results/demo_outputs/coper_to_states/models/`.                                                                                                                                                                                                                                                                                                                  |
 | `train_mdp_policies.ipynb`           | Train tabular RL on ICU-Sepsis; compare random, expert, **optimal** (value iteration), and learned policies (`os.chdir` into `policies/` as noted in the notebook).                                                                                                                                                                                                                                        |
-| `evaluations.ipynb`                  | Publication-style plots from `results/tables/results-final.xlsx`; PDFs → `results/demo_outputs/evaluations_from_xlsx/figures/`.                                                                                                                                                                                                                                                                            |
 | `datasets.ipynb`                     | Side-by-side stats: COPER mortality pickle vs MDP cohort / params (`data_mngmt/tools/dataset_compare.py`), plus post-build 48 h / 1 h checks.                                                                                                                                                                                                                                                              |
 
 
@@ -83,7 +80,7 @@ code/COPER/
 ├── figures/                  # documentation assets (e.g. architecture diagram)
 ├── data_mngmt/               # PhysioNet → benchmarks → COPER pickle + ICU-Sepsis MDP (see below)
 ├── src_coper/                # COPER core: attention, ODE cell, transformer baseline, losses
-├── utils/                    # training entrypoint, export/load bundles, embeddings, viz
+├── utils/                    # training entrypoint, export/load bundles, embeddings, viz, mortality baselines (`lstm.py`, `regression.py`, `random_forest.py`)
 ├── notebooks/                # analysis and demos (see below)
 ├── scripts/                  # e.g. setup_venv.sh
 ├── results/                  # runs/, checkpoints/, models/, …; notebook exports under ``demo_outputs/<notebook>/{figures,tables,models,latents,…}/`` (``notebook_demo_dir``)

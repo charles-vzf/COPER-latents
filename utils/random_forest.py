@@ -76,4 +76,5 @@ def fit_random_forest_mortality(
         out["test_accuracy"] = te_acc
         out["test_auroc"] = te_auroc
 
+    out["estimator"] = clf
     return out
