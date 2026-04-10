@@ -1,4 +1,5 @@
 # Unified ignore rules for code/COPER (replaces per-subtree .gitignore files)
+todo
 
 # Byte-compiled / caches
 __pycache__/
@@ -42,32 +43,45 @@ coverage.xml
 *.cover
 .hypothesis/
 
-# Experiment outputs under results/: ignore heavy artifacts, keep small summaries
-results/logs/
-results/**/logs/
+# results/ — single tree: ignore checkpoints, logs, predictions, latents, model weights; keep tables, light figures, traces, export JSON
 results/**/logs/**
-results/checkpoints/
-results/**/checkpoints/
 results/**/checkpoints/**
-results/models/
+results/**/predictions/**
+results/**/latents/**
 results/**/*.ckpt
 results/**/*.pth
-results/**/*.pt
-results/**/Predictions_*.npz
+results/**/models/**/*.pt
+results/**/traces/**
 
-# Keep lightweight aggregate outputs
-!results/tables/
-!results/tables/*.csv
-!results/**/*.meta.json
 
-# Artifacts: ignore heavy bundles/arrays, keep metadata
-artifacts/*.pt
-artifacts/*.npz
-!artifacts/*.json
-!artifacts/*.meta.json
+# NPZ caches / dumps (anywhere under results/)
+results/**/*.npz
 
-# ICU-Sepsis bundle: optional large CSV tables (~1.7 MB); MDP uses packaged dynamics.npz
-icu_sepsis/icu-sepsis-csv-tables.tar.gz
+# Optional: skip large vector figures
+results/**/*.pdf
+
+# data_mngmt: large derived artifacts (scripts tracked; docs only in repo README)
+data_mngmt/generated/
+*data_mngmt/legacy/**
+
+# Vendored by ``python -m data_mngmt.sepsis_rl.mimic_sepsis_vendor`` (MIT upstream; re-run to refresh)
+data_mngmt/vendor/mimic_sepsis_upstream/
+
+data_mngmt/mortality_for_coper.data
+data_mngmt/generated/mortality_coper_*.data
+data_mngmt/mortality_for_coper_mdp_legacy.data
+# YerevaNN/mimic3-benchmarks (``python -m data_mngmt.mimic.mimic3_benchmarks_vendor``)
+data_mngmt/vendor/mimic3_benchmarks/
+# Legacy optional ICU-Sepsis CSV bundle (see paths.json)
+data_mngmt/legacy/icu-sepsis-csv-tables.tar.gz
+data_mngmt/legacy/icu-sepsis-csv-tables/
+# Deprecated locations (keep ignoring if still present locally)
+data_mngmt/icu-sepsis-csv-tables.tar.gz
+data_mngmt/icu-sepsis-csv-tables/
+
+# MDP rebuild outputs / local cohort tables (optional)
+data_mngmt/mimic_mdp_params/
+data_mngmt/cohort/
 
 # Duplicate of icu_sepsis/icu_sepsis + icu_sepsis_helpers (upstream "packages/" layout)
 icu_sepsis/packages/
@@ -75,7 +89,7 @@ icu_sepsis/packages/
 # Redundant notebook; canonical copy is notebooks/icu_sepsis_demo.ipynb
 icu_sepsis/demo.ipynb
 
-# Generated notebook outputs (GIFs, etc.)
+# Legacy / mistaken notebook output dirs (canonical: results/demo_outputs/<notebook>/{figures,tables,...}/)
 icu_sepsis/demo_outputs/
 notebooks/demo_outputs/
 

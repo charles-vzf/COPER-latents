@@ -8,7 +8,6 @@ import gymnasium as gym
 from gymnasium import spaces
 
 from ..utils.io import MDPParameters
-from ..utils import constants
 from ..utils.constants import inadmissible_action_strategies as ias
 from ..utils.exceptions import InadmissibleActionError
 
@@ -17,9 +16,11 @@ class ICUSepsisEnv(gym.Env):
     """## The ICU-Sepsis environment.
 
     The ICU-Sepsis environment is a discrete MDP that models the treatment of
-    sepsis in an ICU. The state space consists of **716 states**, with the
-    first 713 representing the state of a patient undergoing, and the
-    last three representing death, survival, and s_inf respectively. The action
+    sepsis in an ICU. The state space has **S** discrete indices ``0 … S-1``;
+    the **last three** indices are always **death**, **survival**, and **s_inf**
+    (absorbing), matching the tabular dynamics built by ``icu_sepsis_helpers``
+    (e.g. S=716 for bundled assets, or a different S after pruning on a custom
+    cohort). The action
     space consists of **25 actions**, representing a combination of fluids and
     vasopressors to be administered to the patient at 5 different levels each.
     The episode ends when the agent reaches a terminal state or the maximum
@@ -71,6 +72,14 @@ class ICUSepsisEnv(gym.Env):
         # Set environment properties
         self._num_states: int = self._tx_mat.shape[0]
         self._num_actions: int = self._tx_mat.shape[1]
+        if self._num_states < 3:
+            raise ValueError(
+                f'Expected at least 3 states (death, survival, s_inf); got {self._num_states}')
+        self._state_death: int = self._num_states - 3
+        self._state_survival: int = self._num_states - 2
+        self._state_s_inf: int = self._num_states - 1
+        self._states_terminal: frozenset[int] = frozenset({
+            self._state_death, self._state_survival, self._state_s_inf})
         self._gamma: float = kwargs.get('gamma', 1.00)
         self._action_levels: int = round(np.sqrt(self._num_actions))
         assert self._action_levels ** 2 == self._num_actions, \
@@ -112,7 +121,7 @@ class ICUSepsisEnv(gym.Env):
     def _is_terminal_state(self, state: int) -> bool:
         if (state < 0) or (state >= self._num_states):
             raise ValueError(f'Invalid state: {state}')
-        return state in constants.STATES_TERMINAL
+        return state in self._states_terminal
 
     def _is_admissible_action(self, state: int, action_idx: int) -> bool:
         return action_idx in self._admissible_action_sets[state]
@@ -132,7 +141,7 @@ class ICUSepsisEnv(gym.Env):
         if self._inadmissible_action_strategy == ias.MEAN:
             self._make_state_transition(transition_prob)
         elif self._inadmissible_action_strategy == ias.TERMINATE:
-            self._current_state = constants.STATE_DEATH
+            self._current_state = self._state_death
         elif self._inadmissible_action_strategy == ias.RAISE_EXCEPTION:
             raise InadmissibleActionError(
                 f'Inadmissible action {action_idx} in state {state}')
@@ -198,6 +207,21 @@ class ICUSepsisEnv(gym.Env):
     def num_states(self) -> int:
         """The number of states in the environment."""
         return self._num_states
+
+    @property
+    def state_death(self) -> int:
+        """Discrete index for the death absorbing state (``num_states - 3``)."""
+        return self._state_death
+
+    @property
+    def state_survival(self) -> int:
+        """Discrete index for the survival absorbing state (``num_states - 2``)."""
+        return self._state_survival
+
+    @property
+    def state_s_inf(self) -> int:
+        """Discrete index for the ``s_inf`` absorbing state (``num_states - 1``)."""
+        return self._state_s_inf
 
     @property
     def num_actions(self) -> int:

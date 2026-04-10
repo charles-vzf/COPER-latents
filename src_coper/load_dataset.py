@@ -3,8 +3,24 @@ import torch
 import pickle
 import json
 import numpy as np
+from pathlib import Path
 import random
 from torch.utils.data import Dataset, DataLoader, random_split, WeightedRandomSampler
+
+
+def _paths_json_file() -> Path:
+    return Path(__file__).resolve().parent.parent / "paths.json"
+
+
+def _load_paths_dict() -> dict:
+    with open(_paths_json_file(), encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _resolve_paths_entry(raw: str) -> str:
+    path = Path(raw)
+    resolved = path if path.is_absolute() else (_paths_json_file().parent / path).resolve()
+    return str(resolved)
 
 
 class Dataset(torch.utils.data.Dataset):
@@ -89,10 +105,9 @@ def load_physionet_nfold(fold, K, device, batch, carry_frd, drop, sampler):
     from sklearn.model_selection import StratifiedKFold
     from sklearn.model_selection import train_test_split
 
-    with open('paths.json', 'r') as f:
-        file_names = json.load(f)
-        X = np.load(file_names["physionet_2012_data"])
-        y = np.load(file_names["physionet_2012_labels"])
+    file_names = _load_paths_dict()
+    X = np.load(_resolve_paths_entry(file_names["physionet_2012_data"]))
+    y = np.load(_resolve_paths_entry(file_names["physionet_2012_labels"]))
 
     print('total data points:', X.shape, y.shape)
 
@@ -149,9 +164,8 @@ def load_physionet_nfold(fold, K, device, batch, carry_frd, drop, sampler):
 
 def load_mimic_loader(device, batch, val_batch, carry_frd, drop, sampler):
 
-    with open('paths.json', 'r') as f:
-        file_name = json.load(f)["mimic3_mortality"]
-    with open(file_name,'rb') as fp:
+    file_name = _resolve_paths_entry(_load_paths_dict()["mimic3_mortality"])
+    with open(file_name, "rb") as fp:
         details, X_train, y_train, X_val, y_val, X_test, y_test, _ = pickle.load(fp)
 
     # print(X_train.shape, y_train.shape, '------------------')

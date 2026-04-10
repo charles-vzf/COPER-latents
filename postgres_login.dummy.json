@@ -1,0 +1,7 @@
+{
+  "PGHOST": "localhost",
+  "PGPORT": "5432",
+  "PGDATABASE": "mimic",
+  "PGUSER": "mimic",
+  "PGPASSWORD": "CHANGE_ME"
+}

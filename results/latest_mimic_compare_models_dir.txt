@@ -1,0 +1,1 @@
+/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/models

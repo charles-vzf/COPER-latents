@@ -1,0 +1,961 @@
+arch_id,architecture,model_type,niters,second_node,repo_dir,seed,drop,return_code,runtime_sec,ckpt_path,ckpt_exists,test_og_auroc,test_og_auprc,test_og_accuracy,test_g_auroc,test_g_auprc,test_g_accuracy,val_auroc,val_auprc,val_accuracy,train_auroc,train_auprc,train_accuracy,raw_tail
+coper_1node,1-NODE (ODE → Perceiver),COPER,1,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,58.09263777732849,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0.5_S1.ckpt,True,0.6244,0.3385,0.6068,0.6256,0.3384,0.623,0.6533,0.469,0.6379,0.6493,0.3995,0.6228,"      (diffeq_solver): DiffeqSolver(
+        (ode_func): ODEFunc(
+          (gradient_net): ODEFuncNet(
+            (net): PlainNet(
+              (net): Sequential(
+                (0): Linear(in_features=32, out_features=128, bias=True)
+                (1): Tanh()
+                (2): Dropout(p=0.5, inplace=False)
+                (3): Linear(in_features=128, out_features=128, bias=True)
+                (4): Tanh()
+                (5): Dropout(p=0.5, inplace=False)
+                (6): Linear(in_features=128, out_features=128, bias=True)
+                (7): Tanh()
+                (8): Dropout(p=0.5, inplace=False)
+                (9): Linear(in_features=128, out_features=128, bias=True)
+                (10): Tanh()
+                (11): Linear(in_features=128, out_features=32, bias=True)
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (net): Perceiver(
+    (pos_encoder): PositionalEncoding()
+    (cross_attn): Transformer(
+      (mha): MultiheadAttention(
+        (w_q): Linear(in_features=64, out_features=128, bias=True)
+        (w_k): Linear(in_features=32, out_features=128, bias=True)
+        (w_v): Linear(in_features=32, out_features=128, bias=True)
+        (dropout): Dropout(p=0.5, inplace=False)
+        (to_out): Linear(in_features=128, out_features=64, bias=True)
+      )
+      (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      (mlp): Sequential(
+        (0): Linear(in_features=64, out_features=256, bias=True)
+        (1): ReLU()
+        (2): Dropout(p=0.5, inplace=False)
+        (3): Linear(in_features=256, out_features=64, bias=True)
+      )
+      (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    )
+    (self_attns): ModuleList(
+      (0): Transformer(
+        (mha): MultiheadAttention(
+          (w_q): Linear(in_features=64, out_features=256, bias=True)
+          (w_k): Linear(in_features=64, out_features=256, bias=True)
+          (w_v): Linear(in_features=64, out_features=256, bias=True)
+          (dropout): Dropout(p=0.5, inplace=False)
+          (to_out): Linear(in_features=256, out_features=64, bias=True)
+        )
+        (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (mlp): Sequential(
+          (0): Linear(in_features=64, out_features=256, bias=True)
+          (1): ReLU()
+          (2): Dropout(p=0.5, inplace=False)
+          (3): Linear(in_features=256, out_features=64, bias=True)
+        )
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (norm): LayerNorm((64,), eps=1e-06, elementwise_affine=True)
+  (classifier): Sequential(
+    (0): Linear(in_features=64, out_features=1, bias=True)
+  )
+  (act): Sigmoid()
+)
+Train Loss:0.576239
+Val Epoch: 0001 | Val Loss 0.611703
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.267335, G-Mean=0.616
+Val AUROC = 0.6533
+Val AUPRC = 0.4690
+Val Accuracy = 0.6379
+Val Precision = 0.4100
+Val Recall = 0.5691
+Val F1-score = 0.5999
+
+
+Validation auc increased (inf --> 0.653286).  Saving model ...
+Train Epoch: -001 | Train Loss 0.570052
+Number of labeled examples: 2850
+Number of examples with mortality 1: 747
+Best Threshold=0.266355, G-Mean=0.619
+Train AUROC = 0.6493
+Train AUPRC = 0.3995
+Train Accuracy = 0.6228
+Train Precision = 0.3677
+Train Recall = 0.6104
+Train F1-score = 0.5847
+
+
+Test-OG Epoch: -001 | Test-OG Loss 0.551119
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.266613, G-Mean=0.604
+Test-OG AUROC = 0.6244
+Test-OG AUPRC = 0.3385
+Test-OG Accuracy = 0.6068
+Test-OG Precision = 0.3272
+Test-OG Recall = 0.5973
+Test-OG F1-score = 0.5623
+
+
+Test-G Epoch: -001 | Test-G Loss 0.551110
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.267405, G-Mean=0.607
+Test-G AUROC = 0.6256
+Test-G AUPRC = 0.3384
+Test-G Accuracy = 0.6230
+Test-G Precision = 0.3359
+Test-G Recall = 0.5772
+Test-G F1-score = 0.5722
+
+
+...........Experiment ended............."
+coper_2node,2-NODE (ODE → Perceiver → ODE on latents),COPER,1,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,108.67307090759277,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0.5_S1_N2.ckpt,True,0.5976,0.3418,0.6262,0.5984,0.3301,0.5696,0.6091,0.4042,0.5871,0.6134,0.3649,0.5554,"    (cross_attn): Transformer(
+      (mha): MultiheadAttention(
+        (w_q): Linear(in_features=64, out_features=128, bias=True)
+        (w_k): Linear(in_features=32, out_features=128, bias=True)
+        (w_v): Linear(in_features=32, out_features=128, bias=True)
+        (dropout): Dropout(p=0.5, inplace=False)
+        (to_out): Linear(in_features=128, out_features=64, bias=True)
+      )
+      (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      (mlp): Sequential(
+        (0): Linear(in_features=64, out_features=256, bias=True)
+        (1): ReLU()
+        (2): Dropout(p=0.5, inplace=False)
+        (3): Linear(in_features=256, out_features=64, bias=True)
+      )
+      (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    )
+    (self_attns): ModuleList(
+      (0): Transformer(
+        (mha): MultiheadAttention(
+          (w_q): Linear(in_features=64, out_features=256, bias=True)
+          (w_k): Linear(in_features=64, out_features=256, bias=True)
+          (w_v): Linear(in_features=64, out_features=256, bias=True)
+          (dropout): Dropout(p=0.5, inplace=False)
+          (to_out): Linear(in_features=256, out_features=64, bias=True)
+        )
+        (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (mlp): Sequential(
+          (0): Linear(in_features=64, out_features=256, bias=True)
+          (1): ReLU()
+          (2): Dropout(p=0.5, inplace=False)
+          (3): Linear(in_features=256, out_features=64, bias=True)
+        )
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (ode_out): ODE(
+    (ode_cell): ODECell(
+      (diffeq_solver): DiffeqSolver(
+        (ode_func): ODEFunc(
+          (gradient_net): ODEFuncNet(
+            (net): PlainNet(
+              (net): Sequential(
+                (0): Linear(in_features=64, out_features=128, bias=True)
+                (1): Tanh()
+                (2): Dropout(p=0.5, inplace=False)
+                (3): Linear(in_features=128, out_features=128, bias=True)
+                (4): Tanh()
+                (5): Dropout(p=0.5, inplace=False)
+                (6): Linear(in_features=128, out_features=128, bias=True)
+                (7): Tanh()
+                (8): Dropout(p=0.5, inplace=False)
+                (9): Linear(in_features=128, out_features=128, bias=True)
+                (10): Tanh()
+                (11): Linear(in_features=128, out_features=64, bias=True)
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (norm): LayerNorm((64,), eps=1e-06, elementwise_affine=True)
+  (classifier): Sequential(
+    (0): Linear(in_features=64, out_features=1, bias=True)
+  )
+  (act): Sigmoid()
+)
+Train Loss:0.586686
+Val Epoch: 0001 | Val Loss 0.609139
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.295456, G-Mean=0.591
+Val AUROC = 0.6091
+Val AUPRC = 0.4042
+Val Accuracy = 0.5871
+Val Precision = 0.3693
+Val Recall = 0.6011
+Val F1-score = 0.5621
+
+
+Validation auc increased (inf --> 0.609118).  Saving model ...
+Train Epoch: -001 | Train Loss 0.574584
+Number of labeled examples: 2850
+Number of examples with mortality 1: 747
+Best Threshold=0.293696, G-Mean=0.584
+Train AUROC = 0.6134
+Train AUPRC = 0.3649
+Train Accuracy = 0.5554
+Train Precision = 0.3264
+Train Recall = 0.6546
+Train F1-score = 0.5345
+
+
+Test-OG Epoch: -001 | Test-OG Loss 0.783344
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.581912, G-Mean=0.567
+Test-OG AUROC = 0.5976
+Test-OG AUPRC = 0.3418
+Test-OG Accuracy = 0.6262
+Test-OG Precision = 0.3170
+Test-OG Recall = 0.4765
+Test-OG F1-score = 0.5565
+
+
+Test-G Epoch: -001 | Test-G Loss 0.557314
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.295327, G-Mean=0.570
+Test-G AUROC = 0.5984
+Test-G AUPRC = 0.3301
+Test-G Accuracy = 0.5696
+Test-G Precision = 0.2962
+Test-G Recall = 0.5705
+Test-G F1-score = 0.5287
+
+
+...........Experiment ended............."
+transformer_baseline,TRANSFORMER (ODE → T×T self-attention),TRANSFORMER,1,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,57.60437989234924,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1.ckpt,True,0.6475,0.3931,0.6278,0.6473,0.3768,0.6456,0.6651,0.4682,0.6302,0.6459,0.4078,0.5951,"      (diffeq_solver): DiffeqSolver(
+        (ode_func): ODEFunc(
+          (gradient_net): ODEFuncNet(
+            (net): PlainNet(
+              (net): Sequential(
+                (0): Linear(in_features=32, out_features=128, bias=True)
+                (1): Tanh()
+                (2): Dropout(p=0.5, inplace=False)
+                (3): Linear(in_features=128, out_features=128, bias=True)
+                (4): Tanh()
+                (5): Dropout(p=0.5, inplace=False)
+                (6): Linear(in_features=128, out_features=128, bias=True)
+                (7): Tanh()
+                (8): Dropout(p=0.5, inplace=False)
+                (9): Linear(in_features=128, out_features=128, bias=True)
+                (10): Tanh()
+                (11): Linear(in_features=128, out_features=32, bias=True)
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (net): Transformer_Multiple(
+    (pos_encoder): PositionalEncoding()
+    (cross_attn): Transformer(
+      (mha): MultiheadAttention(
+        (w_q): Linear(in_features=32, out_features=128, bias=True)
+        (w_k): Linear(in_features=32, out_features=128, bias=True)
+        (w_v): Linear(in_features=32, out_features=128, bias=True)
+        (dropout): Dropout(p=0.5, inplace=False)
+        (to_out): Linear(in_features=128, out_features=32, bias=True)
+      )
+      (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+      (mlp): Sequential(
+        (0): Linear(in_features=32, out_features=128, bias=True)
+        (1): ReLU()
+        (2): Dropout(p=0.5, inplace=False)
+        (3): Linear(in_features=128, out_features=32, bias=True)
+      )
+      (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+    )
+    (self_attns): ModuleList(
+      (0): Transformer(
+        (mha): MultiheadAttention(
+          (w_q): Linear(in_features=32, out_features=256, bias=True)
+          (w_k): Linear(in_features=32, out_features=256, bias=True)
+          (w_v): Linear(in_features=32, out_features=256, bias=True)
+          (dropout): Dropout(p=0.5, inplace=False)
+          (to_out): Linear(in_features=256, out_features=32, bias=True)
+        )
+        (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (mlp): Sequential(
+          (0): Linear(in_features=32, out_features=128, bias=True)
+          (1): ReLU()
+          (2): Dropout(p=0.5, inplace=False)
+          (3): Linear(in_features=128, out_features=32, bias=True)
+        )
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (norm): LayerNorm((32,), eps=1e-06, elementwise_affine=True)
+  (classifier): Sequential(
+    (0): Linear(in_features=32, out_features=1, bias=True)
+  )
+  (act): Sigmoid()
+)
+Train Loss:0.572761
+Val Epoch: 0001 | Val Loss 0.597412
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.257108, G-Mean=0.612
+Val AUROC = 0.6651
+Val AUPRC = 0.4682
+Val Accuracy = 0.6302
+Val Precision = 0.4030
+Val Recall = 0.5745
+Val F1-score = 0.5943
+
+
+Validation auc increased (inf --> 0.665124).  Saving model ...
+Train Epoch: -001 | Train Loss 0.559803
+Number of labeled examples: 2850
+Number of examples with mortality 1: 747
+Best Threshold=0.255461, G-Mean=0.606
+Train AUROC = 0.6459
+Train AUPRC = 0.4078
+Train Accuracy = 0.5951
+Train Precision = 0.3494
+Train Recall = 0.6319
+Train F1-score = 0.5648
+
+
+Test-OG Epoch: -001 | Test-OG Loss 0.539566
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.263646, G-Mean=0.612
+Test-OG AUROC = 0.6475
+Test-OG AUPRC = 0.3931
+Test-OG Accuracy = 0.6278
+Test-OG Precision = 0.3412
+Test-OG Recall = 0.5839
+Test-OG F1-score = 0.5771
+
+
+Test-G Epoch: -001 | Test-G Loss 0.539764
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.265362, G-Mean=0.604
+Test-G AUROC = 0.6473
+Test-G AUPRC = 0.3768
+Test-G Accuracy = 0.6456
+Test-G Precision = 0.3478
+Test-G Recall = 0.5369
+Test-G F1-score = 0.5833
+
+
+...........Experiment ended............."
+transformer_2node,TRANSFORMER 2-NODE (ODE → T×T self-attention → ODE on sequence),TRANSFORMER,1,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,111.22240424156189,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1_N2.ckpt,True,0.614,0.3386,0.5696,0.6097,0.3303,0.6084,0.6389,0.4381,0.5855,0.6189,0.3699,0.5965,"    (cross_attn): Transformer(
+      (mha): MultiheadAttention(
+        (w_q): Linear(in_features=32, out_features=128, bias=True)
+        (w_k): Linear(in_features=32, out_features=128, bias=True)
+        (w_v): Linear(in_features=32, out_features=128, bias=True)
+        (dropout): Dropout(p=0.5, inplace=False)
+        (to_out): Linear(in_features=128, out_features=32, bias=True)
+      )
+      (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+      (mlp): Sequential(
+        (0): Linear(in_features=32, out_features=128, bias=True)
+        (1): ReLU()
+        (2): Dropout(p=0.5, inplace=False)
+        (3): Linear(in_features=128, out_features=32, bias=True)
+      )
+      (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+    )
+    (self_attns): ModuleList(
+      (0): Transformer(
+        (mha): MultiheadAttention(
+          (w_q): Linear(in_features=32, out_features=256, bias=True)
+          (w_k): Linear(in_features=32, out_features=256, bias=True)
+          (w_v): Linear(in_features=32, out_features=256, bias=True)
+          (dropout): Dropout(p=0.5, inplace=False)
+          (to_out): Linear(in_features=256, out_features=32, bias=True)
+        )
+        (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (mlp): Sequential(
+          (0): Linear(in_features=32, out_features=128, bias=True)
+          (1): ReLU()
+          (2): Dropout(p=0.5, inplace=False)
+          (3): Linear(in_features=128, out_features=32, bias=True)
+        )
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (ode_out): ODE(
+    (ode_cell): ODECell(
+      (diffeq_solver): DiffeqSolver(
+        (ode_func): ODEFunc(
+          (gradient_net): ODEFuncNet(
+            (net): PlainNet(
+              (net): Sequential(
+                (0): Linear(in_features=32, out_features=128, bias=True)
+                (1): Tanh()
+                (2): Dropout(p=0.5, inplace=False)
+                (3): Linear(in_features=128, out_features=128, bias=True)
+                (4): Tanh()
+                (5): Dropout(p=0.5, inplace=False)
+                (6): Linear(in_features=128, out_features=128, bias=True)
+                (7): Tanh()
+                (8): Dropout(p=0.5, inplace=False)
+                (9): Linear(in_features=128, out_features=128, bias=True)
+                (10): Tanh()
+                (11): Linear(in_features=128, out_features=32, bias=True)
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (norm): LayerNorm((32,), eps=1e-06, elementwise_affine=True)
+  (classifier): Sequential(
+    (0): Linear(in_features=32, out_features=1, bias=True)
+  )
+  (act): Sigmoid()
+)
+Train Loss:0.619047
+Val Epoch: 0001 | Val Loss 0.615103
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.219013, G-Mean=0.605
+Val AUROC = 0.6389
+Val AUPRC = 0.4381
+Val Accuracy = 0.5855
+Val Precision = 0.3769
+Val Recall = 0.6596
+Val F1-score = 0.5676
+
+
+Validation auc increased (inf --> 0.638944).  Saving model ...
+Train Epoch: -001 | Train Loss 0.569433
+Number of labeled examples: 2850
+Number of examples with mortality 1: 747
+Best Threshold=0.228634, G-Mean=0.589
+Train AUROC = 0.6189
+Train AUPRC = 0.3699
+Train Accuracy = 0.5965
+Train Precision = 0.3400
+Train Recall = 0.5730
+Train F1-score = 0.5577
+
+
+Test-OG Epoch: -001 | Test-OG Loss 0.544027
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.236973, G-Mean=0.589
+Test-OG AUROC = 0.6140
+Test-OG AUPRC = 0.3386
+Test-OG Accuracy = 0.5696
+Test-OG Precision = 0.3082
+Test-OG Recall = 0.6309
+Test-OG F1-score = 0.5370
+
+
+Test-G Epoch: -001 | Test-G Loss 0.545148
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.230435, G-Mean=0.582
+Test-G AUROC = 0.6097
+Test-G AUPRC = 0.3303
+Test-G Accuracy = 0.6084
+Test-G Precision = 0.3162
+Test-G Recall = 0.5369
+Test-G F1-score = 0.5539
+
+
+...........Experiment ended............."
+coper_1node,1-NODE (ODE → Perceiver),COPER,3,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,119.40963673591614,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0.5_S1.ckpt,True,0.6743,0.4004,0.6311,0.6723,0.3988,0.6036,0.6985,0.5121,0.6703,0.7011,0.4837,0.6095,"        (w_q): Linear(in_features=64, out_features=128, bias=True)
+        (w_k): Linear(in_features=32, out_features=128, bias=True)
+        (w_v): Linear(in_features=32, out_features=128, bias=True)
+        (dropout): Dropout(p=0.5, inplace=False)
+        (to_out): Linear(in_features=128, out_features=64, bias=True)
+      )
+      (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      (mlp): Sequential(
+        (0): Linear(in_features=64, out_features=256, bias=True)
+        (1): ReLU()
+        (2): Dropout(p=0.5, inplace=False)
+        (3): Linear(in_features=256, out_features=64, bias=True)
+      )
+      (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    )
+    (self_attns): ModuleList(
+      (0): Transformer(
+        (mha): MultiheadAttention(
+          (w_q): Linear(in_features=64, out_features=256, bias=True)
+          (w_k): Linear(in_features=64, out_features=256, bias=True)
+          (w_v): Linear(in_features=64, out_features=256, bias=True)
+          (dropout): Dropout(p=0.5, inplace=False)
+          (to_out): Linear(in_features=256, out_features=64, bias=True)
+        )
+        (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (mlp): Sequential(
+          (0): Linear(in_features=64, out_features=256, bias=True)
+          (1): ReLU()
+          (2): Dropout(p=0.5, inplace=False)
+          (3): Linear(in_features=256, out_features=64, bias=True)
+        )
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (norm): LayerNorm((64,), eps=1e-06, elementwise_affine=True)
+  (classifier): Sequential(
+    (0): Linear(in_features=64, out_features=1, bias=True)
+  )
+  (act): Sigmoid()
+)
+Train Loss:0.576239
+Val Epoch: 0001 | Val Loss 0.611703
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.267335, G-Mean=0.616
+Val AUROC = 0.6533
+Val AUPRC = 0.4690
+Val Accuracy = 0.6379
+Val Precision = 0.4100
+Val Recall = 0.5691
+Val F1-score = 0.5999
+
+
+Validation auc increased (inf --> 0.653286).  Saving model ...
+Train Loss:0.568323
+Val Epoch: 0002 | Val Loss 0.621970
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.215627, G-Mean=0.656
+Val AUROC = 0.6871
+Val AUPRC = 0.5027
+Val Accuracy = 0.6718
+Val Precision = 0.4517
+Val Recall = 0.6223
+Val F1-score = 0.6366
+
+
+Validation auc increased (0.653286 --> 0.687093).  Saving model ...
+Train Loss:0.560497
+Val Epoch: 0003 | Val Loss 0.582110
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.291408, G-Mean=0.664
+Val AUROC = 0.6985
+Val AUPRC = 0.5121
+Val Accuracy = 0.6703
+Val Precision = 0.4519
+Val Recall = 0.6489
+Val F1-score = 0.6390
+
+
+Validation auc increased (0.687093 --> 0.698458).  Saving model ...
+Train Epoch: -001 | Train Loss 0.543996
+Number of labeled examples: 2850
+Number of examples with mortality 1: 747
+Best Threshold=0.274936, G-Mean=0.645
+Train AUROC = 0.7011
+Train AUPRC = 0.4837
+Train Accuracy = 0.6095
+Train Precision = 0.3752
+Train Recall = 0.7363
+Train F1-score = 0.5889
+
+
+Test-OG Epoch: -001 | Test-OG Loss 0.535593
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.292523, G-Mean=0.629
+Test-OG AUROC = 0.6743
+Test-OG AUPRC = 0.4004
+Test-OG Accuracy = 0.6311
+Test-OG Precision = 0.3509
+Test-OG Recall = 0.6242
+Test-OG F1-score = 0.5860
+
+
+Test-G Epoch: -001 | Test-G Loss 0.534558
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.284564, G-Mean=0.631
+Test-G AUROC = 0.6723
+Test-G AUPRC = 0.3988
+Test-G Accuracy = 0.6036
+Test-G Precision = 0.3411
+Test-G Recall = 0.6913
+Test-G F1-score = 0.5723
+
+
+...........Experiment ended............."
+coper_2node,2-NODE (ODE → Perceiver → ODE on latents),COPER,3,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,226.83828592300415,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/COPER-mimic-F-1_D0.5_S1_N2.ckpt,True,0.6561,0.3837,0.6586,0.6614,0.3939,0.6149,0.6814,0.4937,0.6133,0.6869,0.4634,0.6004,"          (0): Linear(in_features=64, out_features=256, bias=True)
+          (1): ReLU()
+          (2): Dropout(p=0.5, inplace=False)
+          (3): Linear(in_features=256, out_features=64, bias=True)
+        )
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (ode_out): ODE(
+    (ode_cell): ODECell(
+      (diffeq_solver): DiffeqSolver(
+        (ode_func): ODEFunc(
+          (gradient_net): ODEFuncNet(
+            (net): PlainNet(
+              (net): Sequential(
+                (0): Linear(in_features=64, out_features=128, bias=True)
+                (1): Tanh()
+                (2): Dropout(p=0.5, inplace=False)
+                (3): Linear(in_features=128, out_features=128, bias=True)
+                (4): Tanh()
+                (5): Dropout(p=0.5, inplace=False)
+                (6): Linear(in_features=128, out_features=128, bias=True)
+                (7): Tanh()
+                (8): Dropout(p=0.5, inplace=False)
+                (9): Linear(in_features=128, out_features=128, bias=True)
+                (10): Tanh()
+                (11): Linear(in_features=128, out_features=64, bias=True)
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (norm): LayerNorm((64,), eps=1e-06, elementwise_affine=True)
+  (classifier): Sequential(
+    (0): Linear(in_features=64, out_features=1, bias=True)
+  )
+  (act): Sigmoid()
+)
+Train Loss:0.586686
+Val Epoch: 0001 | Val Loss 0.609139
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.295456, G-Mean=0.591
+Val AUROC = 0.6091
+Val AUPRC = 0.4042
+Val Accuracy = 0.5871
+Val Precision = 0.3693
+Val Recall = 0.6011
+Val F1-score = 0.5621
+
+
+Validation auc increased (inf --> 0.609118).  Saving model ...
+Train Loss:0.572849
+Val Epoch: 0002 | Val Loss 0.609309
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.248027, G-Mean=0.631
+Val AUROC = 0.6594
+Val AUPRC = 0.4671
+Val Accuracy = 0.6133
+Val Precision = 0.4013
+Val Recall = 0.6809
+Val F1-score = 0.5938
+
+
+Validation auc increased (0.609118 --> 0.659378).  Saving model ...
+Train Loss:0.563156
+Val Epoch: 0003 | Val Loss 0.608827
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.207698, G-Mean=0.640
+Val AUROC = 0.6814
+Val AUPRC = 0.4937
+Val Accuracy = 0.6133
+Val Precision = 0.4054
+Val Recall = 0.7181
+Val F1-score = 0.5976
+
+
+Validation auc increased (0.659378 --> 0.681370).  Saving model ...
+Train Epoch: -001 | Train Loss 0.556822
+Number of labeled examples: 2850
+Number of examples with mortality 1: 747
+Best Threshold=0.207344, G-Mean=0.635
+Train AUROC = 0.6869
+Train AUPRC = 0.4634
+Train Accuracy = 0.6004
+Train Precision = 0.3674
+Train Recall = 0.7269
+Train F1-score = 0.5802
+
+
+Test-OG Epoch: -001 | Test-OG Loss 0.717154
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.555785, G-Mean=0.618
+Test-OG AUROC = 0.6561
+Test-OG AUPRC = 0.3837
+Test-OG Accuracy = 0.6586
+Test-OG Precision = 0.3628
+Test-OG Recall = 0.5503
+Test-OG F1-score = 0.5961
+
+
+Test-G Epoch: -001 | Test-G Loss 0.536851
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.215639, G-Mean=0.625
+Test-G AUROC = 0.6614
+Test-G AUPRC = 0.3939
+Test-G Accuracy = 0.6149
+Test-G Precision = 0.3416
+Test-G Recall = 0.6443
+Test-G F1-score = 0.5756
+
+
+...........Experiment ended............."
+transformer_baseline,TRANSFORMER (ODE → T×T self-attention),TRANSFORMER,3,False,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,118.92574954032898,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1.ckpt,True,0.7048,0.4471,0.6942,0.6934,0.4319,0.6877,0.7002,0.5198,0.6656,0.7164,0.4999,0.6354,"        (w_q): Linear(in_features=32, out_features=128, bias=True)
+        (w_k): Linear(in_features=32, out_features=128, bias=True)
+        (w_v): Linear(in_features=32, out_features=128, bias=True)
+        (dropout): Dropout(p=0.5, inplace=False)
+        (to_out): Linear(in_features=128, out_features=32, bias=True)
+      )
+      (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+      (mlp): Sequential(
+        (0): Linear(in_features=32, out_features=128, bias=True)
+        (1): ReLU()
+        (2): Dropout(p=0.5, inplace=False)
+        (3): Linear(in_features=128, out_features=32, bias=True)
+      )
+      (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+    )
+    (self_attns): ModuleList(
+      (0): Transformer(
+        (mha): MultiheadAttention(
+          (w_q): Linear(in_features=32, out_features=256, bias=True)
+          (w_k): Linear(in_features=32, out_features=256, bias=True)
+          (w_v): Linear(in_features=32, out_features=256, bias=True)
+          (dropout): Dropout(p=0.5, inplace=False)
+          (to_out): Linear(in_features=256, out_features=32, bias=True)
+        )
+        (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (mlp): Sequential(
+          (0): Linear(in_features=32, out_features=128, bias=True)
+          (1): ReLU()
+          (2): Dropout(p=0.5, inplace=False)
+          (3): Linear(in_features=128, out_features=32, bias=True)
+        )
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (norm): LayerNorm((32,), eps=1e-06, elementwise_affine=True)
+  (classifier): Sequential(
+    (0): Linear(in_features=32, out_features=1, bias=True)
+  )
+  (act): Sigmoid()
+)
+Train Loss:0.572761
+Val Epoch: 0001 | Val Loss 0.597412
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.257108, G-Mean=0.612
+Val AUROC = 0.6651
+Val AUPRC = 0.4682
+Val Accuracy = 0.6302
+Val Precision = 0.4030
+Val Recall = 0.5745
+Val F1-score = 0.5943
+
+
+Validation auc increased (inf --> 0.665124).  Saving model ...
+Train Loss:0.559020
+Val Epoch: 0002 | Val Loss 0.574705
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.259547, G-Mean=0.640
+Val AUROC = 0.6932
+Val AUPRC = 0.5108
+Val Accuracy = 0.6025
+Val Precision = 0.4017
+Val Recall = 0.7606
+Val F1-score = 0.5918
+
+
+Validation auc increased (0.665124 --> 0.693232).  Saving model ...
+Train Loss:0.537128
+Val Epoch: 0003 | Val Loss 0.559103
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.294769, G-Mean=0.657
+Val AUROC = 0.7002
+Val AUPRC = 0.5198
+Val Accuracy = 0.6656
+Val Precision = 0.4461
+Val Recall = 0.6383
+Val F1-score = 0.6336
+
+
+Validation auc increased (0.693232 --> 0.700201).  Saving model ...
+Train Epoch: -001 | Train Loss 0.522552
+Number of labeled examples: 2850
+Number of examples with mortality 1: 747
+Best Threshold=0.275196, G-Mean=0.655
+Train AUROC = 0.7164
+Train AUPRC = 0.4999
+Train Accuracy = 0.6354
+Train Precision = 0.3910
+Train Recall = 0.7015
+Train F1-score = 0.6073
+
+
+Test-OG Epoch: -001 | Test-OG Loss 0.515392
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.322775, G-Mean=0.666
+Test-OG AUROC = 0.7048
+Test-OG AUPRC = 0.4471
+Test-OG Accuracy = 0.6942
+Test-OG Precision = 0.4107
+Test-OG Recall = 0.6174
+Test-OG F1-score = 0.6371
+
+
+Test-G Epoch: -001 | Test-G Loss 0.517101
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.319274, G-Mean=0.654
+Test-G AUROC = 0.6934
+Test-G AUPRC = 0.4319
+Test-G Accuracy = 0.6877
+Test-G Precision = 0.4009
+Test-G Recall = 0.5973
+Test-G F1-score = 0.6283
+
+
+...........Experiment ended............."
+transformer_2node,TRANSFORMER 2-NODE (ODE → T×T self-attention → ODE on sequence),TRANSFORMER,3,True,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER,1,0.5,0,244.59860801696777,/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/runs/2026-04-10_mimic_compare/checkpoints/TRANSFORMER-mimic-F-1_D0.5_S1_N2.ckpt,True,0.6793,0.437,0.6667,0.6697,0.4207,0.657,0.6894,0.5171,0.698,0.6987,0.4784,0.6319,"          (0): Linear(in_features=32, out_features=128, bias=True)
+          (1): ReLU()
+          (2): Dropout(p=0.5, inplace=False)
+          (3): Linear(in_features=128, out_features=32, bias=True)
+        )
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+  )
+  (ode_out): ODE(
+    (ode_cell): ODECell(
+      (diffeq_solver): DiffeqSolver(
+        (ode_func): ODEFunc(
+          (gradient_net): ODEFuncNet(
+            (net): PlainNet(
+              (net): Sequential(
+                (0): Linear(in_features=32, out_features=128, bias=True)
+                (1): Tanh()
+                (2): Dropout(p=0.5, inplace=False)
+                (3): Linear(in_features=128, out_features=128, bias=True)
+                (4): Tanh()
+                (5): Dropout(p=0.5, inplace=False)
+                (6): Linear(in_features=128, out_features=128, bias=True)
+                (7): Tanh()
+                (8): Dropout(p=0.5, inplace=False)
+                (9): Linear(in_features=128, out_features=128, bias=True)
+                (10): Tanh()
+                (11): Linear(in_features=128, out_features=32, bias=True)
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (norm): LayerNorm((32,), eps=1e-06, elementwise_affine=True)
+  (classifier): Sequential(
+    (0): Linear(in_features=32, out_features=1, bias=True)
+  )
+  (act): Sigmoid()
+)
+Train Loss:0.619047
+Val Epoch: 0001 | Val Loss 0.615103
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.219013, G-Mean=0.605
+Val AUROC = 0.6389
+Val AUPRC = 0.4381
+Val Accuracy = 0.5855
+Val Precision = 0.3769
+Val Recall = 0.6596
+Val F1-score = 0.5676
+
+
+Validation auc increased (inf --> 0.638944).  Saving model ...
+Train Loss:0.564537
+Val Epoch: 0002 | Val Loss 0.593182
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.261256, G-Mean=0.632
+Val AUROC = 0.6713
+Val AUPRC = 0.4922
+Val Accuracy = 0.6317
+Val Precision = 0.4118
+Val Recall = 0.6330
+Val F1-score = 0.6039
+
+
+Validation auc increased (0.638944 --> 0.671286).  Saving model ...
+Train Loss:0.552203
+Val Epoch: 0003 | Val Loss 0.581206
+Number of labeled examples: 649
+Number of examples with mortality 1: 188
+Best Threshold=0.273683, G-Mean=0.651
+Val AUROC = 0.6894
+Val AUPRC = 0.5171
+Val Accuracy = 0.6980
+Val Precision = 0.4818
+Val Recall = 0.5638
+Val F1-score = 0.6497
+
+
+Validation auc increased (0.671286 --> 0.689447).  Saving model ...
+Train Epoch: -001 | Train Loss 0.539542
+Number of labeled examples: 2850
+Number of examples with mortality 1: 747
+Best Threshold=0.257411, G-Mean=0.642
+Train AUROC = 0.6987
+Train AUPRC = 0.4784
+Train Accuracy = 0.6319
+Train Precision = 0.3833
+Train Recall = 0.6640
+Train F1-score = 0.5997
+
+
+Test-OG Epoch: -001 | Test-OG Loss 0.528144
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.294319, G-Mean=0.628
+Test-OG AUROC = 0.6793
+Test-OG AUPRC = 0.4370
+Test-OG Accuracy = 0.6667
+Test-OG Precision = 0.3733
+Test-OG Recall = 0.5638
+Test-OG F1-score = 0.6051
+
+
+Test-G Epoch: -001 | Test-G Loss 0.527007
+Number of labeled examples: 618
+Number of examples with mortality 1: 149
+Best Threshold=0.271496, G-Mean=0.625
+Test-G AUROC = 0.6697
+Test-G AUPRC = 0.4207
+Test-G Accuracy = 0.6570
+Test-G Precision = 0.3648
+Test-G Recall = 0.5705
+Test-G F1-score = 0.5984
+
+
+...........Experiment ended............."

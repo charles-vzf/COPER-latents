@@ -5,6 +5,7 @@
     University of Oxford UK
     Last updated Dec. 22, 2022.
 '''
+import json
 import os
 import sys
 
@@ -84,6 +85,26 @@ def main():
     # set logger
     log_path = os.path.join(args.results_dir, 'logs', 'exp_' + str(experimentID) + '.log')
     utils.makedirs(os.path.join(args.results_dir, 'logs'))
+    for sub in ("predictions", "traces"):
+        utils.makedirs(os.path.join(args.results_dir, sub))
+    try:
+        trace_path = os.path.join(
+            args.results_dir, "traces", f"exp_{experimentID}.json"
+        )
+        with open(trace_path, "w", encoding="utf-8") as tf:
+            json.dump(
+                {
+                    "experiment_id": experimentID,
+                    "results_dir": args.results_dir,
+                    "model_type": args.model_type,
+                    "random_seed": args.random_seed,
+                    "argv": [str(x) for x in sys.argv],
+                },
+                tf,
+                indent=2,
+            )
+    except OSError:
+        pass
     logger = utils.get_logger(logpath=log_path, filepath=os.path.abspath(__file__), displaying=True)
     logger.info("Experiment " + str(experimentID))
     logger.info('args:\n')
@@ -178,6 +199,8 @@ def main():
 
     # evaluation on test set
     best_model.eval()
+    # Same metrics as Val/Test (AUROC, AUPRC, Accuracy at Youden threshold) for interpretability.
+    utils.evaluate(args, device, 'Train', train_loader, best_model, crit, logger, wandb, -1, n_traj_samples=1)
     args.setting = 'Test' # this will retain the observed time-steps and generate the missing (applicable to continuous models)
     utils.evaluate(args, device, 'Test-OG', test_loader, best_model, crit, logger, wandb, -1, n_traj_samples=1)
     args.setting = '-1' # generate all time-steps

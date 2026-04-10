@@ -1,5 +1,6 @@
 import logging
 import argparse
+from pathlib import Path
 
 # Choose if you want to use gym or gymnasium
 import gymnasium as gym
@@ -15,10 +16,18 @@ from icu_sepsis.utils.io import MDPParameters
 
 ENV_ID = 'Sepsis/ICU-Sepsis-v1'
 
+# COPER repo root (…/icu_sepsis/examples → parents[2])
+_COPER_ROOT = Path(__file__).resolve().parents[2]
+# Cohort CSV published by ``run_unified_build`` (``paths.json`` → ``icu_sepsis_csv_tables_dir``).
+_DEFAULT_COHORT = (
+    _COPER_ROOT / "data_mngmt" / "generated" / "icu_sepsis_csv_tables" / "mimic_dataset_table.csv"
+)
+_DEFAULT_MDP_OUT = _COPER_ROOT / 'data_mngmt' / 'mimic_mdp_params'
+
 # Give arg values in command line or set them here
 ARGS = {
-    'mimic_dataset_in_path'     : 'data/mimic_dataset_table.csv',
-    'output_dir'                : 'data/output/mimic_params_test/',
+    'mimic_dataset_in_path'     : str(_DEFAULT_COHORT),
+    'output_dir'                : str(_DEFAULT_MDP_OUT),
     'n_states'                  : 750,
     'n_action_levels'           : 5,        # n_actions = n_action_levels ** 2
     'threshold'                 : 20,       # Threshold for min no. of samples in (s,a) pair

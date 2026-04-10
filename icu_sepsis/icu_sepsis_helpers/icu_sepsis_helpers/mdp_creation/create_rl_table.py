@@ -10,9 +10,16 @@ from sklearn.cluster import KMeans
 def create_rl_dataset(MIMIC_dataset_path: Path, output_root:Path,
         n_states: int, n_action_levels: int, /, *,
         n_clustering: int = 32, ratio_clustering: float = 0.25, seed: int = 0,
-        max_iter: int = 10_000, init: str = 'k-means++'):
+        max_iter: int = 10_000, init: str = 'k-means++',
+        outcome_column: str = 'mortality_90d'):
     MIMIC_Dataset_Raw = pd.read_csv(MIMIC_dataset_path)
     logging.debug('Dataset shape: %s', MIMIC_Dataset_Raw.shape)
+
+    if outcome_column not in MIMIC_Dataset_Raw.columns:
+        raise KeyError(
+            f"outcome_column {outcome_column!r} not in dataset columns: "
+            f"{list(MIMIC_Dataset_Raw.columns)[:20]}..."
+        )
 
     # TODO: Deal with null values
     MIMIC_Dataset_Raw.fillna(0, inplace=True)
@@ -34,7 +41,8 @@ def create_rl_dataset(MIMIC_dataset_path: Path, output_root:Path,
 
     all_cols = colbin + colnorm + collog
 
-    MIMIC_Dataset = create_features(MIMIC_Dataset_Raw, colbin, colnorm, collog)
+    MIMIC_Dataset = create_features(
+        MIMIC_Dataset_Raw, colbin, colnorm, collog, outcome_column=outcome_column)
 
     save_rl_dataset(
         MIMIC_Dataset, MIMIC_Dataset_Raw, n_states, n_action_levels,
@@ -52,8 +60,13 @@ def normalize_dataset(
     # normalizing based on type of data
     dataset = dataset_raw.copy()
     dataset[colbin] = dataset_bin - 0.5
-    dataset[colnorm] = zscore(dataset_norm)
-    dataset[collog] = zscore(np.log(dataset_log+0.1))
+    dataset[colnorm] = zscore(dataset_norm, nan_policy="omit", axis=0)
+    log_arg = np.asarray(dataset_log, dtype=np.float64) + 0.1
+    np.maximum(log_arg, 1e-15, out=log_arg)
+    dataset[collog] = zscore(np.log(log_arg), nan_policy="omit", axis=0)
+
+    # Constant / degenerate columns -> NaN in zscore; KMeans rejects NaNs.
+    dataset = dataset.replace([np.inf, -np.inf], np.nan).fillna(0.0)
 
     logging.info('Normalized dataset: %s', dataset.shape)
 
@@ -61,7 +74,8 @@ def normalize_dataset(
 
 
 def create_features(
-        Dataset_Raw: pd.DataFrame, colbin, colnorm, collog, /) -> pd.DataFrame:
+        Dataset_Raw: pd.DataFrame, colbin, colnorm, collog, /, *,
+        outcome_column: str = 'mortality_90d') -> pd.DataFrame:
     all_cols = colbin + colnorm + collog
     Dataset = normalize_dataset(Dataset_Raw, colbin, colnorm, collog)
 
@@ -69,8 +83,8 @@ def create_features(
     Dataset[all_cols[4-1]] = Dataset[all_cols[4-1]] + 0.6  # max dose?
     Dataset[all_cols[45-1]] = Dataset[all_cols[45-1]] * 2  # increase weight
 
-    # column for reward
-    Dataset['outcome_y'] = Dataset['mortality_90d'].astype(int)
+    # column for reward (historically 90d mortality; unified builds may use IHM)
+    Dataset['outcome_y'] = Dataset[outcome_column].astype(int)
 
     return Dataset
 

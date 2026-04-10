@@ -19,7 +19,7 @@ def build_mimic_params(
         action_map_method: str = 'uniform_unweighted', temp_dir: Path = None,
         save_npz: bool = True, save_csv: bool = True, n_clustering: int = 32,
         ratio_clustering: float = 0.25, max_iter_kmeans: int = 10_000,
-        init_kmeans: str = 'k-means++'):
+        init_kmeans: str = 'k-means++', outcome_column: str = 'mortality_90d'):
 
     metadata = {
         'n_states': n_states,
@@ -34,14 +34,14 @@ def build_mimic_params(
     dataset_path = Path(dataset_path)
     out_dir = Path(out_dir)
 
-    with tempfile.mkdtemp(prefix='mimic_') as td:
+    with tempfile.TemporaryDirectory(prefix="mimic_") as td:
         temp_dir = Path(td)
 
         create_rl_dataset(
             dataset_path, temp_dir, n_states, n_action_levels,
             seed=seed, ratio_clustering=ratio_clustering,
             max_iter=max_iter_kmeans, init=init_kmeans,
-            n_clustering=n_clustering)
+            n_clustering=n_clustering, outcome_column=outcome_column)
         logging.info('Created RL table in %s', temp_dir)
 
         # Load the RL table

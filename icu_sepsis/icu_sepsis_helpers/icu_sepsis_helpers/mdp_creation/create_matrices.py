@@ -3,6 +3,17 @@ import pandas as pd
 from tqdm import trange
 
 
+def _int_index(val, lo: int, hi: int, name: str) -> int:
+    """CSV round-trips ``state`` / ``action`` as float64; NumPy 2 disallows float indices."""
+    v = np.asarray(val).item()
+    if not np.isfinite(v):
+        raise ValueError(f"{name} is not finite: {val!r}")
+    i = int(v)
+    if not (lo <= i < hi):
+        raise ValueError(f"{name}={i} out of range [{lo}, {hi})")
+    return i
+
+
 def rl_table_to_unnormalized_matrices(
         rl_table: pd.DataFrame,
         n_states: int,
@@ -16,11 +27,15 @@ def rl_table_to_unnormalized_matrices(
     expert_policy = np.zeros((n_states+2, n_action_levels**2))
     r_mat = np.zeros_like(tx_mat)
 
+    n_act = n_action_levels**2
     row = rl_table.iloc[0, :]
     for i in trange(1, len(rl_table)):
         row_next = rl_table.iloc[i, :]
-        b, s, a = row['bloc'], row['state'], row['action']
-        s_, b_ = row_next['state'], row_next['bloc']
+        b = int(np.asarray(row["bloc"]).item())
+        s = _int_index(row["state"], 0, n_states + 2, "state")
+        a = _int_index(row["action"], 0, n_act, "action")
+        s_ = _int_index(row_next["state"], 0, n_states + 2, "state_next")
+        b_ = int(np.asarray(row_next["bloc"]).item())
         expert_policy[s, a] += 1
 
         # start of episode
@@ -28,17 +43,17 @@ def rl_table_to_unnormalized_matrices(
             d_0[s] += 1
 
         # one step in the episode
-        if b_ == b+1:
-            assert row_next['bloc'] > row['bloc'], \
-                (f'blocs {row["bloc"]}, '
-                 f'{row_next["bloc"]} not aligned for '
-                 f'icustayid {row["icustayid"]}')
+        if b_ == b + 1:
+            assert row_next["bloc"] > row["bloc"], (
+                f'blocs {row["bloc"]}, {row_next["bloc"]} not aligned for '
+                f'icustayid {row.get("icustayid", "?")}'
+            )
             tx_mat[s, a, s_] += 1
 
         # end of episode. will transition to dead (idx n_states) or
         # alive state (idx n_states+1)
         else:
-            next_state = n_states if row['outcome_y'] == 1 else n_states+1
+            next_state = n_states if int(row["outcome_y"]) == 1 else n_states + 1
             tx_mat[s, a, next_state] += 1
 
         row = row_next

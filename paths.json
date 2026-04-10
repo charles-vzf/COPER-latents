@@ -1,5 +1,10 @@
 {
-  "mimic3_mortality": "/home/charlesv/Desktop/StatisitcalGenetics/MIMIC/mimic3-benchmarks/data/mortality_for_coper.data",
+  "physionet_mimic_root": "/home/charlesv/Desktop/StatisitcalGenetics/MIMIC/physionet.org/files/mimiciii/1.4",
+  "mimic3_mortality": "/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/data_mngmt/generated/mortality_coper_sepsis-60m-h48ihm.data",
+  "mimic3_mortality_legacy": "data_mngmt/legacy/mortality_for_coper_mdp_legacy.data",
+  "postgres_login_json": "../../MIMIC/physionet/login.json",
+  "icu_sepsis_csv_tables_dir": "data_mngmt/generated/icu_sepsis_csv_tables",
+  "icu_sepsis_csv_legacy": "data_mngmt/legacy/icu-sepsis-csv-tables-legacy.tar.gz",
   "physionet_2012_data": "/data/Vinod/Data/datasets/physionet2012/anshul_from/Data.npy",
   "physionet_2012_labels": "/data/Vinod/Data/datasets/physionet2012/anshul_from/labels.npy"
 }

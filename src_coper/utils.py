@@ -28,7 +28,7 @@ def init_args():
         '--results-dir',
         type=str,
         default='results',
-        help='Root directory for checkpoints/ (unless --save overrides), logs/, and Predictions_*.npz',
+        help='Root for checkpoints/, logs/, predictions/*.npz (and optional traces/)',
     )
     parser.add_argument('--load', type=str, default=None, help="ID of the experiment to load for evaluation. If None, run a new experiment.")
     parser.add_argument('-r', '--random-seed', type=int, default=2022, help="Random_seed")
@@ -169,9 +169,11 @@ def evaluate(args, device, setting, test_loader, model, crit, logger, wandb, epo
     if 'Test' in setting:
         s2 = '_2NODE' if getattr(args, 'second_node', False) else ''
         _rd = getattr(args, 'results_dir', 'results')
+        _pred_dir = os.path.join(_rd, 'predictions')
+        makedirs(_pred_dir)
         np.savez(
             os.path.join(
-                _rd,
+                _pred_dir,
                 'Predictions_'
                 + args.model_type
                 + '-'
@@ -232,9 +234,11 @@ def evaluate_uq(args, device, setting, test_loader, model, crit, logger, wandb, 
         
         if 'Test' in setting:
             _rd = getattr(args, 'results_dir', 'results')
+            _pred_dir = os.path.join(_rd, 'predictions')
+            makedirs(_pred_dir)
             np.savez(
                 os.path.join(
-                    _rd,
+                    _pred_dir,
                     'Predictions_'
                     + args.model_type
                     + '-UQ-'

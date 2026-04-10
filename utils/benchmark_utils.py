@@ -39,11 +39,25 @@ def restore_paths_json(repo_dir: Path, original: dict) -> None:
 
 
 def parse_metrics(stdout: str) -> dict:
+    """Parse test metrics plus last-seen Val / Train lines from training logs.
+
+    ``run_exp`` logs ``Val AUROC``, ``Val Accuracy``, etc. each epoch; we take the
+    **last** occurrence (final epoch before early stop / end). Train metrics are only
+    present if ``run_exp`` evaluates on the train loader after loading the best ckpt.
+    """
     patterns = {
         "test_og_auroc": r"Test-OG AUROC\s*=\s*([0-9]*\.?[0-9]+)",
         "test_og_auprc": r"Test-OG AUPRC\s*=\s*([0-9]*\.?[0-9]+)",
+        "test_og_accuracy": r"Test-OG Accuracy\s*=\s*([0-9]*\.?[0-9]+)",
         "test_g_auroc": r"Test-G AUROC\s*=\s*([0-9]*\.?[0-9]+)",
         "test_g_auprc": r"Test-G AUPRC\s*=\s*([0-9]*\.?[0-9]+)",
+        "test_g_accuracy": r"Test-G Accuracy\s*=\s*([0-9]*\.?[0-9]+)",
+        "val_auroc": r"Val AUROC\s*=\s*([0-9]*\.?[0-9]+)",
+        "val_auprc": r"Val AUPRC\s*=\s*([0-9]*\.?[0-9]+)",
+        "val_accuracy": r"Val Accuracy\s*=\s*([0-9]*\.?[0-9]+)",
+        "train_auroc": r"Train AUROC\s*=\s*([0-9]*\.?[0-9]+)",
+        "train_auprc": r"Train AUPRC\s*=\s*([0-9]*\.?[0-9]+)",
+        "train_accuracy": r"Train Accuracy\s*=\s*([0-9]*\.?[0-9]+)",
     }
     out = {}
     for key, pat in patterns.items():
@@ -140,5 +154,6 @@ def run_one(
         "ckpt_path": str(ckpt_path),
         "ckpt_exists": ckpt_path.is_file(),
         **metrics,
+        # Keep a short tail for debugging; full metrics are parsed from the entire log above.
         "raw_tail": "\n".join(text_out.splitlines()[-120:]),
     }

@@ -17,3 +17,9 @@ pyyaml
 pillow
 ipykernel
 openpyxl
+# microsoft/mimic_sepsis (PostgreSQL extract + sepsis_cohort KNN imputation)
+psycopg2-binary>=2.9
+# Older fancyimpute can break against newer scikit-learn; sepsis_cohort falls back to KNNImputer.
+fancyimpute>=0.7
+# Progress bars: data_mngmt runs mimic_sepsis under a PTY when possible (see mimic_sepsis_run).
+pyprind>=2.11

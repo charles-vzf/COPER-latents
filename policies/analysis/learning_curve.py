@@ -1,9 +1,9 @@
-'''
-This code will produce the learning curve for different agents
-that are specified in the json files
-Status : Complete (not completed the key based best parameter selection part)
-Updates : This files combines all json of the same agent as well
-'''
+"""
+Learning curves for agents specified in JSON run files.
+
+Status: complete (key-based best-parameter selection not implemented).
+This module also merges JSON logs for the same agent.
+"""
 import os, sys, time, copy
 sys.path.append(os.getcwd())
 import matplotlib.pyplot as plt
