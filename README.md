@@ -20,23 +20,68 @@ Implementation largely taken from the in the original COPER reference repository
 
 ![COPER architecture overview](figures/coper_architecture.png)
 
+## **ICU-Sepsis MDP: key basic formulas from [ICU-Sepsis (arXiv:2406.05646)](https://arxiv.org/abs/2406.05646)**
+
+**Setup.** Discrete states **{0,…,S−1}** for the loaded dynamics; positive actions **A⁺ = {0,…,24}**; discount **γ = 1**. The **packaged** repo assets use **S = 716** with death / survival / **s_inf** at **713 / 714 / 715** and survival reward **+1** at state **714** (see paper). A **rebuilt** cohort (unified build) may yield a different **S** after pruning; `ICUSepsisEnv` always treats the **last three** indices as those terminals (`state_death`, `state_survival`, `state_s_inf` on the env instance).
+
+**Transition counts** over trajectories *h* in the empirical dataset **D**:
+
+```text
+C(s,a,s′) = Σ_{h,t} I[ S_t = s  and  A_t = a  and  S_{t+1} = s′ ]     |     C(s,a) = Σ_{s′} C(s,a,s′)
+```
+
+(*I[·]* is the indicator: 1 when the event holds, 0 otherwise.)
+
+**Admissible actions** (threshold **τ**, e.g. **20**): *a* ∈ **A(s)** iff **C(s,a) ≥ τ**. Inadmissible *(s,a)* pairs are mapped to the **average** of admissible transitions from *s*, keeping a full **|S| × |A⁺|** table.
+
+**Empirical dynamics and expert policy**
+
+```text
+p(s′ | s,a) = C(s,a,s′) / C(s,a)          when a ∈ A(s)
+
+π_expert(a | s) = C(s,a) / ( Σ_{ã} C(s,ã) )
+```
+
+**Initial distribution** *d*₀(*s*): empirical mass on the first state of each trajectory.
+
+**Optimal policy.** From *p* and reward *R*, value iteration gives value function `V`* and policy `π`* satisfying:
+
+```text
+π*(s) ∈ arg max_a Q*(s,a)
+```
+
+Code: `icu_sepsis_helpers.utils.mdp.value_iteration` (baselines and `train_mdp_policies.ipynb`).
+
+**Objective.** With **γ = 1**, expected return equals survival probability for this reward.
+
+**Illustration.** Discrete states in 2D (UMAP of cluster centers): SOFA, initial distribution *d*₀, expert-policy entropy *H*(*s*), and admissible-action counts (rebuilt cohorts may use a different **S**; this panel uses **723** states). Reproduced in `notebooks/icu_sepsis_demo.ipynb` (UMAP / trajectory section).
+
+![723 MDP states in 2D (UMAP on cluster centers)](figures/icu_sepsis_umap_states_2x2.png)
+
+Random-policy rollout projected onto the same kind of UMAP view (states colored by SOFA):
+
+![Random policy trajectory on UMAP of ICU-Sepsis MDP states](figures/umap_trajectory_random.gif)
+
+### Small head: COPER latent → MDP trajectory
+
+After COPER produces a patient-level embedding **z**, a lightweight head is trained to match a **target distribution over MDP states** derived from the patient’s ICU trajectory (histogram / occupancy in state space), minimizing KL to **p(state | z)**. The figure below is one **validation** patient (**idx 151**): **left**, UMAP of validation embeddings with that patient highlighted; **next**, the head’s predicted density over MDP states (same UMAP layout); **then**, the empirical target from the trajectory; **right**, the observed state sequence (**length 47**, non-mortality label, COPER mortality probability **≈ 0.42**, reference trajectory aligned on the same stay).
+
+![Latent-to-MDP mapping for one validation patient](figures/mapping.png)
+
 ## **Notebooks**
 
 
-| **Notebook**                         | **Purpose**                                                                                                                                                                                                                                                                                                                                                                                                |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `build_data.ipynb`                   | Runs unified `data_mngmt` build end-to-end: default **48 h / 1 h** IHM → `generated/mortality_coper_*.data`, sepsis-filtered MDP cohort (**1 h** RL blocs by default), optional publish. Analysis/plots are in `datasets.ipynb`. `REBUILD_FROM_SCRATCH=True` forces a benchmark rebuild; `MDP_FORCE_REBUILD_SOURCE_TABLE=True` (or delete `mimic_dataset_table_src_bloc*.csv`) forces Postgres RL rebuild. |
-| `icu_sepsis_demo.ipynb`              | **Gymnasium MDP demo:** value iteration, rollouts, UMAP — loads `mdp_params_<slug>/` from the unified build by default (`USE_PACKAGED_MDP=False`), or packaged `envs/assets` if `True`.                                                                                                                                                                                                                    |
-| `COPERvsTRANSFORMER_mortality.ipynb` | Train and compare **COPER vs Transformer** on MIMIC mortality tensors (default **no input-time `--drop`**; `NITERS_LIST` typically **1, 3, 10** — keep in sync with `display_embeddings.ipynb`). Also fits **logistic (L2/L1), random forest, PyTorch LSTM**; saves `.joblib` / `.pt` baselines under `results/demo_outputs/coper_vs_transformer_mortality/models/`. Exports deep bundles to the run’s `models/`; tables + `mimic3_baselines_*.csv/json` → `.../tables/`. |
-| `display_embeddings.ipynb`           | Latent PCA/UMAP/t-SNE; figures and caches → `results/demo_outputs/display_embeddings/{figures,latents}/`.                                                                                                                                                                                                                                                                                                  |
-| `latent_dim.ipynb`                   | Latent-dim sweep; CSV/PNGs → `results/demo_outputs/latent_dim_sweep/{tables,figures}/`.                                                                                                                                                                                                                                                                                                                    |
-| `COPER_demo.ipynb`                   | Quick MIMIC + COPER demo; demo checkpoint → `results/demo_outputs/coper_demo/models/`.                                                                                                                                                                                                                                                                                                                     |
-| `coper_to_states.ipynb`              | Map latents to MDP states; trained head → `results/demo_outputs/coper_to_states/models/`.                                                                                                                                                                                                                                                                                                                  |
-| `train_mdp_policies.ipynb`           | Train tabular RL on ICU-Sepsis; compare random, expert, **optimal** (value iteration), and learned policies (`os.chdir` into `policies/` as noted in the notebook).                                                                                                                                                                                                                                        |
-| `datasets.ipynb`                     | Side-by-side stats: COPER mortality pickle vs MDP cohort / params (`data_mngmt/tools/dataset_compare.py`), plus post-build 48 h / 1 h checks.                                                                                                                                                                                                                                                              |
-
-
-  
+| **Notebook**                         | **Purpose**                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `build_data.ipynb`                   | Runs unified `data_mngmt` build end-to-end: default **48 h / 1 h** IHM → `generated/mortality_coper_*.data`, sepsis-filtered MDP cohort (**1 h** RL blocs by default), optional publish. Analysis/plots are in `datasets.ipynb`. `REBUILD_FROM_SCRATCH=True` forces a benchmark rebuild; `MDP_FORCE_REBUILD_SOURCE_TABLE=True` (or delete `mimic_dataset_table_src_bloc*.csv`) forces Postgres RL rebuild.                                                                |
+| `icu_sepsis_demo.ipynb`              | **Gymnasium MDP demo:** value iteration, rollouts, UMAP — loads `mdp_params_<slug>/` from the unified build by default (`USE_PACKAGED_MDP=False`), or packaged `envs/assets` if `True`.                                                                                                                                                                                                                                                                                   |
+| `COPERvsTRANSFORMER_mortality.ipynb` | Train and compare **COPER vs Transformer** on MIMIC mortality tensors (default **no input-time** `--drop`; `NITERS_LIST` typically **1, 3, 10** — keep in sync with `display_embeddings.ipynb`). Also fits **logistic (L2/L1), random forest, PyTorch LSTM**; saves `.joblib` / `.pt` baselines under `results/demo_outputs/coper_vs_transformer_mortality/models/`. Exports deep bundles to the run’s `models/`; tables + `mimic3_baselines_*.csv/json` → `.../tables/`. |
+| `display_embeddings.ipynb`           | Latent PCA/UMAP/t-SNE; figures and caches → `results/demo_outputs/display_embeddings/{figures,latents}/`.                                                                                                                                                                                                                                                                                                                                                                 |
+| `latent_dim.ipynb`                   | Latent-dim sweep; CSV/PNGs → `results/demo_outputs/latent_dim_sweep/{tables,figures}/`.                                                                                                                                                                                                                                                                                                                                                                                   |
+| `COPER_demo.ipynb`                   | Quick MIMIC + COPER demo; demo checkpoint → `results/demo_outputs/coper_demo/models/`.                                                                                                                                                                                                                                                                                                                                                                                    |
+| `coper_to_states.ipynb`              | Map latents to MDP states; trained head → `results/demo_outputs/coper_to_states/models/`.                                                                                                                                                                                                                                                                                                                                                                                 |
+| `train_mdp_policies.ipynb`           | Train tabular RL on ICU-Sepsis; compare random, expert, **optimal** (value iteration), and learned policies (`os.chdir` into `policies/` as noted in the notebook).                                                                                                                                                                                                                                                                                                       |
+| `datasets.ipynb`                     | Side-by-side stats: COPER mortality pickle vs MDP cohort / params (`data_mngmt/tools/dataset_compare.py`), plus post-build 48 h / 1 h checks.                                                                                                                                                                                                                                                                                                                             |
 
 
 ## Data preprocessing from MIMIC for experiments
@@ -77,7 +122,7 @@ code/COPER/
 ├── requirements.txt          # unified Python dependencies for COPER + notebooks + MDP
 ├── LICENSE
 ├── paths.json                # local path hints (MIMIC extracts, pickles, ICU-Sepsis CSV dir)
-├── figures/                  # documentation assets (e.g. architecture diagram)
+├── figures/                  # docs: `coper_architecture.png`, `icu_sepsis_umap_states_2x2.png`, `mapping.png` (latent→MDP head), ICU-Sepsis trajectory (`umap_trajectory_random.gif`, see formulas section)
 ├── data_mngmt/               # PhysioNet → benchmarks → COPER pickle + ICU-Sepsis MDP (see below)
 ├── src_coper/                # COPER core: attention, ODE cell, transformer baseline, losses
 ├── utils/                    # training entrypoint, export/load bundles, embeddings, viz, mortality baselines (`lstm.py`, `regression.py`, `random_forest.py`)
@@ -91,42 +136,6 @@ code/COPER/
     ├── icu_sepsis_helpers/   # value iteration, baselines, MDP rebuild utilities
     └── examples/             # quickstart, MDP stats, `rebuild_env_assets.py` (cohort → dynamics → package assets)
 ```
-
----
-
-## ICU-Sepsis MDP: key basic formulas from [ICU-Sepsis (arXiv:2406.05646)](https://arxiv.org/abs/2406.05646)
-
-**Setup.** Discrete states **{0,…,S−1}** for the loaded dynamics; positive actions **A⁺ = {0,…,24}**; discount **γ = 1**. The **packaged** repo assets use **S = 716** with death / survival / **s_inf** at **713 / 714 / 715** and survival reward **+1** at state **714** (see paper). A **rebuilt** cohort (unified build) may yield a different **S** after pruning; `ICUSepsisEnv` always treats the **last three** indices as those terminals (`state_death`, `state_survival`, `state_s_inf` on the env instance).
-
-**Transition counts** over trajectories *h* in the empirical dataset **D**:
-
-```text
-C(s,a,s′) = Σ_{h,t} I[ S_t = s  and  A_t = a  and  S_{t+1} = s′ ]     |     C(s,a) = Σ_{s′} C(s,a,s′)
-```
-
-(*I[·]* is the indicator: 1 when the event holds, 0 otherwise.)
-
-**Admissible actions** (threshold **τ**, e.g. **20**): *a* ∈ **A(s)** iff **C(s,a) ≥ τ**. Inadmissible *(s,a)* pairs are mapped to the **average** of admissible transitions from *s*, keeping a full **|S| × |A⁺|** table.
-
-**Empirical dynamics and expert policy**
-
-```text
-p(s′ | s,a) = C(s,a,s′) / C(s,a)          when a ∈ A(s)
-
-π_expert(a | s) = C(s,a) / ( Σ_{ã} C(s,ã) )
-```
-
-**Initial distribution** *d*₀(*s*): empirical mass on the first state of each trajectory.
-
-**Optimal policy.** From *p* and reward *R*, value iteration gives value function `V`* and policy `π`* satisfying:
-
-```text
-π*(s) ∈ arg max_a Q*(s,a)
-```
-
-Code: `icu_sepsis_helpers.utils.mdp.value_iteration` (baselines and `train_mdp_policies.ipynb`).
-
-**Objective.** With **γ = 1**, expected return equals survival probability for this reward.
 
 ---
 

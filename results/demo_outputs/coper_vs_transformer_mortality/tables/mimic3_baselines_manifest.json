@@ -1,0 +1,62 @@
+{
+  "mortality_pickle": "/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/data_mngmt/generated/mortality_coper_sepsis-60m-h48ihm.data",
+  "models_dir": "/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/demo_outputs/coper_vs_transformer_mortality/models",
+  "artifacts": [
+    {
+      "family": "logistic_l2",
+      "path": "/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/demo_outputs/coper_vs_transformer_mortality/models/mortality_logistic_l2.joblib",
+      "model": "logistic_l2",
+      "penalty": "l2",
+      "C": 1.0,
+      "train_accuracy": 0.987719298245614,
+      "val_accuracy": 0.6687211093990755,
+      "test_accuracy": 0.6844660194174758,
+      "train_auroc": 0.9995397662929415,
+      "val_auroc": 0.6601398440023999,
+      "test_auroc": 0.6480731529314119
+    },
+    {
+      "family": "logistic_l1",
+      "path": "/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/demo_outputs/coper_vs_transformer_mortality/models/mortality_logistic_l1.joblib",
+      "model": "logistic_l1",
+      "penalty": "l1",
+      "C": 1.0,
+      "train_accuracy": 0.8929824561403509,
+      "val_accuracy": 0.7026194144838213,
+      "test_accuracy": 0.6893203883495146,
+      "train_auroc": 0.9588138574268543,
+      "val_auroc": 0.6955623759634467,
+      "test_auroc": 0.6787681916400738
+    },
+    {
+      "family": "random_forest",
+      "path": "/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/demo_outputs/coper_vs_transformer_mortality/models/mortality_random_forest.joblib",
+      "model": "random_forest",
+      "n_estimators": 200,
+      "max_depth": 16,
+      "train_accuracy": 1.0,
+      "val_accuracy": 0.7380585516178737,
+      "test_accuracy": 0.7896440129449838,
+      "train_auroc": 1.0,
+      "val_auroc": 0.7633497946185444,
+      "test_auroc": 0.757301698601909
+    },
+    {
+      "family": "lstm",
+      "path": "/home/charlesv/Desktop/StatisitcalGenetics/code/COPER/results/demo_outputs/coper_vs_transformer_mortality/models/mortality_lstm.pt",
+      "model": "lstm",
+      "input_dim": 76,
+      "hidden_dim": 64,
+      "num_layers": 1,
+      "bidirectional": true,
+      "dropout": 0.2,
+      "epochs_trained": 10,
+      "train_accuracy": 0.7768421052631579,
+      "val_accuracy": 0.7288135593220338,
+      "test_accuracy": 0.7880258899676376,
+      "train_auroc": 0.7749635409604817,
+      "val_auroc": 0.7448654636082521,
+      "test_auroc": 0.7418468539374079
+    }
+  ]
+}
