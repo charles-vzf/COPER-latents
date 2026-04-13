@@ -44,8 +44,21 @@ class COPER(nn.Module):
         if cont_in:
             self.ode_in = ODE(input, input, rec_layers, units, nonlinear, config.ode_dropout, device)
 
-        self.net = Perceiver(cont_out, num_latents=num_latents, latent_dim=latent_dim, input_channels=input, att_dropout=config.att_dropout, ff_dropout = config.ff_dropout, self_per_cross_attn=config.self_per_cross_attn,
-                            latent_heads = config.latent_heads, cross_heads=config.cross_heads, cross_dim_head=config.cross_dim_head, latent_dim_head=config.latent_dim_head)
+        use_pos_encoding = getattr(config, "use_pos_encoding", True)
+        self.net = Perceiver(
+            cont_out,
+            num_latents=num_latents,
+            latent_dim=latent_dim,
+            input_channels=input,
+            att_dropout=config.att_dropout,
+            ff_dropout=config.ff_dropout,
+            self_per_cross_attn=config.self_per_cross_attn,
+            latent_heads=config.latent_heads,
+            cross_heads=config.cross_heads,
+            cross_dim_head=config.cross_dim_head,
+            latent_dim_head=config.latent_dim_head,
+            use_pos_encoding=use_pos_encoding,
+        )
 
         if self.second_node:
             self.ode_out = ODE(
@@ -106,10 +119,12 @@ class COPER(nn.Module):
 class Perceiver(nn.Module):
     def __init__(self, cont_out, num_latents, latent_dim, input_channels = 1, cross_heads = 1,
             latent_heads = 1, cross_dim_head = 128, latent_dim_head = 128,
-            att_dropout = 0.2, ff_dropout = 0.2, self_per_cross_attn = 1, device=torch.device("cpu")):
+            att_dropout = 0.2, ff_dropout = 0.2, self_per_cross_attn = 1, device=torch.device("cpu"),
+            use_pos_encoding: bool = True):
 
         super(Perceiver, self).__init__()
 
+        self.use_pos_encoding = bool(use_pos_encoding)
         self.pos_encoder = PositionalEncoding(input_channels)#, max_len=num_latents)
 
         self.cont_out = cont_out
@@ -127,7 +142,8 @@ class Perceiver(nn.Module):
                                         head_dim=latent_dim_head, att_dropout = att_dropout, ff_dropout = ff_dropout))
 
     def forward(self, data, time_steps=None):
-        data = self.pos_encoder(data)
+        if self.use_pos_encoding:
+            data = self.pos_encoder(data)
 
         # if self.cont_out:
         # mask = self._causal_mask(data.shape[1]).to(data.device) ##### commenting this for changing #num_latents

@@ -159,6 +159,80 @@ def state_targets_for_coper_splits(
     return out
 
 
+def per_bloc_state_matrix(
+    cohort_with_states: pd.DataFrame,
+    icu_ids: np.ndarray,
+    *,
+    n_blocs: int = 48,
+    icu_col: str | None = None,
+    bloc_col: str | None = None,
+    state_col: str = "state",
+    max_state_exclusive: int | None = None,
+) -> tuple[np.ndarray, np.ndarray]:
+    """For each ``ICUSTAY_ID`` row in ``icu_ids`` (order preserved), build per-bloc MDP cluster states.
+
+    Uses **hourly (1 h) bloc convention**: bloc values ``1 .. n_blocs`` must each appear at least once
+    for the stay to be marked valid. If multiple RL rows share the same bloc, the **first** row is used.
+
+    Args:
+        cohort_with_states: RL table with at least ``icu_col``, ``bloc_col``, ``state_col``.
+        icu_ids: shape ``(N,)`` int64 stay ids (use ``-1`` for padding / unknown; those rows stay invalid).
+        n_blocs: number of blocs to require (default ``48`` for first 48h with 1h blocs).
+        max_state_exclusive: if set, reject stays where any state is outside ``[0, max_state_exclusive)``.
+
+    Returns:
+        ``states`` of shape ``(N, n_blocs)`` int64 with ``-1`` for invalid / incomplete rows.
+        ``valid`` shape ``(N,)`` bool — ``True`` iff every bloc ``1..n_blocs`` is present with a finite state.
+    """
+    icu_ids = np.asarray(icu_ids, dtype=np.int64).reshape(-1)
+    n = int(icu_ids.shape[0])
+    if icu_col is None:
+        icu_col = _icustay_col(cohort_with_states)
+    if bloc_col is None:
+        bloc_col = next((c for c in ("bloc", "BLOC") if c in cohort_with_states.columns), None)
+    if bloc_col is None:
+        raise KeyError("cohort_with_states must contain a bloc column (bloc / BLOC)")
+
+    states = np.full((n, int(n_blocs)), -1, dtype=np.int64)
+    valid = np.zeros(n, dtype=bool)
+    grp = cohort_with_states.groupby(icu_col, sort=False)
+
+    for i in range(n):
+        iid = int(icu_ids[i])
+        if iid < 0:
+            continue
+        try:
+            g = grp.get_group(iid)
+        except KeyError:
+            continue
+        b = pd.to_numeric(g[bloc_col], errors="coerce")
+        st = pd.to_numeric(g[state_col], errors="coerce")
+        ok_row = b.notna() & st.notna()
+        if not bool(ok_row.any()):
+            continue
+
+        row_states: list[int] = []
+        filled = True
+        for t in range(1, int(n_blocs) + 1):
+            sel = g.loc[ok_row & (b == t)]
+            if len(sel) == 0:
+                filled = False
+                break
+            si = int(pd.to_numeric(sel[state_col].iloc[0], errors="coerce"))
+            if not np.isfinite(si):
+                filled = False
+                break
+            if max_state_exclusive is not None and not (0 <= si < int(max_state_exclusive)):
+                filled = False
+                break
+            row_states.append(si)
+        if filled:
+            states[i] = np.asarray(row_states, dtype=np.int64)
+            valid[i] = True
+
+    return states, valid
+
+
 def default_unified_cohort_paths(
     repo_root: Path | None = None,
     *,

@@ -1,0 +1,12 @@
+{
+  "test_pooled_per_step_acc": 0.004552979953587055,
+  "test_mean_per_stay_acc": 0.004552979953587055,
+  "train_mean_per_stay_acc": 0.031982421875,
+  "val_mean_per_stay_acc": 0.003616898087784648,
+  "n_states": 750,
+  "stays": {
+    "train": 768,
+    "val": 144,
+    "test": 151
+  }
+}
