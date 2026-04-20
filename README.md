@@ -124,7 +124,7 @@ code/COPER/
 ├── requirements.txt          # unified Python dependencies for COPER + notebooks + MDP
 ├── LICENSE
 ├── paths.json                # local path hints (MIMIC extracts, pickles, ICU-Sepsis CSV dir)
-├── figures/                  # docs: `coper_architecture.png`, `icu_sepsis_umap_states_2x2.png`, `mapping.png` (latent→MDP head), ICU-Sepsis trajectory (`umap_trajectory_random.gif`, see formulas section)
+├── figures/                  # docs: `coper_architecture.png`, `icu_sepsis_umap_states_2x2.png`, `mapping.png` (latent→MDP head), `reward_functions_vs_mdethods.png` (policy / reward sweep), ICU-Sepsis trajectory (`umap_trajectory_random.gif`, see formulas section)
 ├── data_mngmt/               # PhysioNet → benchmarks → COPER pickle + ICU-Sepsis MDP (see below)
 ├── src_coper/                # COPER core: attention, ODE cell, Perceiver (`use_pos_encoding` on config), transformer baseline, losses
 ├── utils/                    # training entrypoint, export/load bundles, embeddings, viz, mortality baselines (`lstm.py`, `regression.py`, `random_forest.py`)
@@ -202,4 +202,8 @@ python run/local.py -p src/mainjson.py -j experiments/debug.json
 python analysis/process_data.py experiments/debug.json
 python analysis/learning_curve.py y returns auc experiments/debug.json
 ```
+
+**Reward shaping vs evaluation (notebook `reward_functions.ipynb`).** The plot below compares **survival rate** (same evaluation protocol: rollouts under each trained policy) across **reward functions**—packaged sparse survival, SOFA-based shaping, severity proxy, **`death_prob_dense`**, and the COPER composite. **`death_prob_dense` tends to work best** because the per-step “mortality pressure” is built **directly from the tabular MDP**: it uses the one-step mass on the death absorbing state under the true transition law \(p(s' \mid s,a)\). That objective is therefore **aligned with the evaluation metric** you care about in this benchmark—**survival estimated by sampling trajectories** in the same MDP. By contrast, **optimal** policies are obtained **offline** via **value iteration** on the full model (here the MDP is small enough to be tractable; there is no online exploration in the usual sense). Learned policies are trained from **offline** trajectory data or tabular backups, so a dense reward that tracks **immediate death risk from \(p\)** is a close match to how performance is scored at the end of an episode.
+
+![Survival rate by RL method; color = reward function](figures/reward_functions_vs_mdethods.png)
 

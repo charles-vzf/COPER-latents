@@ -22,9 +22,15 @@ NUM_ENVS = 4
 
 
 
-def make_env(seed, env_type = None):
+def make_env(seed, env_type=None, reward_spec=None, reward_params=None):
+    env_kw = {}
+    if reward_spec is not None:
+        env_kw["reward_spec"] = reward_spec
+    if reward_params is not None:
+        env_kw["reward_params"] = reward_params
+
     def thunk():
-        env = gym.make('Sepsis/ICU-Sepsis-v2')
+        env = gym.make("Sepsis/ICU-Sepsis-v2", **env_kw)
         env = gym.wrappers.RecordEpisodeStatistics(env)
         # env.seed(seed)
         env.action_space.seed(seed)

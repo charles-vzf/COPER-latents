@@ -10,6 +10,7 @@ from gymnasium import spaces
 from ..utils.io import MDPParameters
 from ..utils.constants import inadmissible_action_strategies as ias
 from ..utils.exceptions import InadmissibleActionError
+from ..utils.reward_specs import SURVIVAL_PACKAGED, build_reward_matrix
 
 
 class ICUSepsisEnv(gym.Env):
@@ -39,6 +40,7 @@ class ICUSepsisEnv(gym.Env):
     _admissible_actions: list[list[int]]
     _state_cluster_centers: np.ndarray
     _sofa_scores: np.ndarray
+    _reward_spec: str
 
     def __init__(self, *, render_mode: str = None,
                  params: MDPParameters = None,
@@ -56,6 +58,11 @@ class ICUSepsisEnv(gym.Env):
                 Strategy to handle inadmissible actions. Keeping it None will
                 use the default strategy defined in the package constants.
                 Defaults to None.
+            reward_spec (str, optional):
+                If set (e.g. ``\"sofa_next\"``), replaces the tabular ``r_mat``
+                while keeping transitions fixed. See ``icu_sepsis.utils.reward_specs``.
+            reward_params (dict, optional):
+                Optional parameters for the chosen ``reward_spec`` (e.g. ``lambda``).
         """
         # Load provided environment parameters, or use default parameters
         if params is None:
@@ -63,6 +70,21 @@ class ICUSepsisEnv(gym.Env):
             logging.debug('Loading data from %s', data_root)
             params = MDPParameters(data_root)
         params.load_to(self)
+
+        reward_spec = kwargs.get('reward_spec', None)
+        reward_params = kwargs.get('reward_params', None) or {}
+        if reward_spec in (None, '', SURVIVAL_PACKAGED, 'survival', 'default'):
+            self._reward_spec = SURVIVAL_PACKAGED
+        else:
+            self._reward_spec = str(reward_spec)
+            self._r_mat = build_reward_matrix(
+                self._tx_mat,
+                self._sofa_scores,
+                self._state_cluster_centers,
+                self._r_mat,
+                self._reward_spec,
+                reward_params,
+            )
 
         # Set admissible actions as a list of sets for faster lookup
         self._admissible_action_sets = [
@@ -251,6 +273,11 @@ class ICUSepsisEnv(gym.Env):
         """Average Sequential Organ Failure Assessment (SOFA) scores of
         patients for each state in the state space."""
         return self._sofa_scores
+
+    @property
+    def reward_spec(self) -> str:
+        """Name of the reward tensor (``packaged`` or a built-in alternative)."""
+        return self._reward_spec
 
     @property
     def env_metadata(self) -> dict:

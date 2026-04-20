@@ -1,0 +1,249 @@
+\documentclass[final]{beamer}
+
+% Poster layout (beamerposter) — portrait, two columns
+\usepackage[size=a0,scale=1.08,orientation=portrait]{beamerposter}
+\usetheme{default}
+\usecolortheme{default}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% --- Dark blue color scheme ---
+\definecolor{darkblue}{RGB}{0,51,102}
+\setbeamercolor{block title}{fg=white,bg=darkblue}
+\setbeamercolor{block body}{fg=black,bg=white}
+\setbeamerfont{block title}{series=\bfseries,size=\Large}
+\setbeamerfont{block body}{size=\large}
+\setbeamertemplate{block begin}{
+  \vskip0.75ex
+  \begin{beamercolorbox}[wd=\textwidth,sep=1.2ex,rounded=true,leftskip=0.5ex,rightskip=0.5ex]{block title}
+    \usebeamerfont{block title}\insertblocktitle
+  \end{beamercolorbox}
+  \begin{beamercolorbox}[wd=\textwidth,sep=1.2ex,rounded=true,leftskip=0.5ex,rightskip=0.5ex]{block body}
+    \usebeamerfont{block body}
+}
+\setbeamertemplate{block end}{
+  \end{beamercolorbox}
+  \vskip0.75ex
+}
+
+% Frame style for ideas
+\newcommand{\framedidea}[1]{%
+  \vspace{0.3em}
+  \setlength{\fboxrule}{2pt}
+  \setlength{\fboxsep}{0.8ex}
+  \fcolorbox{darkblue}{white}{%
+    \parbox{0.92\textwidth}{#1}%
+  }%
+  \vspace{0.3em}
+}
+
+% Header
+\title{Minimum Sizes of Identifying Codes in Graphs Differing by One Vertex (OH2)}
+\author{Charon, Honkala, Hudry, Lobstein (2013), \emph{Cryptography and Communications}}
+\institute{Poster author: Vielzeuf Charles}
+\date{}
+
+\begin{document}
+\begin{frame}[t]
+
+% --- Big title banner with dark blue ---
+\begin{beamercolorbox}[wd=\textwidth,sep=1.6ex,center,rounded=true]{block title}
+  \huge\bfseries \inserttitle\\[0.5em]
+  \Large \insertauthor \qquad\textbar\qquad \large \insertinstitute
+\end{beamercolorbox}
+
+\vspace{1.2em}
+
+\begin{columns}[t,totalwidth=\textwidth]
+
+% ===================== Column 1 (up to and including Lemmas) =====================
+\begin{column}{0.48\textwidth}
+
+\begin{block}{Context and Motivation}
+\textbf{Identifying codes} model the placement of sensors on certain vertices of a graph to \textbf{identify} (or locate) an unknown vertex from the sensors that ``see'' it.
+
+\framedidea{%
+\textbf{Example application: Museum rooms}\\
+Consider a museum with rooms connected by corridors. We want to place detectors (sensors) in some rooms so that if an alarm is
+triggered, we can identify exactly which room it came from based on which detectors detect it. The detectors have a detection radius $r$:
+they can detect alarms in rooms within distance $r$. The goal is to minimize the number of detectors needed while ensuring every room can be uniquely identified.
+We note by \textbf{$\gamma_r(G)$ the minimum number of detectors needed to identify all rooms in a graph $G$}.
+}
+
+Article OH2 studies the \textbf{stability} of the parameter $\gamma_r(G)$ when modifying the graph by \textbf{adding or deleting a vertex}.
+With $G^*$ obtained from $G$ by adding/deleting a vertex, provided that $G$ and $G^*$ remain \textbf{identifiable}, we compare:
+$$
+\gamma_r(G^*)-\gamma_r(G)
+\qquad\text{and}\qquad
+\frac{\gamma_r(G^*)}{\gamma_r(G)}.
+$$
+\end{block}
+
+\begin{block}{Main Definitions}
+Let $G=(V,E)$ be a simple undirected graph. For $v\in V$ and $r\ge 1$, the \textbf{ball} of radius $r$ is
+$ B_{G,r}(v)=\{x\in V: d_G(v,x)\le r\}. $
+
+\framedidea{%
+Two vertices $x\ne y$ are \textbf{$(G,S,r)$-twins} if
+$$
+B_{G,r}(x)\cap S = B_{G,r}(y)\cap S.
+$$
+The graph is \textbf{$r$-twin-free} if no such twins exist (when $S=V$).
+}
+
+A \textbf{code} is a subset $\mathcal{C}\subseteq V$; the elements of C are called \textbf{codewords}.
+
+For a vertex $v$, the associated \textbf{identifying set} is:
+$$
+I_{G,\mathcal{C},r}(v)=B_{G,r}(v)\cap \mathcal{C}.
+$$
+
+\framedidea{%
+The code $\mathcal{C}$ is \textbf{$r$-identifying} if the sets $I_{G,\mathcal{C},r}(v)$, $v\in V$, are:
+\begin{itemize}
+  \item \textbf{nonempty} (every vertex is covered),
+  \item \textbf{all distinct} (every pair of vertices is separated).
+\end{itemize}
+}
+A graph admits an $r$-identifying code only if it is $r$-twin-free: two $r$-twins would have the same identifying set $I_{G,\mathcal{C},r}(\cdot)$ for any code $\mathcal{C}$, so they could not be separated.
+
+When $G$ is $r$-twin-free, we define
+$
+\gamma_r(G)=\min\{|\mathcal{C}|:\ \mathcal{C}\ \text{is an $r$-identifying code of}\ G\}.
+$
+
+\vspace{1.5em}
+
+\begin{center}
+\includegraphics[width=\textwidth]{cases.png}
+\end{center}
+\end{block}
+
+\begin{block}{Main Questions}
+\framedidea{%
+Given an $r$-twin-free graph $G$, and $G^*$ obtained by \textbf{adding} or \textbf{deleting} a vertex,\\
+if $G^*$ is still $r$-twin-free:
+\begin{itemize}
+  \item What differences are possible for $\gamma_r(G^*)-\gamma_r(G)$?
+  \item What ratios are possible for $\gamma_r(G^*)/\gamma_r(G)$?
+\end{itemize}
+}
+
+OH2 provides \textbf{extremal constructions} showing that these quantities can vary strongly, including for \textbf{connected} graphs.
+\end{block}
+
+\begin{block}{Lemmas}
+\noindent\textbf{Lemma 1} [(G, S, r)-twin transitivity] In a graph $G = (V, E)$, if $x, y, z$ are three distinct vertices, if $S$ is a subset of $V$, if $x$ and $y$ are $(G, S, r)$-twins and if $y$ and $z$ are $(G, S, r)$-twins, then $x$ and $z$ are $(G, S, r)$-twins.
+
+
+\hspace*{0.8em}\textbf{Lemma 2} If $C$ is an $r$-identifying code in a graph $G = (V, E)$, then so is any set $S$ such that $C \subseteq S \subseteq V$.
+\end{block}
+
+\begin{block}{Case $r=1$}
+\framedidea{%
+Let $k \geq 1$ be an arbitrary integer. There exist two (connected) $1$-twin-free graphs $G$ and $G_x$, where $G_x$ denotes the graph obtained from $G$ by deleting the vertex $x$ and $G$ has $2k + \lceil\log_2(k + 1)\rceil + 2$ vertices, such that
+$$
+\gamma_1(G) \leq \lceil\log_2(k + 1)\rceil + 2 \quad \text{and} \quad \gamma_1(G_x) \geq k.
+$$
+}
+\end{block}
+
+\end{column}
+
+% ===================== Column 2 (Proof Case r=1, Case r>=2, Conclusion) =====================
+\begin{column}{0.48\textwidth}
+
+\textbf{Proof:} Construction with two similar sets of $x$- and $y$-vertices, each identifiable via the codewords $a$, and a vertex $x$ adjacent to only one of these sets.
+
+\vspace{0.8em}
+
+\begin{center}
+\includegraphics[width=0.72\linewidth]{example_graph_proof.png}\\
+\small Example $k=7$: the codewords $a_i$ + $x$ suffice to identify all $x_i$ and $y_i$ in $G$. $x$ is the vertex removed to get $G_x$;
+\end{center}
+
+\textbf{Open question:} Can we do better?
+
+\vspace{1em}
+
+\framedidea{%
+Let $G = (V, E)$ be any $1$-twin-free graph with at least three vertices. For any vertex $x \in V$ such that $G_x$ is $1$-twin-free, we have:
+$$
+\gamma_1(G_x) \geq \gamma_1(G) - 1.
+$$
+}
+
+\textbf{Proof:} From a minimum $1$-identifying code in $G_x$, one builds a $1$-identifying code in $G$ of size at most $\gamma_1(G_x)+1$ by adding $x$ if it is not $1$-covered, or (when $x$ is $1$-covered but $C - \{x\}$ fails to $1$-separate $x$ from some vertex $v$) by adding a vertex $z$ that $1$-covers exactly one of $x$ and $v$ (such $z$ exists because $G$ is $1$-twin-free); hence $\gamma_1(G)\le\gamma_1(G_x)+1$.
+
+\vspace{1em}
+
+\textbf{Corollary:} If $\gamma_1(G_x) \leq a$ and $\gamma_1(G) \geq a + 1$, then $\gamma_1(G_x) = a$ and $\gamma_1(G) = a + 1$.
+
+\vspace{1em}
+
+\begin{block}{Case $r \geq 2$}
+\framedidea{%
+For $r \geq 2$, both $\gamma_r(G_x) - \gamma_r(G)$ and $\gamma_r(G_x)/\gamma_r(G)$ can be \textbf{arbitrarily large or small}.
+}
+
+\textbf{General view.} The paper uses cycles (e.g.\ $\gamma_r(C_n) = n/2$ for even $n \geq 2r+4$), then connected graphs with \textit{$r$ even} and \textit{$r$ odd} where the difference grows with $n$; path-based constructions yield ratios that can be made arbitrarily large; other families give exact $\gamma_r$ for graphs of order $pr+1$ and $pr+2$. Both the difference and the ratio can be made arbitrarily large or arbitrarily small (see best know ratios from conclusion).
+\end{block}
+
+\begin{block}{General Conclusion}
+Table~1 summarizes the results of the paper: possible ranges for the difference $\gamma_r(G_x) - \gamma_r(G)$ and the ratio $\gamma_r(G_x)/\gamma_r(G)$ when $G_x$ is obtained from $G$ by adding or deleting one vertex. The asymptotic behaviour is given for $n$ large with respect to $r$; $\approx$ denotes approximate worth known growth.
+
+\vspace{0.5em}
+
+\begin{center}
+\large
+\begin{tabular}{cclcc}
+\toprule
+$r$ & $r$ & comment & $\gamma_r(G_x) - \gamma_r(G)$ & $\gamma_r(G_x) / \gamma_r(G)$ \\
+\midrule
+$r = 1$ & & always & $\geq -1$ & \\
+$r = 1$ & & (connected) graphs & $\gtrsim 0.5 n - 1.5 \log_2 n$ & $\gtrsim n / (2 \log_2 n)$ \\
+$\geq 2$ & even & connected graphs & $\gtrsim n/4$ & \\
+$\geq 2$ & odd & connected graphs & $\gtrsim n(3r-1) / (12r)$ & \\
+$\geq 2$ & any & not connected graphs & $\gtrsim n(2r-2) / (2r+1)$ & \\
+$\geq 2$ & any & (connected) graphs & & $\gtrsim n / (2r^2 \log_2 n)$ \\
+$\geq 2$ & any & (connected) graphs & $\lesssim -n(r-1) / r$ & $\lesssim r(r+1) \log_2 n / n$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.3em}
+\small
+\textbf{Table 1:} The difference $\gamma_r(G_x) - \gamma_r(G)$ and ratio $\gamma_r(G_x) / \gamma_r(G)$, as functions of $n$ and $r$.
+\end{block}
+
+\begin{block}{Sources}
+\textbf{More results}
+\begin{itemize}
+  \item A. Lobstein, O. Hudry, I. Charon, «~Locating-domination and identification~», Ch.~6 in \emph{Topics in Domination in Graphs}, eds.~T.~Haynes, S.~Hedetniemi, M.~Henning, Springer, 2020, pp.~251--299.
+  \item O. Hudry, V. Junnila, A. Lobstein, «~On Iiro Honkala's contributions to identifying codes~», \emph{Fundamenta Informaticae} \textbf{191} (3--4), 2024, pp.~165--196.
+\end{itemize}
+
+\vspace{0.6em}
+\textbf{Applications of identifying codes}
+\begin{itemize}
+  \item K. Basu, A. Sen, «~Identifying individuals associated with organized criminal networks: A social network analysis~», \emph{Social Networks} \textbf{64}, 2021, pp.~42--54.
+  \item K. Basu, M. Padhee, S. Roy, A. Pal, A. Sen, M. Rhodes, B. Keel, «~Health Monitoring of Critical Power System Equipments using Identifying Codes~», preprint, 2018.
+  \item S. Sengupta, K. Basu, A. Sen, S. Kambhampati, «~Moving Target Defense for Robust Monitoring of Electric Grid Transformers in Adversarial Environments~», \emph{GameSec} 2020. Uses \textbf{discriminating codes} (variant of identifying codes).
+\end{itemize}
+\end{block}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+\end{document}

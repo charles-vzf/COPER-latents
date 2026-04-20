@@ -60,7 +60,15 @@ def run_sac(args, use_tensorboard=False, use_wandb=False, return_agent=False):
     else:
         env_type = None
     envs = gym.vector.SyncVectorEnv(
-            [make_env( args.seed + i, env_type) for i in range(args.num_envs)]
+            [
+                make_env(
+                    args.seed + i,
+                    env_type,
+                    getattr(args, "reward_spec", None),
+                    getattr(args, "reward_params", None),
+                )
+                for i in range(args.num_envs)
+            ]
         )
     assert isinstance(envs.single_action_space, gym.spaces.Discrete), "only discrete action space is supported"
 
@@ -217,8 +225,8 @@ def run_sac(args, use_tensorboard=False, use_wandb=False, return_agent=False):
         global_step += 1
     
 
-    assert (returns_ >= 0.0).all(), "returns should be non-negative"
-    assert (discounted_returns_ >= 0.0).all(), "discounted returns should be non-negative"
+    assert np.isfinite(returns_).all(), "returns should be finite"
+    assert np.isfinite(discounted_returns_).all(), "discounted returns should be finite"
     summary = {
         'returns': returns_,
         'discounted_returns': discounted_returns_,
