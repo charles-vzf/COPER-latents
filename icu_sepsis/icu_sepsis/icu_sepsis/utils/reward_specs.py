@@ -17,6 +17,8 @@ SOFA_NEXT = "sofa_next"
 SOFA_DELTA = "sofa_delta"
 SEVERITY_PROXY = "severity_proxy"
 DEATH_PROB_DENSE = "death_prob_dense"
+COPER_NEXT = "coper_next"
+COPER_DELTA = "coper_delta"
 COPER_COMPOSITE = "coper_composite"
 
 KNOWN_SPECS = frozenset(
@@ -28,6 +30,8 @@ KNOWN_SPECS = frozenset(
         SOFA_DELTA,
         SEVERITY_PROXY,
         DEATH_PROB_DENSE,
+        COPER_NEXT,
+        COPER_DELTA,
         COPER_COMPOSITE,
     }
 )
@@ -53,7 +57,9 @@ def build_reward_matrix(
         state_cluster_centers: Shape ``(S, F)`` cluster centroids (transient + absorbing).
         packaged_r_mat: Rewards shipped with the environment (sparse + terminal).
         reward_spec: One of :data:`KNOWN_SPECS` (aliases ``survival`` / ``default`` = packaged).
-        params: Optional floats ``lambda``, ``beta``, ``w_sofa``, ``w_death``, etc.
+        params: Optional floats ``lambda``, ``beta``, ``alpha``, ``w_sofa``, ``w_death``,
+            ``coper_scores`` (length ``S``) for :data:`COPER_NEXT` / :data:`COPER_DELTA`,
+            and optional ``coper_scale`` for :data:`COPER_DELTA`.
     """
     params = dict(params or {})
     spec = reward_spec if reward_spec is not None else SURVIVAL_PACKAGED
@@ -111,9 +117,42 @@ def build_reward_matrix(
         r[:n_tr, :, :n_tr] = (-beta * pdeath[:n_tr, :, np.newaxis])
         return r
 
+    if spec == COPER_NEXT:
+        lam = float(params.get("lambda", 0.05))
+        coper = np.asarray(params.get("coper_scores"), dtype=np.float64).reshape(-1)
+        if len(coper) != n_s:
+            raise ValueError(
+                f"coper_scores length {len(coper)} != num states {n_s} "
+                "(pass a full state vector including absorbing states)."
+            )
+        cmax = max(float(coper[:n_tr].max()), 1e-6)
+        r[:n_tr, :, :n_tr] = (-lam / cmax) * coper[:n_tr].reshape(1, 1, n_tr)
+        return r
+
+    if spec == COPER_DELTA:
+        lam = float(params.get("lambda", 0.05))
+        coper = np.asarray(params.get("coper_scores"), dtype=np.float64).reshape(-1)
+        if len(coper) != n_s:
+            raise ValueError(
+                f"coper_scores length {len(coper)} != num states {n_s} "
+                "(pass a full state vector including absorbing states)."
+            )
+        den = float(
+            params.get("coper_scale", max(float(np.ptp(coper[:n_tr])), 1e-6))
+        )
+        cvec = coper[:n_tr].reshape(n_tr, 1)
+        cprime = coper[:n_tr].reshape(1, n_tr)
+        delta_block = (-lam / den) * (cprime - cvec)
+        r[:n_tr, :, :n_tr] = delta_block[:, np.newaxis, :]
+        return r
+
     if spec == COPER_COMPOSITE:
-        w_sofa = float(params.get("w_sofa", 0.5))
-        w_death = float(params.get("w_death", 0.5))
+        if "alpha" in params:
+            w_sofa = float(params["alpha"])
+            w_death = 1.0 - w_sofa
+        else:
+            w_sofa = float(params.get("w_sofa", 0.5))
+            w_death = float(params.get("w_death", 0.5))
         r_s = build_reward_matrix(
             tx_mat,
             sofa,
